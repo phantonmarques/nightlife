@@ -1,0 +1,2 @@
+;
+<?php echo $__env->make('vendor.adminlte.login', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH E:\Projetos Desenvolvimento\ProjetosPhpStorm\ProjetosLaravel\nightlife\resources\views/siteinstitucional/auth/login.blade.php ENDPATH**/ ?>
