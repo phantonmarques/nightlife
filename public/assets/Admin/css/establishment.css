@@ -1,0 +1,16 @@
+.action-delete {
+    color: #605ca8;
+}
+
+.action-delete:hover {
+    color: #f39c12;
+}
+
+.action-edit{
+    color: black;
+}
+
+.action-show{
+    color: #f39c12;
+}
+
