@@ -6,7 +6,7 @@
 @stop
 
 @section('breadcrumbs')
-    {{ Breadcrumbs::render(Route::currentRouteName(), $establishments) }}
+    {{ Breadcrumbs::render(Route::currentRouteName(), $establishmentsAdress) }}
 @endsection
 
 @section('content')
@@ -15,9 +15,9 @@
             <div class="box box-warning">
                 <div class="box-header with-border">
                     <div class="box-title col-xs-6 no-padding">
-                        <a class="btn btn-success btn-flat" href="{{ route('establishment.create')  }}">
+                        <a class="btn btn-success btn-flat" href="{{ route('establishmentAddress.create')  }}">
                             <!--  //route('vehicles.create')  -->
-                            <i class="fas fa-sm fa-plus"></i>&nbsp;&nbsp;Novo Estabelecimento
+                            <i class="fas fa-sm fa-plus"></i>&nbsp;&nbsp;Novo Endereço
                         </a>
                     </div>
 
@@ -35,7 +35,7 @@
                                 </button>
                                 @if (!empty($search))
                                     <a title="Limpar" class="btn btn-default"
-                                       href="{{ route('establishments.index') }}">
+                                       href="{{ route('establishmentAddress.index') }}">
                                         <i class="fas fa-backspace"></i>
                                     </a>
                                 @endif
@@ -52,21 +52,21 @@
 {{--                            <th class="text-center">--}}
 {{--                                <input class="icheck check-all" type="checkbox"/>--}}
 {{--                            </th>--}}
-                            <th>Razão Social</th>
-                            <th>Inscrição Estadual</th>
-                            <th>CNPJ</th>
-                            <th>Tipo Licença</th>
-                            <th>Situação Empresa</th>
-                            <th>Usuário</th>
-                            <th>E-mail</th>
+                            <th>Estabelecimento</th>
+                            <th>Rua</th>
+                            <th>Número</th>
+                            <th>CEP</th>
+                            <th>Cidade</th>
+                            <th>Estado</th>
+                            <th>Telefone</th>
                             <th>Data de criação</th>
                             <th>Data de atualização</th>
                             <th class="col-actions"></th>
                         </tr>
                         </thead>
                         <tbody>
-                        @if (isset($establishments) && sizeof($establishments) > 0)
-                            @foreach($establishments as $establishment)
+                        @if (isset($establishmentsAdress) && sizeof($establishmentsAdress) > 0)
+                            @foreach($establishmentsAdress as $establishment)
                                 <tr>
 {{--                                    <th class="text-center">--}}
 {{--                                        <input class="icheck check-all" name="establishment[id][]" type="checkbox"--}}
@@ -122,9 +122,9 @@
                     </table>
                 </div>
 
-                @if ($establishments->hasPages())
+                @if ($establishmentsAdress->hasPages())
                     <div class="box-footer clearfix">
-                        {{ $establishments->appends(['q' => $search])->onEachSide(2)->links() }}
+                        {{ $establishmentsAdress->appends(['q' => $search])->onEachSide(2)->links() }}
                     </div>
                 @endif
             </div>

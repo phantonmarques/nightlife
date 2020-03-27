@@ -45,18 +45,26 @@
                         <?php echo e(Form::open(['method' => 'GET'])); ?>
 
                         <div class="input-group">
-                            <?php if(empty($search)): ?>
-                                <?php echo e($search = ''); ?>
+                            <?php if(empty($establishmentsSearch)): ?>
+                                <?php echo e($establishmentsSearch = ''); ?>
 
                             <?php endif; ?>
-                            <?php echo e(Form::text('s', $search, ['placeholder' => 'Pesquisar', 'class' => 'form-control col-md-4'])); ?>
+                            <!-- SEARCH PESQUISA INPUT -->
+                            <?php echo e(Form::text('s', $establishmentsSearch, ['placeholder' => 'Pesquisar', 'class' => 'form-control col-md-4'])); ?>
 
+                            <!-- FIM SEARCH PESQUISA -->
 
+                            <!-- INICIO CASO ESTEJA EM "DESABILITADOS" -->
+                            <?php if(isset($_GET['d'])): ?>
+                                    <?php echo e(Form::hidden('d', 1, array('id' => 'd'))); ?>
+
+                            <?php endif; ?>
+                            <!-- FIM -->
                             <div class="input-group-btn">
                                 <button type="submit" class="btn btn-default btn-flat">
                                     <i class="fas fa-search"></i>
                                 </button>
-                                <?php if(!empty($search)): ?>
+                                <?php if(!empty($establishmentsSearch)): ?>
                                     <a title="Limpar" class="btn btn-default"
                                        href="<?php echo e(route('establishment.index')); ?>">
                                         <i class="fas fa-backspace"></i>
@@ -73,9 +81,6 @@
                     <table class="table table-hover table-striped">
                         <thead>
                         <tr>
-
-
-
                             <th>Razão Social</th>
                             <th>Inscrição Estadual</th>
                             <th>CNPJ</th>
@@ -92,10 +97,6 @@
                         <?php if(isset($establishments) && sizeof($establishments) > 0): ?>
                             <?php $__currentLoopData = $establishments; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $establishment): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                 <tr>
-
-
-
-
                                     <th>
                                         <?php echo e($establishment->corporate_name); ?>
 
@@ -147,7 +148,12 @@
                         <?php else: ?>
                             <tr>
                                 <td colspan="100%" class="text-center">
-                                    Nenhum estabelecimento cadastrado
+                                    <?php if(isset($_GET['d'])): ?>
+                                        Nenhum estabelecimento desativado
+                                    <?php else: ?>
+                                        Nenhum estabelecimento cadastrado
+                                    <?php endif; ?>
+
                                 </td>
                             </tr>
                         <?php endif; ?>
@@ -157,7 +163,7 @@
 
                 <?php if($establishments->hasPages()): ?>
                     <div class="box-footer clearfix">
-                        <?php echo e($establishments->appends(['q' => $search])->onEachSide(2)->links()); ?>
+                        <?php echo e($establishments->appends(['q' => $establishmentsSearch])->onEachSide(2)->links()); ?>
 
                     </div>
                 <?php endif; ?>

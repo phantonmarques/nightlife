@@ -41,16 +41,23 @@
                     <div class="box-title col-xs-6 col-sm-3 no-padding pull-right">
                         {{ Form::open(['method' => 'GET']) }}
                         <div class="input-group">
-                            @if (empty($search))
-                                {{ $search = '' }}
+                            @if (empty($establishmentsSearch))
+                                {{ $establishmentsSearch = '' }}
                             @endif
-                            {{ Form::text('s', $search, ['placeholder' => 'Pesquisar', 'class' => 'form-control col-md-4']) }}
+                            <!-- SEARCH PESQUISA INPUT -->
+                            {{ Form::text('s', $establishmentsSearch, ['placeholder' => 'Pesquisar', 'class' => 'form-control col-md-4']) }}
+                            <!-- FIM SEARCH PESQUISA -->
 
+                            <!-- INICIO CASO ESTEJA EM "DESABILITADOS" -->
+                            @if (isset($_GET['d']))
+                                    {{ Form::hidden('d', 1, array('id' => 'd')) }}
+                            @endif
+                            <!-- FIM -->
                             <div class="input-group-btn">
                                 <button type="submit" class="btn btn-default btn-flat">
                                     <i class="fas fa-search"></i>
                                 </button>
-                                @if (!empty($search))
+                                @if (!empty($establishmentsSearch))
                                     <a title="Limpar" class="btn btn-default"
                                        href="{{ route('establishment.index') }}">
                                         <i class="fas fa-backspace"></i>
@@ -66,9 +73,6 @@
                     <table class="table table-hover table-striped">
                         <thead>
                         <tr>
-{{--                            <th class="text-center">--}}
-{{--                                <input class="icheck check-all" type="checkbox"/>--}}
-{{--                            </th>--}}
                             <th>Razão Social</th>
                             <th>Inscrição Estadual</th>
                             <th>CNPJ</th>
@@ -85,10 +89,6 @@
                         @if (isset($establishments) && sizeof($establishments) > 0)
                             @foreach($establishments as $establishment)
                                 <tr>
-{{--                                    <th class="text-center">--}}
-{{--                                        <input class="icheck check-all" name="establishment[id][]" type="checkbox"--}}
-{{--                                               value="{{ $establishment->id }}"/>--}}
-{{--                                    </th>--}}
                                     <th>
                                         {{ $establishment->corporate_name }}
                                     </th>
@@ -131,7 +131,12 @@
                         @else
                             <tr>
                                 <td colspan="100%" class="text-center">
-                                    Nenhum estabelecimento cadastrado
+                                    @if (isset($_GET['d']))
+                                        Nenhum estabelecimento desativado
+                                    @else
+                                        Nenhum estabelecimento cadastrado
+                                    @endif
+
                                 </td>
                             </tr>
                         @endif
@@ -141,7 +146,7 @@
 
                 @if ($establishments->hasPages())
                     <div class="box-footer clearfix">
-                        {{ $establishments->appends(['q' => $search])->onEachSide(2)->links() }}
+                        {{ $establishments->appends(['q' => $establishmentsSearch])->onEachSide(2)->links() }}
                     </div>
                 @endif
             </div>

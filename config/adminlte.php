@@ -126,11 +126,11 @@ return [
                     'route'  => 'establishmentAddress.prepareIndex',
                     'active' => [ 'establishmentAddress', 'establishmentAddress/*', 'establishmentAddress?*' ]
                 ],
-                [
-                    'text'  => 'Faturas',
-                    'url'   => '#',
-                    'icon'  => 'fas fa-file-invoice-dollar'
-                ],
+//                [
+//                    'text'  => 'Faturas',
+//                    'url'   => '#',
+//                    'icon'  => 'fas fa-file-invoice-dollar'
+//                ],
             ],
         ],
         [

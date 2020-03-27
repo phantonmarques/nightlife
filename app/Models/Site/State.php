@@ -8,7 +8,7 @@ class State extends Model
 {
     protected $table = 'state';
 
-    public function cidades(){
+    public function city(){
         return $this->hasMany(City::class, 'state_id', 'id');
     }
 }

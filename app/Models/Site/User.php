@@ -168,7 +168,7 @@ class User extends Authenticatable
     }
 
     public function establishments(){
-        return $this->hasMany(Establishment::class, 'id', 'user_id');
+        return $this->hasOne(Establishment::class, 'id', 'user_id');
     }
 
 

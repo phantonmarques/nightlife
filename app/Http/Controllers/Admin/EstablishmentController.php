@@ -34,20 +34,22 @@
          */
         public function index(Request $request, Establishment $establishments)
         {
+            $userActive = auth()->user()->name;
+
             $establishmentsDisabled = $request->query('d');
 
             $establishmentsSearch = $request->query('s');
 
-            if (!empty(trim($establishmentsDisabled)))
+            if (!empty(trim($establishmentsDisabled)) && !empty(trim($establishmentsSearch)))
+                $establishments = $establishments->with('users')->where('status', 0)->where('corporate_name', 'like', "%{$establishmentsSearch}%")->paginate($this->paginate);
+            else if (!empty(trim($establishmentsDisabled)))
                 $establishments = $establishments->with('users')->where('status', 0)->paginate($this->paginate);
             else if (!empty(trim($establishmentsSearch)))
                 $establishments = $establishments->with('users')->where('status', 1)->where('corporate_name', 'like', "%{$establishmentsSearch}%")->paginate($this->paginate);
             else
                 $establishments = $establishments->with('users')->where('status', 1)->paginate($this->paginate);
 
-            $userActive = auth()->user()->name;
-
-            return view('admin.establishment.index', compact('establishments', 'userActive'));
+            return view('admin.establishment.index', compact('establishments', 'userActive', 'establishmentsSearch'));
         }
 
         /**
@@ -57,6 +59,8 @@
          */
         public function create(Request $request)
         {
+            $userActive = auth()->user()->name;
+
             /** Create form options */
             $formOptions = [
                 'route' => 'establishment.store',
@@ -68,8 +72,6 @@
             $users = User::where('type_user', 'e')->whereNotIn('id', function ($q) {
                 $q->select('user_id')->from('establishment');
             })->get();
-
-            $userActive = auth()->user()->name;
 
             $establishment = new Establishment();
 
@@ -118,14 +120,14 @@
          */
         public function show(Establishment $establishment)
         {
+            $userActive = auth()->user()->name;
+
 //            /** @var App\Models\Site\User Authenticated user */
 //            $user = $request->user();
 //
 //            if (!$user->role->isAdmin()) {
 //                abort_if($vehicle->customer_id != $user->contact->customer_id, 404, 'Veículo não encontrado');
 //            }
-
-            $userActive = auth()->user()->name;
 
             /** @var  $userEstablishment - Relation Linked User */
             $userEstablishment = $establishment->users()->first();
@@ -155,6 +157,8 @@
          */
         public function edit(Establishment $establishment)
         {
+            $userActive = auth()->user()->name;
+
             /** Create form options */
             $formOptions = [
                 'route' => ['establishment.update', $establishment],
@@ -167,8 +171,6 @@
             $users = User::where('type_user', 'e')->whereNotIn('id', function ($q) {
                 $q->select('user_id')->from('establishment');
             })->get();
-
-            $userActive = auth()->user()->name;
 
             return view('admin.establishment.form', compact('users', 'userOld', 'userActive', 'establishment', 'formOptions'));
         }

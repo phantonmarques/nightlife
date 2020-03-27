@@ -44,10 +44,6 @@
                                     class="span-required">*</span>
                             {{ Form::text('state_registration' , (isset($establishment->id) ? $establishment->state_registration : ''), ['placeholder' => 'Informe a inscrição estadual', 'class' => 'form-control required']) }}
                         </div>
-                        {{--                        <div class="col-md-5">--}}
-                        {{--                            {{ Form::label('cnpjEstablishment','CNPJ: ') }} <span class="span-required">*</span>--}}
-                        {{--                            {{ Form::text('cnpjEstablishment' , '', ['placeholder' => 'Informe o cnpj', 'class' => 'form-control required', 'onkeypress' => 'return somenteNumeros(event)']) }}--}}
-                        {{--                        </div>--}}
                     </div>
 
                     @if ($errors->has('state_registration'))
@@ -91,8 +87,7 @@
                         </div>
                     @endif
 
-                    @if (isset($establishment->status))
-                        @if ($establishment->status === 0)
+                    @if (isset($establishment->status) && $establishment->status === 0)
                             <div class="row">
                                 <div class="col-md-5">
                                     {{ Form::label('status','Status Estabelecimento ') }} <span
@@ -105,18 +100,17 @@
                                     {{ Form::select('status', [1 => 'Ativo', 0 => 'Inativo'], (isset($establishment->status) && $establishment->status === 1) ? 1 : 0, ['class' => 'form-control']) }}
                                 </div>
                             </div>
-                        @else
-                            {{ Form::hidden('status', 1, array('id' => 'status')) }}
-                        @endif
+                    @else
+                        {{ Form::hidden('status', 1, array('id' => 'status')) }}
+                    @endif
 
-                        @if ($errors->has('status'))
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="text-red">{{ $errors->first('status') }}</div>
-                                </div>
+
+                    @if ($errors->has('status'))
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="text-red">{{ $errors->first('status') }}</div>
                             </div>
-                        @endif
-
+                        </div>
                     @endif
                 </div>
 

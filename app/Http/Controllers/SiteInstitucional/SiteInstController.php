@@ -13,9 +13,9 @@ class SiteInstController extends Controller
         return view('siteinstitucional.home.home');
     }
 
-    public function buscarCidades($estadoEscolhido, State $estado){
-        $estadoEscolhido = $estado->with('cidades')->where('state_cod', $estadoEscolhido)->get();
-        $cidadesEncontradas = $estadoEscolhido[0]->cidades;
-        return json_encode($cidadesEncontradas);
+    public function searchCitys($stateSelect, State $estado){
+        $stateSelect = $estado->with('city')->where('state_cod', $stateSelect)->select('id', 'name', 'name_visible')->first();
+
+        return $stateSelect->city->toJson();
     }
 }

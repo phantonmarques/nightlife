@@ -43,6 +43,7 @@
          */
         protected function failedValidation(Validator $validator)
         {
+            dd($validator);
             request()->session()->flash('form_validation.error', true);
             return parent::failedValidation($validator);
         }

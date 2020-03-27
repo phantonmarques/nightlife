@@ -44,7 +44,7 @@ Route::group(['middleware' => ['auth'], 'prefix' => '/control'], function () {
 # Establishment Address
     Route::get('establishmentAddress/{establishmentAddress}/destroy', 'Admin\\EstablishmentAddressController@destroy')->name('establishmentAddress.destroy')->middleware('auth');
     Route::get('establishmentAddress/prepareIndex', 'Admin\\EstablishmentAddressController@prepareIndex')->name('establishmentAddress.prepareIndex')->middleware('auth');
-    Route::resource('establishmentAddress', 'Admin\\EstablishmentAddressController')->only([ 'index', 'edit', 'update', 'create', 'store', 'show' ])->middleware('auth');
+    Route::resource('establishmentAddress', 'Admin\\EstablishmentAddressController')->except(['destroy'])->middleware('auth');
 
 #######################################################################################################################################
 
@@ -54,7 +54,7 @@ Route::group(['middleware' => ['auth'], 'prefix' => '/control'], function () {
 */
 
 # Busca Cidades
-Route::get('citys/{state_id}', 'SiteInstitucional\SiteInstController@buscarCidades')->name('buscarCidades');
+Route::get('citys/{state_id}', 'SiteInstitucional\SiteInstController@searchCitys')->name('searchCitys');
 
 # Rotas para registrar usuários comuns
 Route::get('register', ['uses' => 'Auth\RegisterController@showRegistrationForm'])->name('register.page');

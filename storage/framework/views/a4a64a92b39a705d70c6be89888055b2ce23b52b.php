@@ -47,10 +47,6 @@
                             <?php echo e(Form::text('state_registration' , (isset($establishment->id) ? $establishment->state_registration : ''), ['placeholder' => 'Informe a inscrição estadual', 'class' => 'form-control required'])); ?>
 
                         </div>
-                        
-                        
-                        
-                        
                     </div>
 
                     <?php if($errors->has('state_registration')): ?>
@@ -98,8 +94,7 @@
                         </div>
                     <?php endif; ?>
 
-                    <?php if(isset($establishment->status)): ?>
-                        <?php if($establishment->status === 0): ?>
+                    <?php if(isset($establishment->status) && $establishment->status === 0): ?>
                             <div class="row">
                                 <div class="col-md-5">
                                     <?php echo e(Form::label('status','Status Estabelecimento ')); ?> <span
@@ -113,19 +108,18 @@
 
                                 </div>
                             </div>
-                        <?php else: ?>
-                            <?php echo e(Form::hidden('status', 1, array('id' => 'status'))); ?>
+                    <?php else: ?>
+                        <?php echo e(Form::hidden('status', 1, array('id' => 'status'))); ?>
 
-                        <?php endif; ?>
+                    <?php endif; ?>
 
-                        <?php if($errors->has('status')): ?>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="text-red"><?php echo e($errors->first('status')); ?></div>
-                                </div>
+
+                    <?php if($errors->has('status')): ?>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="text-red"><?php echo e($errors->first('status')); ?></div>
                             </div>
-                        <?php endif; ?>
-
+                        </div>
                     <?php endif; ?>
                 </div>
 
