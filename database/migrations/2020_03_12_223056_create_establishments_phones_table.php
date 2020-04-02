@@ -18,9 +18,9 @@ class CreateEstablishmentsPhonesTable extends Migration
             $table->unsignedInteger('establishment_address_id');
             $table->unsignedInteger('establishment_id');
             $table->string('name');
-            $table->string('phone_number');
+            $table->string('phone');
+            $table->boolean('main')->default(0);
             $table->boolean('whatsapp')->default(0);
-            $table->boolean('favicon')->default(0);
             $table->timestamps();
             $table->softDeletes();
 

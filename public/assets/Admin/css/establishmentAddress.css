@@ -1,15 +1,24 @@
+.action-delete {
+    color: #605ca8;
+}
+
+.action-delete:hover {
+    color: #f39c12;
+}
+
+.action-edit{
+    color: black;
+}
+
+.action-show{
+    color: #f39c12;
+}
+
 .col-md-6-p {
     position: relative;
     min-height: 1px;
     padding-right: 15px;
     padding-left: 15px;
-}
-
-@media (min-width: 992px) {
-    .col-md-6-p {
-        width: 50%;
-        margin:auto;
-    }
 }
 
 .form-save-p {
@@ -18,9 +27,6 @@
 }
 
 .form-control-p {
-    /*border-radius: 0;*/
-    /*box-shadow: none;*/
-    /*border-color: #d2d6de;*/
     margin-top:15%;
     margin-left:auto;
     margin-right:auto;
@@ -45,5 +51,11 @@
     -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
     -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
     transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+}
 
+@media (min-width: 992px) {
+    .col-md-6-p {
+        width: 50%;
+        margin:auto;
+    }
 }

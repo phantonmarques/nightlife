@@ -2,6 +2,20 @@ $(document).ready(function () {
     $('.phone').mask('(00) 00000-0000');
     $('.cep').mask('00000-000');
 
+    if (document.getElementById('zip_code').value !== '')
+        searchZipCode();
+
+    if (document.getElementById('contContact').value > 1){
+        for (let a = document.getElementById('contContact').value; a > 1; a--){
+            if (document.getElementById('name_' + a) !== null){
+                document.getElementById('contContact').value = (a-1);
+                break;
+            }else if (a === 2){
+                document.getElementById('contContact').value = 1;
+            }
+        }
+    }
+
     $("#add").click(function() {
         let contContacts = parseInt(document.getElementById('contContact').value);
 
@@ -183,6 +197,12 @@ function validateFormEstablishmentAddress(f) {
         return false;
     } else if (!f.elements["contact[0][phone]"].value.length) {
         swal("Erro", "O campo [Telefone] é obrigatório, favor preencha!", "error");
+        return false;
+    }else if (f.elements["contact[0][name]"].value.length < 2) {
+        swal("Erro", "O campo [Nome Contato] é obrigatório e deve conter no mínimo 3 caracteres, favor preencha corretamente!", "error");
+        return false;
+    } else if (f.elements["contact[0][phone]"].value.length < 10) {
+        swal("Erro", "O campo [Telefone] é obrigatório e deve conter no mínimo 11 números, favor preencha corretamente!", "error");
         return false;
     }
 

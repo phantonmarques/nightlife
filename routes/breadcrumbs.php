@@ -2,6 +2,8 @@
     use DaveJamesMiller\Breadcrumbs\Facades\Breadcrumbs;
     use App\Models\Site\User;
     use App\Models\Admin\Establishment;
+    use App\Models\Admin\EstablishmentAddress;
+
 
     Breadcrumbs::for('home', function ($trail) {
         $trail->push('Home', route('home'));
@@ -45,9 +47,9 @@
         $trail->push('Novo Endereço', route('establishmentAddress.create'));
     });
 
-    Breadcrumbs::for('establishmentAddress.show', function ($trail, Establishment $establishment) {
+    Breadcrumbs::for('establishmentAddress.show', function ($trail, EstablishmentAddress $establishmentAddress) {
         $trail->parent('establishmentAddress.index');
-        $trail->push($establishment->corporate_name, route('establishmentAddress.show', $establishment));
+        $trail->push($establishmentAddress->establishment, route('establishmentAddress.show', $establishmentAddress));
     });
 
     Breadcrumbs::for('establishmentAddress.edit', function ($trail, Establishment $establishment) {

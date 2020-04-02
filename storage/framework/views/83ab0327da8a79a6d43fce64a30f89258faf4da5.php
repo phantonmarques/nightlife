@@ -43,7 +43,7 @@
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startSection('css'); ?>
-    <link rel="stylesheet" type="text/css" href="<?php echo e(asset('assets/admin/css/establishmentAdress.css')); ?>"/>
+    <link rel="stylesheet" type="text/css" href="<?php echo e(asset('assets/admin/css/establishmentAddress.css')); ?>"/>
 <?php $__env->stopSection(); ?>
 
 <?php echo $__env->make('adminlte::page', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH E:\Projetos Desenvolvimento\ProjetosPhpStorm\ProjetosLaravel\nightlife\resources\views/admin/establishmentAddress/prepareIndex.blade.php ENDPATH**/ ?>

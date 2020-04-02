@@ -25,7 +25,7 @@ class EstablishmentAddress extends Model
         return $this->hasMany(Establishment::class, 'id', 'establishment_id');
     }
 
-    public function establishmentsPhones(){
-        return $this->hasMany(EstablishmentPhones::class, 'id', 'establishment_address_id');
+    public function establishments_phone(){
+        return $this->hasMany(EstablishmentPhones::class, 'establishment_address_id');
     }
 }

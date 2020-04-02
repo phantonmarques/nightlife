@@ -185,9 +185,6 @@
 
         public function update(CreateOrUpdateEstablishment $request, Establishment $establishment)
         {
-//            /** @var App\ORM\User Authenticated user */
-//            $user = $request->user();
-//
 //            if (!$user->role->isAdmin()) {
 //                abort_if($vehicle->customer_id != $user->contact->customer_id, 404, 'Veículo não encontrado');
 //            }

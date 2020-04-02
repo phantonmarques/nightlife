@@ -123,7 +123,7 @@
                         {{ link_to_route('establishment.index', $title = 'Voltar', '', ['class' => 'btn btn-block btn-danger']) }}
                     </div>
                     <div class="col-md-1">
-                        {{ link_to_route('establishment.edit', $title = 'Editar', '', ['class' => 'btn btn-block btn-primary']) }}
+                        {{ link_to_route('establishment.edit', $title = 'Editar', $establishment, ['class' => 'btn btn-block btn-primary']) }}
                     </div>
                 </div>
             </div>

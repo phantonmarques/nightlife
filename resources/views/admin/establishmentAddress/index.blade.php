@@ -1,12 +1,12 @@
 @extends('adminlte::page')
-@section('title', 'Estabelecimentos · ')
+@section('title', 'Endereço Estabelecimento · ')
 
 @section('content_header')
-    <h1>Estabelecimentos</h1>
+    <h1>Endereço Estabelecimento</h1>
 @stop
 
 @section('breadcrumbs')
-    {{ Breadcrumbs::render(Route::currentRouteName(), $establishmentsAdress) }}
+    {{ Breadcrumbs::render(Route::currentRouteName(), $establishmentsAddress) }}
 @endsection
 
 @section('content')
@@ -27,7 +27,7 @@
                             @if (empty($search))
                                 {{ $search = '' }}
                             @endif
-                            {{ Form::text('q', $search, ['placeholder' => 'Pesquisar', 'class' => 'form-control col-md-4']) }}
+                            {{ Form::text('s', $search, ['placeholder' => 'Pesquisar', 'class' => 'form-control col-md-4']) }}
 
                             <div class="input-group-btn">
                                 <button type="submit" class="btn btn-default btn-flat">
@@ -46,67 +46,68 @@
                 </div>
 
                 <div class="box-body table-responsive no-padding">
-                    <table class="table table-hover table-striped table-vehicles">
+                    <table class="table table-hover">
                         <thead>
                         <tr>
-{{--                            <th class="text-center">--}}
-{{--                                <input class="icheck check-all" type="checkbox"/>--}}
-{{--                            </th>--}}
                             <th>Estabelecimento</th>
-                            <th>Rua</th>
+                            <th>Endereço</th>
                             <th>Número</th>
                             <th>CEP</th>
                             <th>Cidade</th>
                             <th>Estado</th>
+                            <th>Nome Contato</th>
                             <th>Telefone</th>
+                            <th>Whatsapp</th>
                             <th>Data de criação</th>
                             <th>Data de atualização</th>
                             <th class="col-actions"></th>
                         </tr>
                         </thead>
                         <tbody>
-                        @if (isset($establishmentsAdress) && sizeof($establishmentsAdress) > 0)
-                            @foreach($establishmentsAdress as $establishment)
+                        @if (isset($establishmentsAddress) && sizeof($establishmentsAddress) > 0)
+                            @foreach($establishmentsAddress as $address)
                                 <tr>
-{{--                                    <th class="text-center">--}}
-{{--                                        <input class="icheck check-all" name="establishment[id][]" type="checkbox"--}}
-{{--                                               value="{{ $establishment->id }}"/>--}}
-{{--                                    </th>--}}
                                     <th>
-                                        {{ $establishment->corporate_name }}
+                                        {{ $establishment }}
                                     </th>
                                     <th>
-                                        {{ $establishment->state_registration }}
+                                        {{ $address->street_name }}
                                     </th>
                                     <th>
-                                        {{ $establishment->users->cpf_cnpj }}
+                                        {{ $address->building_number }}
                                     </th>
                                     <th>
-                                        {{ $establishment->type_license === 'f' ? 'Full' : 'Básica' }}
+                                        {{ $address->zip_code }}
                                     </th>
                                     <th>
-                                        {{ $establishment->status ? 'Ativa' : 'Inativa' }}
+                                        {{ $address->city_name }}
                                     </th>
                                     <th>
-                                        {{ $establishment->users->login }}
+                                        {{ $address->state_name }}
                                     </th>
                                     <th>
-                                        {{ $establishment->users->email }}
+                                        {{ $address->establishments_phone[0]->name }}
                                     </th>
                                     <th>
-                                        {{ $establishment->created_at->format('d/m/Y - H:i') }}
+                                        {{ $address->establishments_phone[0]->phone }}
                                     </th>
                                     <th>
-                                        {{ $establishment->updated_at->format('d/m/Y - H:i') }}
+                                        {{ ($address->establishments_phone[0]->whatsapp) ? 'Sim' : 'Não' }}
                                     </th>
-{{--                                    <td class="col-actions">--}}
-{{--                                        <a href="{{ route('establishment.destroy', $establishment) }}" class="action-delete"><span class="glyphicon glyphicon-trash"></span></a>--}}
-{{--                                    </td>--}}
+                                    <th>
+                                        {{ $address->created_at->format('d/m/Y - H:i') }}
+                                    </th>
+                                    <th>
+                                        {{ $address->updated_at->format('d/m/Y - H:i') }}
+                                    </th>
                                     <td class="col-actions">
-                                        <a href="{{ route('establishment.edit', $establishment) }}" class="action-edit"><span class="glyphicon glyphicon-pencil"></span></a>
+                                        <a href="{{ route('establishmentAddress.destroy', $address) }}" class="action-delete"><span class="glyphicon glyphicon-trash"></span></a>
                                     </td>
                                     <td class="col-actions">
-                                        <a href="{{ route('establishment.show', $establishment) }}"><span class="glyphicon glyphicon-info-sign"></span></a>
+                                        <a href="{{ route('establishmentAddress.edit', $address) }}" class="action-edit"><span class="glyphicon glyphicon-pencil"></span></a>
+                                    </td>
+                                    <td class="col-actions">
+                                        <a href="{{ route('establishmentAddress.show', $address) }}"><span class="glyphicon glyphicon-info-sign"></span></a>
                                     </td>
 
                                 </tr>
@@ -114,7 +115,7 @@
                         @else
                             <tr>
                                 <td colspan="100%" class="text-center">
-                                    Nenhum estabelecimento cadastrado
+                                    Nenhum endereço do estabelecimento cadastrado
                                 </td>
                             </tr>
                         @endif
@@ -122,9 +123,9 @@
                     </table>
                 </div>
 
-                @if ($establishmentsAdress->hasPages())
+                @if ($establishmentsAddress->hasPages())
                     <div class="box-footer clearfix">
-                        {{ $establishmentsAdress->appends(['q' => $search])->onEachSide(2)->links() }}
+                        {{ $establishmentsAddress->appends(['q' => $search])->onEachSide(2)->links() }}
                     </div>
                 @endif
             </div>
@@ -133,13 +134,12 @@
 
     @include('vendor/flash-message')
 
-    {{--    @include('adminlte::modal.destroy', [--}}
-    {{--    'id' => 'vehicles-destroy',--}}
-    {{--    'title' => 'Excluir veículo',--}}
-    {{--    'description' => 'Tẽm certeza que quer excluir este veículo?'--}}
-    {{--    ])--}}
+@endsection
+
+@section('js')
+    <script type="text/javascript" src="{{ asset('assets/global/js/general.js') }}"></script>
 @endsection
 
 @section('css')
-    <link rel="stylesheet" type="text/css" href="{{ asset('assets/admin/css/establishment.css') }}"/>
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/admin/css/establishmentAddress.css') }}"/>
 @endsection

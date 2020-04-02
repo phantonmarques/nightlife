@@ -48,9 +48,11 @@
         public function messages()
         {
             return [
-                'contact.*.name.min'            => 'Favor preencha [Nome] e [Telefone] do contato OBRIGATÓRIAMENTE, se não remova!',
-                'contact.*.phone.min'           => 'Favor preencha [Nome] e [Telefone] do contato OBRIGATÓRIAMENTE, se não remova!',
-                'contact.*.whatsapp.min'        => 'Favor preencha [Nome] e [Telefone] do contato OBRIGATÓRIAMENTE, se não remova!',
+                'contact.*.name.min'            => 'Favor preencha [Nome] e [Telefone] de TODOS os contatos OBRIGATÓRIAMENTE, se não remova!',
+                'contact.*.name.string'         => 'Favor preencha [Nome] e [Telefone] de TODOS os contatos OBRIGATÓRIAMENTE, se não remova!',
+                'contact.*.phone.min'           => 'Favor preencha [Nome] e [Telefone] de TODOS os contatos OBRIGATÓRIAMENTE, se não remova!',
+                'contact.*.phone.string'        => 'Favor preencha [Nome] e [Telefone] de TODOS os contatos OBRIGATÓRIAMENTE, se não remova!',
+                'contact.*.whatsapp.min'        => 'Favor preencha [Nome] e [Telefone] de TODOS os contatos OBRIGATÓRIAMENTE, se não remova!',
                 'zip_code.required'             => 'O cep é obrigatório!',
                 'zip_code.digits_between'       => 'Informe o cep corretamente!',
                 'zip_code.integer'              => 'Informe o cep corretamente!',
