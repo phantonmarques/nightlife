@@ -1,2 +1,0 @@
-
-<?php echo $__env->make('adminlte::page', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Users\Phanton\Documents\Projetos\Php\nightlife\resources\views/painelusuario/home/home.blade.php ENDPATH**/ ?>

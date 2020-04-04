@@ -107,12 +107,12 @@ return [
     'menu' => [
         [
             'header'    => 'GERERENCIAMENTO PRINCIPAL',
-            //'can'     => 'AdminPolicy'
+            'can'       => 'manage-establishment'
         ],
         [
             'text'    => 'Gerenciar Estabelecimento',
             'icon'    => 'fas fa-warehouse',
-            //'can'     => 'AdminPolicy'
+            'can'     => 'manage-establishment',
             'submenu' => [
                 [
                     'text'   => 'Estabelecimento',
@@ -136,23 +136,24 @@ return [
         [
             'text'    => 'Gerenciar Usuários',
             'icon'    => 'fas fa-users',
-            //'can'     => 'AdminPolicy'
+            'can'     => 'manage-users',
             'submenu' => [
                 [
                     'text' => 'Usuários',
                     'icon' => 'fas fa-users',
-                    'active' => [ 'users', 'users/*', 'users?*' ],
+                    'active' => [ 'user', 'user/*', 'user?*' ],
+                    'route'  => 'user.index',
                 ],
                 [
                     'text' => 'Permissões',
-                    'active' => [ 'permissions', 'permissions/*', 'permissions?*' ],
-                    'url'  => '#',
+                    'active' => [ 'permission', 'permission/*', 'permission?*' ],
+                    'route'  => 'permission.index',
                     'icon' => 'fas fa-user-shield',
                 ],
                 [
                     'text'       => 'Funções',
-                    'active' => [ 'roles', 'roles/*', 'roles?*' ],
-                    'url'        => '#',
+                    'active'     => [ 'role', 'role/*', 'role?*' ],
+                    'route'      => 'role.index',
                     'icon'       => 'fas fa-cog',
                 ],
             ],

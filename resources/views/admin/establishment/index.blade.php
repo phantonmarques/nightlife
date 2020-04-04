@@ -16,7 +16,6 @@
                 <div class="box-header with-border">
                     <div class="box-title col-xs-6 no-padding">
                         <a class="btn btn-success btn-flat" href="{{ route('establishment.create')  }}">
-                            <!--  //route('vehicles.create')  -->
                             <i class="fas fa-sm fa-plus"></i>&nbsp;&nbsp;Novo Estabelecimento
                         </a>
                     </div>
@@ -160,8 +159,6 @@
     <script type="text/javascript" src="{{ asset('assets/global/js/general.js') }}"></script>
 @endsection
 
-
-
 @section('css')
-    <link rel="stylesheet" type="text/css" href="{{ asset('assets/admin/css/establishment.css') }}"/>
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/Global/css/general.css') }}"/>
 @endsection

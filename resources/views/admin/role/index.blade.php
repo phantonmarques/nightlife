@@ -1,0 +1,134 @@
+@extends('adminlte::page')
+@section('title', 'Funções · ')
+
+@section('content_header')
+    <h1>Funções</h1>
+@stop
+
+@section('breadcrumbs')
+    {{ Breadcrumbs::render(Route::currentRouteName(), $roles) }}
+@endsection
+
+@section('content')
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-warning">
+                <div class="box-header with-border">
+                    <div class="box-title col-xs-6 no-padding">
+                        <a class="btn btn-success btn-flat" href="{{ route('role.create')  }}">
+                            <i class="fas fa-sm fa-plus"></i>&nbsp;&nbsp;Nova Função
+                        </a>
+                    </div>
+
+                    <div class="box-title col-xs-6 col-sm-3 no-padding pull-right">
+                        {{ Form::open(['method' => 'GET']) }}
+                        <div class="input-group">
+                        @if (empty($roleSearch))
+                            {{ $roleSearch = '' }}
+                        @endif
+                        <!-- SEARCH PESQUISA INPUT -->
+                        {{ Form::text('s', $roleSearch, ['placeholder' => 'Pesquisar', 'class' => 'form-control col-md-4']) }}
+                        <!-- FIM SEARCH PESQUISA -->
+
+                            <div class="input-group-btn">
+                                <button type="submit" class="btn btn-default btn-flat">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                                @if (!empty($roleSearch))
+                                    <a title="Limpar" class="btn btn-default"
+                                       href="{{ route('role.index') }}">
+                                        <i class="fas fa-backspace"></i>
+                                    </a>
+                                @endif
+                            </div>
+                        </div>
+                        {{ Form::close() }}
+                    </div>
+                </div>
+
+                <div class="box-body table-responsive no-padding">
+                    <table class="table table-hover table-striped">
+                        <thead>
+                        <tr>
+                            <th class="text-center">
+                                <input class="icheck check-all" type="checkbox" />
+                            </th>
+                            <th>
+                                ID
+                            </th>
+                            <th>
+                                Título
+                            </th>
+                            <th>
+                                Função
+                            </th>
+                            <th>
+                                Permissões da Função
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @if (isset($roles) && sizeof($roles) > 0)
+                            @foreach($roles as $role)
+                                <tr data-entry-id="{{ $role->id }}">
+                                    <th class="text-center">
+                                        <input class="icheck" type="checkbox" name="role[id][]" value="{{ $role->id }}" />
+                                    </th>
+                                    <th>
+                                        {{ $role->id }}
+                                    </th>
+                                    <th>
+                                        {{ $role->name }}
+                                    </th>
+                                    <th>
+                                        {{ $role->slug }}
+                                    </th>
+                                    <th>
+                                        @foreach($role->permissions()->pluck('slug') as $permission)
+                                                <span class="label label-primary">{{ $permission }}</span>
+                                        @endforeach
+                                    </th>
+                                    <td class="col-actions">
+                                        <a href="{{ route('role.edit', $role) }}" class="action-edit"><span
+                                                    class="glyphicon glyphicon-pencil"></span></a>
+                                    </td>
+                                    <td class="col-actions">
+                                        <a href="{{ route('role.destroy', $role) }}"
+                                           class="action-delete"><span class="glyphicon glyphicon-trash" onsubmit="confirm('Tem certeza?')"></span></a>
+                                    </td>
+                                    <td class="col-actions">
+                                        <a href="{{ route('role.show', $role) }}" class="action-show"><span
+                                                    class="glyphicon glyphicon-info-sign"></span></a>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        @else
+                            <tr>
+                                <td colspan="100%" class="text-center">
+                                    Nenhuma função {{ (!empty($roleSearch)) ? 'encontrada' : 'cadastrada' }}
+                                </td>
+                            </tr>
+                        @endif
+                        </tbody>
+                    </table>
+                </div>
+
+                @if ($roles->hasPages())
+                    <div class="box-footer clearfix">
+                        {{ $roles->appends(['q' => $roleSearch])->onEachSide(2)->links() }}
+                    </div>
+                @endif
+            </div>
+        </div>
+    </div>
+
+    @include('vendor/flash-message')
+@endsection
+
+@section('js')
+    <script type="text/javascript" src="{{ asset('assets/Global/js/general.js') }}"></script>
+@endsection
+
+@section('css')
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/Global/css/general.css') }}"/>
+@endsection

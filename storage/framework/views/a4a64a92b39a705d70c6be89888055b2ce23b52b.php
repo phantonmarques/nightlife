@@ -1,4 +1,4 @@
-<?php $__env->startSection('title', 'Estabelecimento · '); ?>
+<?php $__env->startSection('title', 'Criar Estabelecimento · '); ?>
 
 <?php $__env->startSection('content_header'); ?>
     <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
@@ -6,7 +6,7 @@
     <ol class="breadcrumb">
         <li><a href="#">Inicio</a></li>
         <li><a href="#">Estabelecimento</a></li>
-        <li><a href="#">Criar Usuário</a></li>
+        <li><a href="#">Criar Estabelecimento</a></li>
     </ol>
 <?php $__env->stopSection(); ?>
 

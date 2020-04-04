@@ -38,6 +38,8 @@
     34 => 'App\\Providers\\RouteServiceProvider',
     35 => 'JeroenNoten\\LaravelAdminLte\\ServiceProvider',
     36 => 'Collective\\Html\\HtmlServiceProvider',
+    37 => 'App\\Providers\\RolesServiceProvider',
+    38 => 'App\\Providers\\PermissionServiceProvider',
   ),
   'eager' => 
   array (
@@ -61,6 +63,8 @@
     17 => 'App\\Providers\\EventServiceProvider',
     18 => 'App\\Providers\\RouteServiceProvider',
     19 => 'JeroenNoten\\LaravelAdminLte\\ServiceProvider',
+    20 => 'App\\Providers\\RolesServiceProvider',
+    21 => 'App\\Providers\\PermissionServiceProvider',
   ),
   'deferred' => 
   array (

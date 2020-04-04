@@ -1,5 +1,5 @@
 @extends('adminlte::page')
-@section('title', 'Estabelecimento · ')
+@section('title', 'Criar Estabelecimento · ')
 
 @section('content_header')
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -7,7 +7,7 @@
     <ol class="breadcrumb">
         <li><a href="#">Inicio</a></li>
         <li><a href="#">Estabelecimento</a></li>
-        <li><a href="#">Criar Usuário</a></li>
+        <li><a href="#">Criar Estabelecimento</a></li>
     </ol>
 @stop
 

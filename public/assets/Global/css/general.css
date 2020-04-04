@@ -1,0 +1,29 @@
+.action-delete {
+    color: #605ca8;
+}
+
+.action-delete:hover {
+    color: #f39c12;
+}
+
+.action-edit{
+    color: black;
+}
+
+.action-show{
+    color: #f39c12;
+}
+
+.select2 {
+    max-width: 100%;
+    width: 100% !important;
+}
+
+.select2-selection__rendered {
+    padding-bottom: 5px !important;
+}
+
+.select2-results__option {
+    padding-left: 0px;
+    padding-right: 0px;
+}

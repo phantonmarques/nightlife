@@ -18,12 +18,12 @@ class CreateUsersTable extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('login');
+            $table->string('login')->unique();
             $table->string('password');
             $table->string('cpf_cnpj')->unique();
             $table->integer('city_id')->unsigned();
             $table->integer('state_id')->unsigned();
-            $table->enum('type_user', ['a','f', 'e', 'ef', 'u']); //ADMINISTRADOR (a), funcionario (f), estabelecimento (e), estabelecimento funcionario (ef), usuário (u).
+            $table->enum('type_user', ['a','f', 'e', 'ef', 'u']); # ADMINISTRADOR (a), funcionario (f), estabelecimento (e), estabelecimento funcionario (ef), usuário (u).
             $table->rememberToken();
             $table->timestamps();
 

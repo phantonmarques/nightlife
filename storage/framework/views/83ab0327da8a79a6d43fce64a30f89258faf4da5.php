@@ -25,7 +25,7 @@
 
 
                             <div class="col-md-2 form-save-p" style="margin-left: 83%;">
-                                <?php echo e(Form::submit('Salvar', ['class' => 'btn btn-block btn-success'])); ?>
+                                <?php echo e(Form::submit('Buscar', ['class' => 'btn btn-block btn-success'])); ?>
 
                             </div>
                         <?php echo e(Form::close()); ?>

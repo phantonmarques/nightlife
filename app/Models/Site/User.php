@@ -2,17 +2,16 @@
 
 namespace App\Models\Site;
 
-//use App\Models\Site\State;
 use App\Models\Admin\Establishment;
-//use App\Models\PainelAdmin\old;
+use App\Models\Admin\Traits\HasRolesAndPermissions;
 use Illuminate\Notifications\Notifiable;
-//use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
-    use Notifiable;
+    use Notifiable, HasRolesAndPermissions;
 
     protected $table = 'user';
 
@@ -21,19 +20,18 @@ class User extends Authenticatable
      *
      * @var array
      */
-//    protected $fillable = [
-//        'name', 'email', 'password', 'cpf_cnpj', 'email_verified_at','login', 'city_id', 'state_id', 'type_user', 'ddd_main',
-//        'phone_main','remember_token'
-//    ];
+    protected $fillable = [
+        'name', 'email', 'login', 'password', 'cpf_cnpj','city_id', 'state_id', 'type_user'
+    ];
 
     /**
      * The attributes that should be hidden for arrays.
      *
      * @var array
      */
-//    protected $hidden = [
-//        'password', 'remember_token', 'id'
-//    ];
+    protected $hidden = [
+        'password', 'remember_token',
+    ];
 
     /**
      * The attributes that should be cast to native types.

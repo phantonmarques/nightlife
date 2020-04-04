@@ -124,17 +124,13 @@
 
                     </div>
                     <div class="col-md-1">
-                        <?php echo e(link_to_route('establishment.edit', $title = 'Editar', '', ['class' => 'btn btn-block btn-primary'])); ?>
+                        <?php echo e(link_to_route('establishment.edit', $title = 'Editar', $establishment, ['class' => 'btn btn-block btn-primary'])); ?>
 
                     </div>
                 </div>
             </div>
         </div>
     </div>
-<?php $__env->stopSection(); ?>
-
-<?php $__env->startSection('css'); ?>
-    <link rel="stylesheet" type="text/css" href="<?php echo e(asset('assets/admin/css/establishment.css')); ?>"/>
 <?php $__env->stopSection(); ?>
 
 <?php echo $__env->make('adminlte::page', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH E:\Projetos Desenvolvimento\ProjetosPhpStorm\ProjetosLaravel\nightlife\resources\views/admin/establishment/show.blade.php ENDPATH**/ ?>

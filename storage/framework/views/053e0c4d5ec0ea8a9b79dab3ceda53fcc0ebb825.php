@@ -16,7 +16,6 @@
                 <div class="box-header with-border">
                     <div class="box-title col-xs-6 no-padding">
                         <a class="btn btn-success btn-flat" href="<?php echo e(route('establishment.create')); ?>">
-                            <!--  //route('vehicles.create')  -->
                             <i class="fas fa-sm fa-plus"></i>&nbsp;&nbsp;Novo Estabelecimento
                         </a>
                     </div>
@@ -178,10 +177,8 @@
     <script type="text/javascript" src="<?php echo e(asset('assets/global/js/general.js')); ?>"></script>
 <?php $__env->stopSection(); ?>
 
-
-
 <?php $__env->startSection('css'); ?>
-    <link rel="stylesheet" type="text/css" href="<?php echo e(asset('assets/admin/css/establishment.css')); ?>"/>
+    <link rel="stylesheet" type="text/css" href="<?php echo e(asset('assets/Global/css/general.css')); ?>"/>
 <?php $__env->stopSection(); ?>
 
 <?php echo $__env->make('adminlte::page', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH E:\Projetos Desenvolvimento\ProjetosPhpStorm\ProjetosLaravel\nightlife\resources\views/admin/establishment/index.blade.php ENDPATH**/ ?>

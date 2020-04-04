@@ -22,29 +22,42 @@ Route::group(['middleware' => ['auth'], 'prefix' => '/site'], function () {
 
 #######################################################################################################################################
 
+Route::get('control/', 'ControlAdmin\AdminController@index')->name('home.page.admin');
+//Route::group(['middleware' => ['auth'], 'prefix' => '/control'], function () {
+//    Route::get('/', 'ControlAdmin\AdminController@index')->name('home.page.admin');
+//
+//    # Rotas para administrador (sócios)
+//    Route::get('criar-estabelecimento', 'ControlAdmin\AdminController@criarEstabelecimento');
+//    Route::post('inserir-estabelecimento', 'ControlAdmin\AdminController@inserirEstabelecimento')->name('inserirEstabelecimento');
+//    Route::get('lista-estabelecimento', 'ControlAdmin\AdminController@listarEstabelecimentos')->name('listaEstabelecimentos');
+//});
+
 /**
 *  Página de admin, com níveis de privilégio.
 * TODO: Admin
 */
-Route::group(['middleware' => ['auth'], 'prefix' => '/control'], function () {
-    Route::get('/', 'ControlAdmin\AdminController@index')->name('home.page.admin');
-
-    # Rotas para administrador (sócios)
-    Route::get('criar-estabelecimento', 'ControlAdmin\AdminController@criarEstabelecimento');
-    Route::post('inserir-estabelecimento', 'ControlAdmin\AdminController@inserirEstabelecimento')->name('inserirEstabelecimento');
-    Route::get('lista-estabelecimento', 'ControlAdmin\AdminController@listarEstabelecimentos')->name('listaEstabelecimentos');
-});
 
 # Establishment
     Route::get('establishment/{establishment}/destroy', 'Admin\\EstablishmentController@destroy')->name('establishment.destroy')->middleware('auth');
-//    Route::get('establishment/{establishment}', 'Admin\\EstablishmentController@index')->name('establishment.index')->middleware('auth');
     Route::resource('establishment', 'Admin\\EstablishmentController')->except(['destroy'])->middleware('auth');
-//    Route::resource('establishment', 'Admin\\EstablishmentController')->only([ 'index', 'edit', 'update', 'create', 'store', 'show' ])->middleware('auth');
 
 # Establishment Address
     Route::get('establishmentAddress/{establishmentAddress}/destroy', 'Admin\\EstablishmentAddressController@destroy')->name('establishmentAddress.destroy')->middleware('auth');
     Route::get('establishmentAddress/prepareIndex', 'Admin\\EstablishmentAddressController@prepareIndex')->name('establishmentAddress.prepareIndex')->middleware('auth');
     Route::resource('establishmentAddress', 'Admin\\EstablishmentAddressController')->except(['destroy'])->middleware('auth');
+
+# User
+    Route::get('user/{user}/destroy', 'Admin\\UserController@destroy')->name('user.destroy')->middleware('auth');
+    Route::resource('user', 'Admin\\UserController')->except(['destroy'])->middleware('auth');
+
+# Role
+    Route::get('role/{role}/destroy', 'Admin\\RoleController@destroy')->name('role.destroy')->middleware('auth');
+    Route::resource('role', 'Admin\\RoleController')->except(['destroy'])->middleware('auth');
+
+# Permission
+    Route::get('permission/{permission}/destroy', 'Admin\\PermissionController@destroy')->name('permission.destroy')->middleware('auth');
+    Route::delete('massDestroy', 'Admin\PermissionController@massDestroy')->name('permission.massDestroy')->middleware('auth');;
+    Route::resource('permission', 'Admin\\PermissionController')->except(['destroy'])->middleware('auth');
 
 #######################################################################################################################################
 

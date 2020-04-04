@@ -130,7 +130,3 @@
         </div>
     </div>
 @endsection
-
-@section('css')
-    <link rel="stylesheet" type="text/css" href="{{ asset('assets/admin/css/establishment.css') }}"/>
-@endsection

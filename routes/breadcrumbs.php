@@ -3,13 +3,16 @@
     use App\Models\Site\User;
     use App\Models\Admin\Establishment;
     use App\Models\Admin\EstablishmentAddress;
+    use App\Models\Admin\Permission;
+    use App\Models\Admin\Role;
+
 
 
     Breadcrumbs::for('home', function ($trail) {
         $trail->push('Home', route('home'));
     });
 
-    # ESTABLISHMENT
+    # TODO: ESTABLISHMENT
     Breadcrumbs::for('establishment.index', function ($trail) {
         $trail->parent('home');
         $trail->push('Estabelecimentos', route('establishment.index'));
@@ -30,7 +33,7 @@
         $trail->push('Editar', route('establishment.edit', $establishment));
     });
 
-    # ESTABLISHMENT ADDRESS
+    # TODO: ESTABLISHMENT ADDRESS
 
     Breadcrumbs::for('establishmentAddress.prepareIndex', function ($trail) {
         $trail->parent('home');
@@ -57,9 +60,74 @@
         $trail->push('Editar', route('establishmentAddress.edit', $establishment));
     });
 
+    # TODO: USER
+
+    Breadcrumbs::for('user.index', function ($trail) {
+        $trail->parent('home');
+        $trail->push('Usuários', route('user.index'));
+    });
+
+    Breadcrumbs::for('user.create', function ($trail) {
+        $trail->parent('user.index');
+        $trail->push('Novo Usuário', route('user.create'));
+    });
+
+    Breadcrumbs::for('user.show', function ($trail, User $user) {
+        $trail->parent('user.index');
+        $trail->push($user->name, route('user.show', $user));
+    });
+
+    Breadcrumbs::for('user.edit', function ($trail, User $user) {
+        $trail->parent('user.index', $user);
+        $trail->push('Editar Usuário', route('user.edit', $user));
+    });
+
+    # TODO: ROLES USER
+
+    Breadcrumbs::for('role.index', function ($trail) {
+        $trail->parent('home');
+        $trail->push('Funções', route('role.index'));
+    });
+
+    Breadcrumbs::for('role.create', function ($trail) {
+        $trail->parent('role.index');
+        $trail->push('Nova Função', route('role.create'));
+    });
+
+    Breadcrumbs::for('role.show', function ($trail, Role $role) {
+        $trail->parent('role.index');
+        $trail->push($role->name, route('role.show', $role));
+    });
+
+    Breadcrumbs::for('role.edit', function ($trail, Role $role) {
+        $trail->parent('role.index', $role);
+        $trail->push('Editar Função', route('role.edit', $role));
+    });
+
+    # TODO: PERMISSIONS USER
+
+    Breadcrumbs::for('permission.index', function ($trail) {
+        $trail->parent('home');
+        $trail->push('Permissões', route('permission.index'));
+    });
+
+    Breadcrumbs::for('permission.create', function ($trail) {
+        $trail->parent('permission.index');
+        $trail->push('Novo Permissão', route('permission.create'));
+    });
+
+    Breadcrumbs::for('permission.show', function ($trail, Permission $permission) {
+        $trail->parent('permission.index');
+        $trail->push($permission->name, route('permission.show', $permission));
+    });
+
+    Breadcrumbs::for('permission.edit', function ($trail, Permission $permission) {
+        $trail->parent('permission.index', $permission);
+        $trail->push('Editar Permissão', route('permission.edit', $permission));
+    });
 
 
-
+    # TODO: ERROR
 
     Breadcrumbs::for('errors.404', function ($trail) {
         $trail->parent('home');

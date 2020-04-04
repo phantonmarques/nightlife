@@ -1,0 +1,241 @@
+<?php
+
+namespace App\Http\Controllers\Admin;
+
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\CreateOrUpdatePermission;
+use App\Models\Admin\Permission;
+use Illuminate\Support\Facades\DB;
+
+class PermissionController extends Controller
+{
+    protected $paginate = 10;
+
+    public function __construct()
+    {
+        $this->middleware('role:admin');
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index(Request $request)
+    {
+        if (! auth()->user()->can('manage-users'))
+            return abort(401);
+
+        $userActive = auth()->user()->name;
+
+        $permissionSearch = $request->query('s');
+
+        if (!empty($permissionSearch))
+            $permissions = Permission::where('name', 'like' , "%{$permissionSearch}%")->paginate($this->paginate);
+        else
+            $permissions = Permission::paginate($this->paginate);
+
+        return view('admin.permission.index', compact('permissions','permissionSearch', 'userActive'));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        if (! auth()->user()->can('manage-users'))
+            return abort(401);
+
+        $userActive = auth()->user()->name;
+
+        /** Create form options */
+        $formOptions = [
+            'route' => 'permission.store',
+            'method' => Request::METHOD_POST,
+            'files' => false,
+            'onsubmit' => 'return validateFormPermission(this)'
+        ];
+
+        $permission = new Permission();
+
+        return view('admin.permission.form', compact('formOptions', 'permission','userActive'));
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(CreateOrUpdatePermission $request)
+    {
+        if (! auth()->user()->can('manage-users'))
+            return abort(401);
+
+        $data = $request->validated();
+
+        DB::beginTransaction();
+
+        try {
+            $permissionExists = Permission::where('slug', $data["slug"])->orWhere('name', $data["name"])->count();
+
+            if ($permissionExists > 0)
+                return redirect()
+                    ->route('permission.create')
+                    ->withInput()
+                    ->with('error', 'Permissão já cadastrada, favor informe outro nome!');
+
+            $permission = Permission::create($data);
+
+            if (!$permission->exists)
+                throw new \Exception('Não foi possível criar a permissão!');
+
+            DB::commit();
+
+            return redirect()
+                ->route('permission.index')
+                ->with('success', 'Permissão criada com sucesso!');
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return redirect()
+                ->route('permission.create')
+                ->withInput()
+                ->with('error', $e->getMessage());
+        }
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  Permission  $permission
+     * @return \Illuminate\Http\Response
+     */
+    public function show(Permission $permission)
+    {
+        if (! auth()->user()->can('manage-users'))
+            return abort(401);
+
+        $userActive = auth()->user()->name;
+
+        return view('admin.permission.show', compact('permission','userActive'));
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  Permission  $permission
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(Permission $permission)
+    {
+        if (! auth()->user()->can('manage-users'))
+            return abort(401);
+
+        $userActive = auth()->user()->name;
+
+        /** Create form options */
+        $formOptions = [
+            'route' => ['permission.update', $permission],
+            'method' => Request::METHOD_PUT,
+            'onsubmit' => 'return validateFormPermission(this)'
+        ];
+
+        return view('admin.permission.form', compact('formOptions','permission','userActive'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(CreateOrUpdatePermission $request, Permission $permission)
+    {
+        if (! auth()->user()->can('manage-users'))
+            return abort(401);
+
+        $data = $request->validated();
+
+        DB::beginTransaction();
+
+        try {
+            $permission->fill($data);
+
+            if ($permission->isDirty())
+                if (!$permission->save())
+                    throw new \Exception('Não foi possível atualizar a permissão');
+
+            DB::commit();
+
+            return redirect()
+                ->route('permission.index')
+                ->with('success', 'Permissão atualizado com sucesso');
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return redirect()
+                ->route('permission.edit', compact('permission'))
+                ->withInput()
+                ->with('error', $e->getMessage());
+        }
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  Permission  $permission
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(Permission $permission)
+    {
+        if (! auth()->user()->can('manage-users'))
+            return abort(401);
+
+        DB::beginTransaction();
+
+        try {
+            if ($permission->delete()):
+                DB::commit();
+
+                return redirect()
+                    ->route('permission.index')
+                    ->with('success', 'Permissão excluído com sucesso');
+            else:
+                DB::rollBack();
+
+                return redirect()
+                    ->route('permission.index', compact('permission'))
+                    ->withInput()
+                    ->with('error', 'Ocorreu um erro desconhecido ao excluir a permissão, tente novamente.');
+            endif;
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return redirect()
+                ->route('permission.index', compact('permission'))
+                ->withInput()
+                ->with('error', $e->getMessage());
+        }
+    }
+
+    /**
+     * Delete all selected Permission at once.
+     *
+     * @param Request $request
+     * @return string
+     */
+    public function massDestroy(Request $request)
+    {
+        if (! auth()->user()->can('manage-users'))
+            return abort(401);
+
+        Permission::whereIn('id', request('ids'))->delete();
+
+        return response()->noContent();
+    }
+}

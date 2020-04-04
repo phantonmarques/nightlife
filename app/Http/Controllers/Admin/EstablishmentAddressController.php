@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Requests\CreateOrUpdatePermission;
 use App\Models\Admin\EstablishmentAddress;
 use App\Models\Admin\Establishment;
 use App\Http\Requests\CreateOrUpdateEstablishmentAddress;
@@ -108,8 +109,9 @@ class EstablishmentAddressController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(CreateOrUpdateEstablishmentAddress $request)
+    public function store(CreateOrUpdatePermission $request)
     {
+        dd('oibb');
         $data = $request->validated();
 
         DB::beginTransaction();
@@ -327,7 +329,7 @@ class EstablishmentAddressController extends Controller
             DB::rollBack();
 
             return redirect()
-                ->route('establishmentAddress.edit', compact('establishmentAddress'))
+                ->route('establishmentAddress.index', compact('establishmentAddress'))
                 ->withInput()
                 ->with('error', $e->getMessage());
         }
