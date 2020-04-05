@@ -24,16 +24,16 @@
                     <div class="box-title col-xs-6 col-sm-3 no-padding pull-right">
                         {{ Form::open(['method' => 'GET']) }}
                         <div class="input-group">
-                            @if (empty($search))
-                                {{ $search = '' }}
+                            @if (empty($establishmentAddressSearch))
+                                {{ $establishmentAddressSearch = '' }}
                             @endif
-                            {{ Form::text('s', $search, ['placeholder' => 'Pesquisar', 'class' => 'form-control col-md-4']) }}
+                            {{ Form::text('s', $establishmentAddressSearch, ['placeholder' => 'Pesquisar', 'class' => 'form-control col-md-4']) }}
 
                             <div class="input-group-btn">
                                 <button type="submit" class="btn btn-default btn-flat">
                                     <i class="fas fa-search"></i>
                                 </button>
-                                @if (!empty($search))
+                                @if (!empty($establishmentAddressSearch))
                                     <a title="Limpar" class="btn btn-default"
                                        href="{{ route('establishmentAddress.index') }}">
                                         <i class="fas fa-backspace"></i>
@@ -101,10 +101,10 @@
                                         {{ $address->updated_at->format('d/m/Y - H:i') }}
                                     </th>
                                     <td class="col-actions">
-                                        <a href="{{ route('establishmentAddress.destroy', $address) }}" class="action-delete"><span class="glyphicon glyphicon-trash"></span></a>
+                                        <a href="{{ route('establishmentAddress.edit', $address) }}" class="action-edit"><span class="glyphicon glyphicon-pencil"></span></a>
                                     </td>
                                     <td class="col-actions">
-                                        <a href="{{ route('establishmentAddress.edit', $address) }}" class="action-edit"><span class="glyphicon glyphicon-pencil"></span></a>
+                                        <a href="{{ route('establishmentAddress.destroy', $address) }}" class="action-delete"><span class="glyphicon glyphicon-trash"></span></a>
                                     </td>
                                     <td class="col-actions">
                                         <a href="{{ route('establishmentAddress.show', $address) }}"><span class="glyphicon glyphicon-info-sign"></span></a>
@@ -125,7 +125,7 @@
 
                 @if ($establishmentsAddress->hasPages())
                     <div class="box-footer clearfix">
-                        {{ $establishmentsAddress->appends(['q' => $search])->onEachSide(2)->links() }}
+                        {{ $establishmentsAddress->appends(['q' => $establishmentAddressSearch])->onEachSide(2)->links() }}
                     </div>
                 @endif
             </div>
@@ -142,4 +142,5 @@
 
 @section('css')
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/admin/css/establishmentAddress.css') }}"/>
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/Global/css/general.css') }}"/>
 @endsection

@@ -12,14 +12,21 @@ class PermissionController extends Controller
 {
     protected $paginate = 10;
 
+    /**
+     * PermissionController constructor.
+     */
     public function __construct()
     {
+        #SOMENTE AUTENTICADOS
+        $this->middleware('auth');
+        #SOMENTE COM A FUNÇÃO ATIVA [ADMIN]
         $this->middleware('role:admin');
     }
 
     /**
      * Display a listing of the resource.
      *
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
@@ -36,7 +43,10 @@ class PermissionController extends Controller
         else
             $permissions = Permission::paginate($this->paginate);
 
-        return view('admin.permission.index', compact('permissions','permissionSearch', 'userActive'));
+        return view('admin.permission.index',
+            compact('permissions',
+                'permissionSearch',
+                'userActive'));
     }
 
     /**
@@ -61,13 +71,16 @@ class PermissionController extends Controller
 
         $permission = new Permission();
 
-        return view('admin.permission.form', compact('formOptions', 'permission','userActive'));
+        return view('admin.permission.form',
+            compact('formOptions',
+                'permission',
+                'userActive'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\CreateOrUpdatePermission  $request
      * @return \Illuminate\Http\Response
      */
     public function store(CreateOrUpdatePermission $request)
@@ -121,7 +134,9 @@ class PermissionController extends Controller
 
         $userActive = auth()->user()->name;
 
-        return view('admin.permission.show', compact('permission','userActive'));
+        return view('admin.permission.show',
+            compact('permission',
+                'userActive'));
     }
 
     /**
@@ -144,14 +159,17 @@ class PermissionController extends Controller
             'onsubmit' => 'return validateFormPermission(this)'
         ];
 
-        return view('admin.permission.form', compact('formOptions','permission','userActive'));
+        return view('admin.permission.form',
+            compact('formOptions',
+                'permission',
+                'userActive'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Http\Requests\CreateOrUpdatePermission  $request
+     * @param  Permission  $permission
      * @return \Illuminate\Http\Response
      */
     public function update(CreateOrUpdatePermission $request, Permission $permission)

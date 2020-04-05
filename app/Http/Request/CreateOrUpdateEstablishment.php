@@ -33,8 +33,8 @@
 
             // Append parameters for USER AND STATE REGISTRATION validation
             if ($establishment instanceof Establishment) {
-                $userUnique = ',user_id,' . $establishment->user_id;
-                $stateRegisterUnique = ',state_registration,' . $establishment->user_id;
+                $userUnique = ',user_id,' . $establishment->id;
+                $stateRegisterUnique = ',state_registration,' . $establishment->id;
             }
 
             $rules = [

@@ -20,19 +20,14 @@ class EstablishmentAddressController extends Controller
     protected $paginate = 10;
 
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * EstablishmentAddressController constructor.
      */
-    public function prepareIndex()
+    public function __construct()
     {
-        $userActive = auth()->user()->name;
-
-        //VERIFICAÇÃO DE USUÁRIO MASTER
-
-        $establishments = Establishment::where('status', 1)->pluck('corporate_name', 'id');
-
-        return view('admin.establishmentAddress.prepareIndex', compact('userActive','establishments'));
+        #SOMENTE AUTENTICADOS
+        $this->middleware('auth');
+        #SOMENTE COM A FUNÇÃO ATIVA [ADMIN]
+        $this->middleware('role:admin');
     }
 
     /**
@@ -40,14 +35,37 @@ class EstablishmentAddressController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function prepareIndex()
+    {
+        if (! auth()->user()->can('manage-establishment'))
+            return abort(401);
+
+        $userActive = auth()->user()->name;
+
+        $establishments = Establishment::where('status', 1)->pluck('corporate_name', 'id');
+
+        return view('admin.establishmentAddress.prepareIndex',
+            compact('userActive',
+                'establishments'));
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @param \App\Models\Admin\EstablishmentAddress
+     * @param \Illuminate\Http\Request
+     * @return \Illuminate\Http\Response
+     */
     public function index(Request $request, EstablishmentAddress $establishmentAddress)
     {
+        if (! auth()->user()->can('manage-establishment'))
+            return abort(401);
+
         $userActive = auth()->user()->name;
 
         $establishmentAddressPrepare = $request->query('e');
 
-        $establishmentsSearch = $request->query('s');
-
+        $establishmentAddressSearch = $request->query('s');
 
         if (!empty(trim($establishmentAddressPrepare)))
             session()->put('establishment', $establishmentAddressPrepare);
@@ -60,23 +78,27 @@ class EstablishmentAddressController extends Controller
                 ->withInput()
                 ->with('error', 'Selecione o estabelecimento novamente!');
 
-        if (!empty($establishmentsSearch))
+        if (!empty($establishmentAddressSearch))
             $establishmentsAddress = $establishmentAddress->with(['establishments_phone' => function($q){
-                $q->where('main', 1);}])->where('establishment_id', $establishmentAddressPrepare)->where('street_name', 'like', "%{$establishmentsSearch}%")->paginate($this->paginate);
+                $q->where('main', 1);}])->where('establishment_id', $establishmentAddressPrepare)->where('street_name', 'like', "%{$establishmentAddressSearch}%")->paginate($this->paginate);
         else
             $establishmentsAddress = $establishmentAddress->with(['establishments_phone' => function($q){
                 $q->where('main', 1);}])->where('establishment_id', $establishmentAddressPrepare)->paginate($this->paginate);
 
-        if (!empty($establishmentsAddress)){ # CASO ENCONTRE ALGUM ENDEREÇO PARA O ESTABELECIMENTO
+        if (!empty($establishmentsAddress)): # CASO ENCONTRE ALGUM ENDEREÇO PARA O ESTABELECIMENTO
             $establishment = Establishment::where("id", $establishmentAddressPrepare)->select('corporate_name')->first()->corporate_name;
 
-            foreach ($establishmentsAddress as $address){ # BUSCA OS NOMES DAS CIDADES E ESTADOS RELACIONADOS
+            foreach ($establishmentsAddress as $address): # BUSCA OS NOMES DAS CIDADES E ESTADOS RELACIONADOS
                 $address->city_name = City::where("id", $address->city_id)->select('name_visible')->first()->name_visible;
                 $address->state_name = State::where("id", $address->state_id)->select('name_visible')->first()->name_visible;
-            }
-        }
+            endforeach;
+        endif;
 
-        return view('admin.establishmentAddress.index', compact( 'userActive', 'establishmentsAddress', 'establishment' ));
+        return view('admin.establishmentAddress.index',
+            compact( 'userActive',
+                'establishmentsAddress',
+                'establishmentAddressSearch',
+                'establishment' ));
     }
 
     /**
@@ -86,6 +108,9 @@ class EstablishmentAddressController extends Controller
      */
     public function create()
     {
+        if (! auth()->user()->can('manage-establishment'))
+            return abort(401);
+
         $userActive = auth()->user()->name;
 
         /** Create form options */
@@ -100,24 +125,29 @@ class EstablishmentAddressController extends Controller
 
         $establishmentAddress = new EstablishmentAddress();
 
-        return view('admin.establishmentAddress.form', compact('userActive', 'establishmentAddress', 'states', 'formOptions'));
+        return view('admin.establishmentAddress.form',
+            compact('userActive',
+                'establishmentAddress',
+                'states',
+                'formOptions'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\CreateOrUpdateEstablishmentAddress  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(CreateOrUpdatePermission $request)
+    public function store(CreateOrUpdateEstablishmentAddress $request)
     {
-        dd('oibb');
+        if (! auth()->user()->can('manage-establishment'))
+            return abort(401);
+
         $data = $request->validated();
 
         DB::beginTransaction();
 
         try {
-
             $establishmentAddressExists = EstablishmentAddress::where([['street_name', $data["street_name"]], ['building_number', $data["building_number"]]])->count();
 
             if ($establishmentAddressExists > 0)
@@ -134,11 +164,10 @@ class EstablishmentAddressController extends Controller
 
             $establishmentAddress = EstablishmentAddress::create($data);
 
-            if (!$establishmentAddress->exists) {
+            if (!$establishmentAddress->exists)
                 throw new \Exception('Não foi possível criar o estabelecimento!');
-            }
 
-            foreach ($data["contact"] as $key => $contact){
+            foreach ($data["contact"] as $key => $contact):
                 $contact["establishment_address_id"] = $establishmentAddress->id;
                 $contact["establishment_id"] = session()->get('establishment');
 
@@ -147,10 +176,10 @@ class EstablishmentAddressController extends Controller
 
                 $establishmentPhones = EstablishmentPhones::create($contact);
 
-                if (!$establishmentPhones->exists) {
+                if (!$establishmentPhones->exists)
                     throw new \Exception('Não foi possível criar o contato!');
-                }
-            }
+
+            endforeach;
 
             DB::commit();
 
@@ -175,6 +204,9 @@ class EstablishmentAddressController extends Controller
      */
     public function show(EstablishmentAddress $establishmentAddress)
     {
+        if (! auth()->user()->can('manage-establishment'))
+            return abort(401);
+
         $userActive = auth()->user()->name;
 
         /** @var $establishment */
@@ -205,6 +237,9 @@ class EstablishmentAddressController extends Controller
      */
     public function edit(EstablishmentAddress $establishmentAddress)
     {
+        if (! auth()->user()->can('manage-establishment'))
+            return abort(401);
+
         $userActive = auth()->user()->name;
 
         /** Create form options */
@@ -234,12 +269,15 @@ class EstablishmentAddressController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Request\CreateOrUpdateEstablishmentAddress  $request
      * @param  \App\Models\Admin\EstablishmentAddress  $establishmentAddress
      * @return \Illuminate\Http\Response
      */
     public function update(CreateOrUpdateEstablishmentAddress $request, EstablishmentAddress $establishmentAddress)
     {
+        if (! auth()->user()->can('manage-establishment'))
+            return abort(401);
+
         $data = $request->validated();
 
         DB::beginTransaction();
@@ -253,19 +291,17 @@ class EstablishmentAddressController extends Controller
 
             $establishmentAddress->fill($data);
 
-            if ($establishmentAddress->isDirty()) {
-                if (!$establishmentAddress->save()) {
+            if ($establishmentAddress->isDirty())
+                if (!$establishmentAddress->save())
                     throw new \Exception('Não foi possível atualizar o estabelecimento');
-                }
-            }
 
-            if (array_key_exists('contact', $data)) {
+            if (array_key_exists('contact', $data)):
                 /** @var Illuminate\Database\Eloquent\Relations\HasMany */
                 $contacts = EstablishmentPhones::where('establishment_address_id', $establishmentAddress->id);
 
                 $contacts->delete();
 
-                foreach ($data["contact"] as $key => $contact){
+                foreach ($data["contact"] as $key => $contact):
                     $contact["establishment_address_id"] = $establishmentAddress->id;
                     $contact["establishment_id"] = session()->get('establishment');
 
@@ -274,11 +310,11 @@ class EstablishmentAddressController extends Controller
 
                     $establishmentPhones = EstablishmentPhones::create($contact);
 
-                    if (!$establishmentPhones->exists) {
+                    if (!$establishmentPhones->exists)
                         throw new \Exception('Não foi possível atualizar o contato!');
-                    }
-                }
-            }
+
+                endforeach;
+            endif;
 
             DB::commit();
 
@@ -303,6 +339,9 @@ class EstablishmentAddressController extends Controller
      */
     public function destroy(EstablishmentAddress $establishmentAddress)
     {
+        if (! auth()->user()->can('manage-establishment'))
+            return abort(401);
+
         DB::beginTransaction();
 
         try {
@@ -311,20 +350,20 @@ class EstablishmentAddressController extends Controller
 
             $contacts->delete();
 
-            if ($establishmentAddress->delete()) {
+            if ($establishmentAddress->delete()):
                 DB::commit();
 
                 return redirect()
                     ->route('establishmentAddress.index')
                     ->with('success', 'Endereço do estabelecimento excluído com sucesso');
-            }else{
+            else:
                 DB::rollBack();
 
                 return redirect()
                     ->route('establishmentAddress.index', compact('establishmentAddress'))
                     ->withInput()
                     ->with('error', 'Ocorreu um erro desconhecido ao excluir o endereço, tente novamente.');
-            }
+            endif;
         } catch (\Exception $e) {
             DB::rollBack();
 

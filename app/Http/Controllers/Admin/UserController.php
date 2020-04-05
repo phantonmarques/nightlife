@@ -7,6 +7,19 @@ use App\Http\Controllers\Controller;
 
 class UserController extends Controller
 {
+    protected $paginate = 10;
+
+    /**
+     * UserController constructor.
+     */
+    public function __construct()
+    {
+        #SOMENTE AUTENTICADOS
+        $this->middleware('auth');
+        #SOMENTE COM A FUNÇÃO ATIVA [ADMIN]
+        $this->middleware('role:admin');
+    }
+
     /**
      * Display a listing of the resource.
      *

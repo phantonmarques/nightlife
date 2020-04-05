@@ -9,23 +9,22 @@
     use App\Models\Site\State;
     use Illuminate\Http\Request;
     use App\Http\Controllers\Controller;
-//    use Illuminate\Support\Facades\App;
     use Illuminate\Support\Facades\DB;
-//    use Illuminate\Http\UploadedFile;
-//    use Illuminate\Pagination\Paginator;
-
 
     class EstablishmentController extends Controller
     {
         protected $paginate = 10;
 
+        /**
+         * EstablishmentController constructor.
+         */
         public function __construct()
         {
             #SOMENTE AUTENTICADOS
             $this->middleware('auth');
-            #DEPOIS CRIAR FUNÇÃO PARA VALIDAR APENAS AUTENTICADOS DO SISTEMA COM PERMISSÃO DE ADMIN
+            #SOMENTE COM A FUNÇÃO ATIVA [ADMIN]
+            $this->middleware('role:admin');
         }
-
 
         /**
          * Display a listing of the resource.
@@ -34,6 +33,9 @@
          */
         public function index(Request $request, Establishment $establishments)
         {
+            if (! auth()->user()->can('manage-establishment'))
+                return abort(401);
+
             $userActive = auth()->user()->name;
 
             $establishmentsDisabled = $request->query('d');
@@ -49,7 +51,10 @@
             else
                 $establishments = $establishments->with('users')->where('status', 1)->paginate($this->paginate);
 
-            return view('admin.establishment.index', compact('establishments', 'userActive', 'establishmentsSearch'));
+            return view('admin.establishment.index',
+                compact('establishments',
+                    'userActive',
+                    'establishmentsSearch'));
         }
 
         /**
@@ -59,6 +64,9 @@
          */
         public function create(Request $request)
         {
+            if (! auth()->user()->can('manage-establishment'))
+                return abort(401);
+
             $userActive = auth()->user()->name;
 
             /** Create form options */
@@ -75,7 +83,11 @@
 
             $establishment = new Establishment();
 
-            return view('admin.establishment.form', compact('users', 'userActive', 'establishment', 'formOptions'));
+            return view('admin.establishment.form',
+                compact('users',
+                    'userActive',
+                    'establishment',
+                    'formOptions'));
         }
 
         /**
@@ -86,6 +98,9 @@
          */
         public function store(CreateOrUpdateEstablishment $request)
         {
+            if (! auth()->user()->can('manage-establishment'))
+                return abort(401);
+
             $data = $request->validated();
 
             DB::beginTransaction();
@@ -93,9 +108,8 @@
             try {
                 $establishment = Establishment::create($data);
 
-                if (!$establishment->exists) {
+                if (!$establishment->exists)
                     throw new \Exception('Não foi possível criar o estabelecimento!');
-                }
 
                 DB::commit();
 
@@ -120,6 +134,9 @@
          */
         public function show(Establishment $establishment)
         {
+            if (! auth()->user()->can('manage-establishment'))
+                return abort(401);
+
             $userActive = auth()->user()->name;
 
             /** @var  $userEstablishment - Relation Linked User */
@@ -133,8 +150,8 @@
             /** @var  $stateUser - Relation Linked State User */
             $stateUser = State::find($userEstablishment->state_id, ['name_visible']);
 
-            return view('admin.establishment.show', compact(
-                'establishment',
+            return view('admin.establishment.show',
+                compact('establishment',
                 'userEstablishment',
                 'cityUser',
                 'stateUser',
@@ -150,6 +167,9 @@
          */
         public function edit(Establishment $establishment)
         {
+            if (! auth()->user()->can('manage-establishment'))
+                return abort(401);
+
             $userActive = auth()->user()->name;
 
             /** Create form options */
@@ -165,19 +185,27 @@
                 $q->select('user_id')->from('establishment');
             })->get();
 
-            return view('admin.establishment.form', compact('users', 'userOld', 'userActive', 'establishment', 'formOptions'));
+            return view('admin.establishment.form',
+                compact('users',
+                'userOld',
+                'userActive',
+                'establishment',
+                'formOptions'));
         }
 
         /**
          * Update the specified resource in storage.
          *
-         * @param \Illuminate\Http\Request $request
+         * @param \App\Http\Request\CreateOrUpdateEstablishment $request
          * @param \App\Models\Admin\Establishment $establishment
          * @return \Illuminate\Http\Response
          */
 
         public function update(CreateOrUpdateEstablishment $request, Establishment $establishment)
         {
+            if (! auth()->user()->can('manage-establishment'))
+                return abort(401);
+
             $data = $request->validated();
 
             DB::beginTransaction();
@@ -185,11 +213,11 @@
             try {
                 $establishment->fill($data);
 
-                if ($establishment->isDirty()) {
-                    if (!$establishment->save()) {
+                if ($establishment->isDirty()):
+                    if (!$establishment->save()):
                         throw new \Exception('Não foi possível atualizar o estabelecimento');
-                    }
-                }
+                    endif;
+                endif;
 
                 DB::commit();
 
@@ -214,6 +242,9 @@
          */
         public function destroy(Establishment $establishment)
         {
+            if (! auth()->user()->can('manage-establishment'))
+                return abort(401);
+
             DB::beginTransaction();
 
             try {

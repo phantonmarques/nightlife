@@ -13,14 +13,21 @@ class RoleController extends Controller
 {
     protected $paginate = 10;
 
+    /**
+     * RoleController constructor.
+     */
     public function __construct()
     {
+        #SOMENTE AUTENTICADOS
+        $this->middleware('auth');
+        #SOMENTE COM A FUNÇÃO ATIVA [ADMIN]
         $this->middleware('role:admin');
     }
 
     /**
      * Display a listing of the resource.
      *
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
@@ -37,7 +44,10 @@ class RoleController extends Controller
         else
             $roles = Role::with('permissions')->paginate($this->paginate);
 
-        return view('admin.role.index', compact('roles','roleSearch', 'userActive'));
+        return view('admin.role.index',
+            compact('roles',
+                'roleSearch',
+                'userActive'));
     }
 
     /**
@@ -64,7 +74,11 @@ class RoleController extends Controller
 
         $role = new Role();
 
-        return view('admin.role.form', compact('formOptions', 'permissions', 'role','userActive'));
+        return view('admin.role.form',
+            compact('formOptions',
+                'permissions',
+                'role',
+                'userActive'));
     }
 
     /**
@@ -128,7 +142,9 @@ class RoleController extends Controller
 
         $userActive = auth()->user()->name;
 
-        return view('admin.role.show', compact('role','userActive'));
+        return view('admin.role.show',
+            compact('role',
+                'userActive'));
     }
 
     /**
@@ -161,7 +177,12 @@ class RoleController extends Controller
             endforeach;
         endif;
 
-        return view('admin.role.form', compact('formOptions','permissions', 'permissionChosen', 'role', 'userActive'));
+        return view('admin.role.form',
+            compact('formOptions',
+                'permissions',
+                'permissionChosen',
+                'role',
+                'userActive'));
     }
 
     /**

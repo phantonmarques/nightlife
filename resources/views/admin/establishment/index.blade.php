@@ -80,7 +80,11 @@
                             <th>Usuário</th>
                             <th>E-mail</th>
                             <th>Data de criação</th>
-                            <th>Data de atualização</th>
+                            @if (isset($_GET['d']))
+                                <th>Data de cancelamento</th>
+                            @else
+                                <th>Data de atualização</th>
+                            @endif
                             <th class="col-actions"></th>
                         </tr>
                         </thead>
@@ -118,9 +122,11 @@
                                     <td class="col-actions">
                                         <a href="{{ route('establishment.edit', $establishment) }}" class="action-edit"><span class="glyphicon glyphicon-pencil"></span></a>
                                     </td>
-                                    <td class="col-actions">
-                                        <a href="{{ route('establishment.destroy', $establishment) }}" class="action-delete"><span class="glyphicon glyphicon-trash"></span></a>
-                                    </td>
+                                    @if (!isset($_GET['d']))
+                                        <td class="col-actions">
+                                            <a href="{{ route('establishment.destroy', $establishment) }}" class="action-delete"><span class="glyphicon glyphicon-trash"></span></a>
+                                        </td>
+                                    @endif
                                     <td class="col-actions">
                                         <a href="{{ route('establishment.show', $establishment) }}" class="action-show"><span class="glyphicon glyphicon-info-sign"></span></a>
                                     </td>
