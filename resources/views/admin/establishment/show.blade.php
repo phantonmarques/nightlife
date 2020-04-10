@@ -74,7 +74,7 @@
                         <div class="col-md-4">
                             @include('adminlte::form.input.static', [
                                 'label' => 'CNPJ',
-                                'value' => $userEstablishment->cpf_cnpj
+                                'value' => formatCnpjCpf($userEstablishment->cpf_cnpj)
                             ])
                         </div>
                         <div class="col-md-4">
@@ -88,19 +88,10 @@
                     <div class="row">
                         <div class="col-md-4">
                             @include('adminlte::form.input.static', [
-                                'label' => 'Login',
-                                'value' => $userEstablishment->login
-                            ])
-                        </div>
-                        <div class="col-md-4">
-                            @include('adminlte::form.input.static', [
                                 'label' => 'Tipo de Usuário',
-                                'value' => $typeUser
+                                'value' => typeUserDescription($userEstablishment->type_user)
                             ])
                         </div>
-                    </div>
-
-                    <div class="row">
                         <div class="col-md-4">
                             @include('adminlte::form.input.static', [
                                 'label' => 'Cidade',

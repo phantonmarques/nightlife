@@ -77,7 +77,6 @@
                             <th>CNPJ</th>
                             <th>Tipo Licença</th>
                             <th>Situação Empresa</th>
-                            <th>Usuário</th>
                             <th>E-mail</th>
                             <th>Data de criação</th>
                             @if (isset($_GET['d']))
@@ -99,16 +98,13 @@
                                         {{ $establishment->state_registration }}
                                     </th>
                                     <th>
-                                        {{ $establishment->users->cpf_cnpj }}
+                                        {{ formatCnpjCpf($establishment->users->cpf_cnpj) }}
                                     </th>
                                     <th>
                                         {{ $establishment->type_license === 'f' ? 'Full' : 'Básica' }}
                                     </th>
                                     <th>
                                         {{ $establishment->status ? 'Ativa' : 'Inativa' }}
-                                    </th>
-                                    <th>
-                                        {{ $establishment->users->login }}
                                     </th>
                                     <th>
                                         {{ $establishment->users->email }}

@@ -121,7 +121,7 @@ class EstablishmentAddressController extends Controller
         ];
 
         /** @var array States array for select */
-        $states = State::pluck('name_visible', 'state_cod')->toArray();
+        $states = State::pluck('name_visible', 'id')->toArray();
 
         $establishmentAddress = new EstablishmentAddress();
 
@@ -155,9 +155,6 @@ class EstablishmentAddressController extends Controller
                     ->route('establishmentAddress.create')
                     ->withInput()
                     ->with('error', 'Endereço já cadastrado, favor informe outro!');
-
-            if (!is_int($data["state_id"]))
-                $data["state_id"] = State::where('state_cod', $data["state_id"])->select('id')->first()->id;
 
             if (!isset($data["establishment_id"]))
                 $data["establishment_id"] = session()->get('establishment');
@@ -251,7 +248,7 @@ class EstablishmentAddressController extends Controller
         ];
 
         /** @var array States array for select */
-        $states = State::pluck('name_visible', 'state_cod')->toArray();
+        $states = State::pluck('name_visible', 'id')->toArray();
 
         /** @var object Contact */
         $contacts = EstablishmentPhones::where('establishment_address_id', $establishmentAddress->id)->get();
@@ -283,9 +280,6 @@ class EstablishmentAddressController extends Controller
         DB::beginTransaction();
 
         try {
-            if (!is_int($data["state_id"]))
-                $data["state_id"] = State::where('state_cod', $data["state_id"])->select('id')->first()->id;
-
             if (!isset($data["establishment_id"]))
                 $data["establishment_id"] = session()->get('establishment');
 

@@ -37,11 +37,13 @@
                             <button type="button" class="btn btn-info" onclick="searchZipCode('click')">Buscar</button>
                         </div>
                     </div>
+
                     <br>
+
                     <div id="addressEstablishment" style="display: none"> <!-- style="display: none" -->
                         <div class="row">
                             <div class="col-lg-6">
-                                {{ Form::label('street_name','Endereço ') }}
+                                {{ Form::label('street_name','Endereço ') }} <span class="span-required">*</span>
                                 {{ Form::text('street_name' , (isset($establishmentAddress->id) ? $establishmentAddress->street_name : ''), ['id' => 'street_name', 'placeholder' => 'Informe endereço do estabelecimento.', 'class' => 'form-control', 'onkeypress' => 'return onlyNumbers(event)']) }}
                             </div>
                             <div class="col-lg-2">
@@ -49,25 +51,31 @@
                                 {{ Form::text('building_number' , (isset($establishmentAddress->id) ? $establishmentAddress->building_number : ''), ['id' => 'building_number', 'placeholder' => 'Informe número do estabelecimento.', 'class' => 'form-control', 'onkeypress' => 'return onlyNumbers(event)']) }}
                             </div>
                         </div>
+
                         <br>
+
                         <div class="row">
                             <div class="col-lg-3">
                                 {{ Form::label('complement','Complemento') }}
                                 {{ Form::text('complement' , (isset($establishmentAddress->id) ? $establishmentAddress->complement : ''), ['id' => 'complement', 'placeholder' => 'Informe complemento do endereço.', 'class' => 'form-control']) }}
                             </div>
                         </div>
+
                         <br>
+
                         <div class="row">
                             <div class="col-lg-6">
                                 {{ Form::label('state_id','Estado') }} <span class="span-required">*</span>
-                                {{ Form::select('state_id', $states, 0, ['class' => 'form-control', 'id' => 'state_id', 'onchange' => 'searchCity()']) }}
+                                {{ Form::select('state_id', $states, (isset($establishmentAddress->id) ? $establishmentAddress->state_id : ''), ['class' => 'form-control', 'id' => 'state_id', 'onchange' => 'searchCity()']) }}
                             </div>
                             <div class="col-lg-6">
-                                {{ Form::label('city_id','Cidade') }}
+                                {{ Form::label('city_id','Cidade') }} <span class="span-required">*</span>
                                 {{ Form::select('city_id', array('' => 'Selecione'), 0, ['class' => 'form-control', 'id' => 'city_id']) }}
                             </div>
                         </div>
+
                         <br>
+
                         <div class="row">
                             <div class="col-lg-3">
                                 {{ Form::label('neighborhood','Bairro') }} <span class="span-required">*</span>
@@ -167,7 +175,7 @@
                             {{ Form::label('Número tem Whatsapp') }} <span class="span-required"></span>
                             <div class="input-group">
                                     <span class="input-group-addon">
-                                        {{ Form::checkbox('contact[0][whatsapp]', (isset($contacts) && $contacts[0]->whatsapp) ? '1' : '0', (isset($contacts) && $contacts[0]->whatsapp) ? 'checked' : false, ['id' => 'whatsapp']) }}
+                                        {{ Form::checkbox('contact[0][whatsapp]', 1, (isset($contacts) && $contacts[0]->whatsapp) ? 'checked' : false, ['id' => 'whatsapp']) }}
                                     </span>
                                 {{ Form::label('whatsapp', 'Sim', ['class' => 'form-control']) }}
                             </div>
@@ -218,7 +226,7 @@
                                     {{ Form::label('Número tem Whatsapp') }}
                                     <div class="input-group">
                                         <span class="input-group-addon">
-                                            {{ Form::checkbox('contact[' . $key . '][whatsapp]', ($contact->whatsapp) ? '1' : '0' , ($contact->whatsapp) ? 'checked' : false, ['id' => 'whatsapp_' . $key]) }}
+                                            {{ Form::checkbox('contact[' . $key . '][whatsapp]', 1 , ($contact->whatsapp) ? 'checked' : false, ['id' => 'whatsapp_' . $key]) }}
                                         </span>
                                         {{ Form::label('whatsapp_' . $key, 'Sim', ['class' => 'form-control']) }}
                                     </div>

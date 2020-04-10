@@ -8,7 +8,11 @@ class State extends Model
 {
     protected $table = 'state';
 
-    public function city(){
-        return $this->hasMany(City::class, 'state_id', 'id');
+    /**
+     * Get state of user.
+     */
+    public function city()
+    {
+        return $this->hasOne (City::class);
     }
 }

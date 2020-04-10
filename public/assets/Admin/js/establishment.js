@@ -52,20 +52,18 @@ function searchInformationCompany() {
 function selectUser(user) {
     if (user !== ''){
         document.getElementById('divEmail').style.display = 'flex';
-        document.getElementById('divLogin').style.display = 'flex';
         document.getElementById('divCnpj').style.display  = 'flex';
         document.getElementById('userEmail').value = user;
-        document.getElementById('userLogin').value = user;
         document.getElementById('userCNPJ').value  = user;
     }else {
         document.getElementById('divEmail').style.display = 'none';
-        document.getElementById('divLogin').style.display = 'none';
         document.getElementById('divCnpj').style.display  = 'none';
     }
 }
 
-function somenteNumeros(e) {
+function onlyNumbers(e) {
     var charCode = e.charCode ? e.charCode : e.keyCode;
+
     if (charCode != 8 && charCode != 9) {
         if (charCode < 48 || charCode > 57) {
             return false;

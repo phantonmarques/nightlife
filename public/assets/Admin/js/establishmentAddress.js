@@ -92,11 +92,12 @@ function searchZipCode(type = '') {
                     document.getElementById("street_name").disabled = true;
                     document.getElementById("neighborhood").value = data.bairro;
                     document.getElementById("neighborhood").disabled = true;
-                    document.getElementById("state_id").value = data.uf;
-                    document.getElementById("state_id").disabled = true;
-                    var city = data.localidade;
-                    city = city.replace(/ /g, '-').toLowerCase();
-                    searchCity(city);
+                    searchState(data.uf);
+                    setTimeout(function() {
+                        var city = data.localidade;
+                        searchCity(removeAccentsSpace(city));
+                    }, (500));
+
                     document.getElementById("city_id").disabled = true;
                     if (type !== '') {
                         document.getElementById('building_number').value = '';
@@ -138,23 +139,24 @@ function searchCity(index = '') {
 
     if (estado.length > 0) {
         $.ajax({
-            url: "http://localhost/nightlife/public/citys/" + estado,
+            url: "http://localhost/ProjetosLaravel/nightlife/public/citys/" + estado,
             type: 'GET',
             crossDomain: true,
             success: function (data) {
                 data = JSON.parse(data);
 
-                if (typeof (data[0].id) != "undefined") {
+                if (typeof (data[0].id) !== undefined) {
                     var selectCidades = document.getElementById("city_id");
+
+                    $('#city_id').empty();
 
                     for (var k in data) {
                         var option = document.createElement("option");
-                        option.id = data[k].name;
                         option.value = data[k].id;
                         option.text = data[k].name_visible;
                         selectCidades.add(option);
 
-                        if (index !== '' && data[k].name === index) {
+                        if (index !== '' && data[k].name === index || index !== '' && data[k].id === parseInt(index)) {
                             selectCidades.value = data[k].id;
                         }
                     }
@@ -169,6 +171,38 @@ function searchCity(index = '') {
     }
 }
 
+function searchState(state) {
+    if (state.length > 0) {
+        $.ajax({
+            url: "http://localhost/ProjetosLaravel/nightlife/public/state/" + state,
+            type: 'GET',
+            crossDomain: true,
+            success: function (data) {
+                data = JSON.parse(data);
+
+                if (data.id !== '' && data.id !== undefined)
+                    document.getElementById("state_id").value = data.id
+                    document.getElementById("state_id").disabled = true;
+            },
+            error: function () {
+                swal("Erro", "Desconhecido, favor recarrega a página e tente novamente!", "error");
+            },
+        });
+    }
+}
+
+function removeAccentsSpace(text) {
+    text = text.toLowerCase();
+    text = text.replace(new RegExp('[ÁÀÂÃ]', 'gi'), 'a');
+    text = text.replace(new RegExp('[ÉÈÊ]', 'gi'), 'e');
+    text = text.replace(new RegExp('[ÍÌÎ]', 'gi'), 'i');
+    text = text.replace(new RegExp('[ÓÒÔÕ]', 'gi'), 'o');
+    text = text.replace(new RegExp('[ÚÙÛ]', 'gi'), 'u');
+    text = text.replace(new RegExp('[Ç]', 'gi'), 'c');
+    text = text.replace(/ /g, '-');
+    return text;
+}
+
 function onlyNumbers(e) {
     var charCode = e.charCode ? e.charCode : e.keyCode;
 
@@ -180,17 +214,23 @@ function onlyNumbers(e) {
 }
 
 function validateFormEstablishmentAddress(f) {
-    if (f.zip_code.value === '') {
+    if (f.zip_code.value.length === undefined || f.zip_code.value === '') {
         swal("Erro", "O campoo [CEP] é obrigatório, favor preencha!", "error");
         return false;
-    } else if (f.street_name.value === '') {
+    } else if (f.street_name.value.length === undefined || f.street_name.value === '') {
         swal("Erro", "Cep inválido ou não localizado, insira e clique em [Buscar]!", "error");
         return false;
-    } else if (f.building_number.value === '') {
+    } else if (f.building_number.value.length === undefined  || f.building_number.value === '') {
         swal("Erro", "O campo [Número] é obrigatório, favoor preencha!", "error");
         return false;
-    } else if (f.name.length === 'undefined' && f.name.value === '') {
-        swal("Erro", "O campo [Nome Contato] é obrigatório, favor preencha!", "error");
+    } else if (f.state_id.value.length === undefined || f.state_id.value === '') {
+        swal("Erro", "O campo [Estado] é obrigatório, favor preencha!", "error");
+        return false;
+    }else if (f.city_id.value.length === undefined || f.city_id.value === '') {
+        swal("Erro", "O campo [Cidade] é obrigatório, favor preencha!", "error");
+        return false;
+    }else if (f.neighborhood.value.length === undefined || f.neighborhood.value === '') {
+        swal("Erro", "O campo [Bairro] é obrigatório, favor preencha!", "error");
         return false;
     }else if (!f.elements["contact[0][name]"].value.length) {
         swal("Erro", "O campo [Nome Contato] é obrigatório, favor preencha!", "error");

@@ -142,8 +142,6 @@
             /** @var  $userEstablishment - Relation Linked User */
             $userEstablishment = $establishment->users()->first();
 
-            $typeUser = User::typeUsers($userEstablishment->type_user);
-
             /** @var  $cityUser - Relation Linked City User */
             $cityUser = City::find($userEstablishment->city_id, ['name_visible']);
 
@@ -155,7 +153,6 @@
                 'userEstablishment',
                 'cityUser',
                 'stateUser',
-                'typeUser',
                 'userActive'));
         }
 
@@ -178,7 +175,7 @@
                 'method' => Request::METHOD_PUT,
             ];
 
-            $userOld = User::select(['id', 'name', 'email', 'cpf_cnpj', 'login'])->where('id', $establishment->user_id)
+            $userOld = User::select(['id', 'name', 'email', 'cpf_cnpj'])->where('id', $establishment->user_id)
                 ->first();
 
             $users = User::where('type_user', 'e')->whereNotIn('id', function ($q) {

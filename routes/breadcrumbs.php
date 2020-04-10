@@ -1,6 +1,7 @@
 <?php
     use DaveJamesMiller\Breadcrumbs\Facades\Breadcrumbs;
     use App\Models\Site\User;
+    use App\Models\Admin\Category;
     use App\Models\Admin\Establishment;
     use App\Models\Admin\EstablishmentAddress;
     use App\Models\Admin\Permission;
@@ -124,6 +125,28 @@
     Breadcrumbs::for('permission.edit', function ($trail, Permission $permission) {
         $trail->parent('permission.index', $permission);
         $trail->push('Editar Permissão', route('permission.edit', $permission));
+    });
+
+    # TODO: CATEGORY FOR ESTABLISHMENT
+
+    Breadcrumbs::for('category.index', function ($trail) {
+        $trail->parent('home');
+        $trail->push('Categorias', route('category.index'));
+    });
+
+    Breadcrumbs::for('category.create', function ($trail) {
+        $trail->parent('category.index');
+        $trail->push('Nova Categoria', route('category.create'));
+    });
+
+    Breadcrumbs::for('category.show', function ($trail, Category $category) {
+        $trail->parent('category.index');
+        $trail->push($category->name, route('category.show', $category));
+    });
+
+    Breadcrumbs::for('category.edit', function ($trail, Category $category) {
+        $trail->parent('category.index', $category);
+        $trail->push('Editar Categoria', route('category.edit', $category));
     });
 
 

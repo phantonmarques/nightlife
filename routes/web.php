@@ -37,6 +37,10 @@ Route::get('control/', 'ControlAdmin\AdminController@index')->name('home.page.ad
 * TODO: Admin
 */
 
+# Category
+    Route::get('category/{category}/destroy', 'Admin\\CategoryController@destroy')->name('category.destroy')->middleware('auth');
+    Route::resource('category', 'Admin\\CategoryController')->except(['destroy'])->middleware('auth');
+
 # Establishment
     Route::get('establishment/{establishment}/destroy', 'Admin\\EstablishmentController@destroy')->name('establishment.destroy')->middleware('auth');
     Route::resource('establishment', 'Admin\\EstablishmentController')->except(['destroy'])->middleware('auth');
@@ -68,6 +72,9 @@ Route::get('control/', 'ControlAdmin\AdminController@index')->name('home.page.ad
 
 # Busca Cidades
 Route::get('citys/{state_id}', 'SiteInstitucional\SiteInstController@searchCitys')->name('searchCitys');
+
+# Busca ID Estado
+Route::get('state/{state_id}', 'SiteInstitucional\SiteInstController@searchState')->name('searchState');
 
 # Rotas para registrar usuários comuns
 Route::get('register', ['uses' => 'Auth\RegisterController@showRegistrationForm'])->name('register.page');

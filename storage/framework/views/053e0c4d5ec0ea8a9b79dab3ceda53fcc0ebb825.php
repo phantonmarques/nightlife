@@ -85,10 +85,13 @@
                             <th>CNPJ</th>
                             <th>Tipo Licença</th>
                             <th>Situação Empresa</th>
-                            <th>Usuário</th>
                             <th>E-mail</th>
                             <th>Data de criação</th>
-                            <th>Data de atualização</th>
+                            <?php if(isset($_GET['d'])): ?>
+                                <th>Data de cancelamento</th>
+                            <?php else: ?>
+                                <th>Data de atualização</th>
+                            <?php endif; ?>
                             <th class="col-actions"></th>
                         </tr>
                         </thead>
@@ -105,7 +108,7 @@
 
                                     </th>
                                     <th>
-                                        <?php echo e($establishment->users->cpf_cnpj); ?>
+                                        <?php echo e(formatCnpjCpf($establishment->users->cpf_cnpj)); ?>
 
                                     </th>
                                     <th>
@@ -114,10 +117,6 @@
                                     </th>
                                     <th>
                                         <?php echo e($establishment->status ? 'Ativa' : 'Inativa'); ?>
-
-                                    </th>
-                                    <th>
-                                        <?php echo e($establishment->users->login); ?>
 
                                     </th>
                                     <th>
@@ -135,9 +134,11 @@
                                     <td class="col-actions">
                                         <a href="<?php echo e(route('establishment.edit', $establishment)); ?>" class="action-edit"><span class="glyphicon glyphicon-pencil"></span></a>
                                     </td>
-                                    <td class="col-actions">
-                                        <a href="<?php echo e(route('establishment.destroy', $establishment)); ?>" class="action-delete"><span class="glyphicon glyphicon-trash"></span></a>
-                                    </td>
+                                    <?php if(!isset($_GET['d'])): ?>
+                                        <td class="col-actions">
+                                            <a href="<?php echo e(route('establishment.destroy', $establishment)); ?>" class="action-delete"><span class="glyphicon glyphicon-trash"></span></a>
+                                        </td>
+                                    <?php endif; ?>
                                     <td class="col-actions">
                                         <a href="<?php echo e(route('establishment.show', $establishment)); ?>" class="action-show"><span class="glyphicon glyphicon-info-sign"></span></a>
                                     </td>

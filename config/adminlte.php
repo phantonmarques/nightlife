@@ -126,6 +126,12 @@ return [
                     'route'  => 'establishmentAddress.prepareIndex',
                     'active' => [ 'establishmentAddress', 'establishmentAddress/*', 'establishmentAddress?*' ]
                 ],
+                [
+                    'text'   => 'Categoria',
+                    'icon'   => 'fas fa-list-ul',
+                    'route'  => 'category.index',
+                    'active' => [ 'category', 'category/*', 'category?*' ]
+                ],
 //                [
 //                    'text'  => 'Faturas',
 //                    'url'   => '#',

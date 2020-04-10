@@ -44,7 +44,7 @@
                         <div class="col-md-10">
                             <?php echo e(Form::label('state_registration','Inscrição Estadual ')); ?> <span
                                     class="span-required">*</span>
-                            <?php echo e(Form::text('state_registration' , (isset($establishment->id) ? $establishment->state_registration : ''), ['placeholder' => 'Informe a inscrição estadual', 'class' => 'form-control required'])); ?>
+                            <?php echo e(Form::text('state_registration' , (isset($establishment->id) ? $establishment->state_registration : ''), ['placeholder' => 'Informe a inscrição estadual', 'class' => 'form-control required', 'onkeypress' => 'return onlyNumbers(event)'])); ?>
 
                         </div>
                     </div>
@@ -179,28 +179,6 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row" id="divLogin" style="display:none">
-                            <div class="col-md-12">
-                                <div class="row">
-                                    <div class="col-md-3">
-                                        <?php echo e(Form::label('Login')); ?> <span class="span-required">*</span>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-3">
-                                        <select class="form-control" name="userLogin" id="userLogin" disabled>
-                                            <?php if(isset($userOld)): ?>
-                                                <option value="<?php echo e($userOld->id); ?>" selected><?php echo e($userOld->login); ?></option>
-                                            <?php endif; ?>
-                                            <?php $__currentLoopData = $users; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $user): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                                <option value="<?php echo e($user->id); ?>"><?php echo e($user->login); ?></option>
-                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
                         <div class="row" id="divCnpj" style="display:none">
                             <div class="col-md-12">
                                 <div class="row">
@@ -212,10 +190,10 @@
                                     <div class="col-md-3">
                                         <select class="form-control" name="userCNPJ" id="userCNPJ" disabled>
                                             <?php if(isset($userOld)): ?>
-                                                <option value="<?php echo e($userOld->id); ?>" selected><?php echo e($userOld->cpf_cnpj); ?></option>
+                                                <option value="<?php echo e($userOld->id); ?>" selected><?php echo e(formatCnpjCpf($userOld->cpf_cnpj)); ?></option>
                                             <?php endif; ?>
                                             <?php $__currentLoopData = $users; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $user): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                                <option value="<?php echo e($user->id); ?>"><?php echo e($user->cpf_cnpj); ?></option>
+                                                <option value="<?php echo e($user->id); ?>"><?php echo e(formatCnpjCpf($user->cpf_cnpj)); ?></option>
                                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                         </select>
                                     </div>
@@ -223,6 +201,7 @@
                             </div>
 
                         </div>
+
                     <?php endif; ?>
 
                     <?php if($errors->has('status')): ?>

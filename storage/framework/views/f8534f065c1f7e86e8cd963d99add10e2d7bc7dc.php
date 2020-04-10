@@ -74,7 +74,7 @@
                         <div class="col-md-4">
                             <?php echo $__env->make('adminlte::form.input.static', [
                                 'label' => 'CNPJ',
-                                'value' => $userEstablishment->cpf_cnpj
+                                'value' => formatCnpjCpf($userEstablishment->cpf_cnpj)
                             ], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
                         </div>
                         <div class="col-md-4">
@@ -84,23 +84,14 @@
                             ], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
                         </div>
                     </div>
-
+                    
                     <div class="row">
-                        <div class="col-md-4">
-                            <?php echo $__env->make('adminlte::form.input.static', [
-                                'label' => 'Login',
-                                'value' => $userEstablishment->login
-                            ], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
-                        </div>
                         <div class="col-md-4">
                             <?php echo $__env->make('adminlte::form.input.static', [
                                 'label' => 'Tipo de Usuário',
-                                'value' => $typeUser
+                                'value' => typeUserDescription($userEstablishment->type_user)
                             ], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
                         </div>
-                    </div>
-
-                    <div class="row">
                         <div class="col-md-4">
                             <?php echo $__env->make('adminlte::form.input.static', [
                                 'label' => 'Cidade',

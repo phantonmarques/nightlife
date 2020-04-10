@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\SiteInstitucional;
 
+use App\Models\Site\State;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Site\State;
+use App\Models\Site\City;
 
 
 class SiteInstController extends Controller
@@ -13,9 +14,11 @@ class SiteInstController extends Controller
         return view('siteinstitucional.home.home');
     }
 
-    public function searchCitys($stateSelect, State $estado){
-        $stateSelect = $estado->with('city')->where('state_cod', $stateSelect)->select('id', 'name', 'name_visible')->first();
+    public function searchCitys($stateSelect){
+        return City::where('state_id', $stateSelect)->select( 'id', 'name', 'name_visible')->get()->toJson();
+    }
 
-        return $stateSelect->city->toJson();
+    public function searchState($state){
+        return State::where('state_cod', $state)->select('id')->first()->toJson();
     }
 }

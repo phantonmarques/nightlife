@@ -42,7 +42,7 @@
                         <div class="col-md-10">
                             {{ Form::label('state_registration','Inscrição Estadual ') }} <span
                                     class="span-required">*</span>
-                            {{ Form::text('state_registration' , (isset($establishment->id) ? $establishment->state_registration : ''), ['placeholder' => 'Informe a inscrição estadual', 'class' => 'form-control required']) }}
+                            {{ Form::text('state_registration' , (isset($establishment->id) ? $establishment->state_registration : ''), ['placeholder' => 'Informe a inscrição estadual', 'class' => 'form-control required', 'onkeypress' => 'return onlyNumbers(event)']) }}
                         </div>
                     </div>
 
@@ -170,28 +170,6 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row" id="divLogin" style="display:none">
-                            <div class="col-md-12">
-                                <div class="row">
-                                    <div class="col-md-3">
-                                        {{ Form::label('Login') }} <span class="span-required">*</span>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-3">
-                                        <select class="form-control" name="userLogin" id="userLogin" disabled>
-                                            @if (isset($userOld))
-                                                <option value="{{$userOld->id}}" selected>{{$userOld->login}}</option>
-                                            @endif
-                                            @foreach($users as $user)
-                                                <option value="{{$user->id}}">{{$user->login}}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
                         <div class="row" id="divCnpj" style="display:none">
                             <div class="col-md-12">
                                 <div class="row">
@@ -203,10 +181,10 @@
                                     <div class="col-md-3">
                                         <select class="form-control" name="userCNPJ" id="userCNPJ" disabled>
                                             @if (isset($userOld))
-                                                <option value="{{$userOld->id}}" selected>{{$userOld->cpf_cnpj}}</option>
+                                                <option value="{{$userOld->id}}" selected>{{ formatCnpjCpf($userOld->cpf_cnpj) }}</option>
                                             @endif
                                             @foreach($users as $user)
-                                                <option value="{{$user->id}}">{{$user->cpf_cnpj}}</option>
+                                                <option value="{{$user->id}}">{{ formatCnpjCpf($user->cpf_cnpj) }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -214,6 +192,7 @@
                             </div>
 
                         </div>
+
                     @endif
 
                     @if ($errors->has('status'))
