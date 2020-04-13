@@ -6,8 +6,7 @@
     use App\Models\Admin\EstablishmentAddress;
     use App\Models\Admin\Permission;
     use App\Models\Admin\Role;
-
-
+    use App\Models\Admin\MusicalRhythm;
 
     Breadcrumbs::for('home', function ($trail) {
         $trail->push('Home', route('home'));
@@ -149,6 +148,27 @@
         $trail->push('Editar Categoria', route('category.edit', $category));
     });
 
+    # TODO: MUSICAL RHYTHM
+
+    Breadcrumbs::for('musicalRhythm.index', function ($trail) {
+        $trail->parent('home');
+        $trail->push('Ritmos Musicais', route('musicalRhythm.index'));
+    });
+
+    Breadcrumbs::for('musicalRhythm.create', function ($trail) {
+        $trail->parent('musicalRhythm.index');
+        $trail->push('Novo Ritmo Musical', route('musicalRhythm.create'));
+    });
+
+    Breadcrumbs::for('musicalRhythm.show', function ($trail, MusicalRhythm $musicalRhythm) {
+        $trail->parent('musicalRhythm.index');
+        $trail->push($musicalRhythm->name, route('musicalRhythm.show', $musicalRhythm));
+    });
+
+    Breadcrumbs::for('musicalRhythm.edit', function ($trail, MusicalRhythm $musicalRhythm) {
+        $trail->parent('musicalRhythm.index', $musicalRhythm);
+        $trail->push('Editar Ritmo Musical', route('musicalRhythm.edit', $musicalRhythm));
+    });
 
     # TODO: ERROR
 

@@ -1,13 +1,13 @@
 @extends('adminlte::page')
-@section('title', (isset($category->id) ? 'Editar ' : 'Criar ') . 'Categoria · ')
+@section('title', (isset($musicalRhythm->id) ? 'Editar ' : 'Criar ') . 'Ritmo Musical · ')
 
 @section('content_header')
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <h1>&nbsp;</h1>
     <ol class="breadcrumb">
         <li><a href="#">Inicio</a></li>
-        <li><a href="#">Categorias</a></li>
-        <li><a href="#">{{ (isset($category->id) ? 'Editar ' : 'Criar ') }} Categoria</a></li>
+        <li><a href="#">Ritmos Musicais</a></li>
+        <li><a href="#">{{ (isset($musicalRhythm->id) ? 'Editar ' : 'Criar ') }} Ritmo Musical</a></li>
     </ol>
 @stop
 
@@ -16,17 +16,17 @@
         <div class="col-md-12">
             <div class="box box-warning">
                 <div class="box-header with-border">
-                    <h3 class="box-title">{{ (isset($category->id) ? 'Editar Categoria' : 'Cadastrar nova Categoria') }}</h3>
+                    <h3 class="box-title">{{ (isset($musicalRhythm->id) ? 'Editar Ritmo Musical' : 'Cadastrar novo Ritmo Musical') }}</h3>
                     <h6 align="right" style="color:red">* Campos obrigatórios</h6>
                 </div>
 
-                {{ Form::model($category, $formOptions) }}
+                {{ Form::model($musicalRhythm, $formOptions) }}
                 {!! csrf_field() !!}
                 <div class="box-body">
                     <div class="row">
                         <div class="col-md-12">
                             {{ Form::label('name','Nome') }} <span class="span-required">*</span>
-                            {{ Form::text('name', (isset($category->id) ? $category->name : ''), ['placeholder' => 'Informe nome do categoria', 'class' => 'form-control required']) }}
+                            {{ Form::text('name', (isset($musicalRhythm->id) ? $musicalRhythm->name : ''), ['placeholder' => 'Informe nome do ritmo musical', 'class' => 'form-control required']) }}
                         </div>
                     </div>
 
@@ -50,7 +50,7 @@
 
                 <div class="box-footer">
                     <div class="col-lg-1" style="margin-left: 83%;">
-                        {{ link_to_route('category.index', $title = 'Voltar', '', ['class' => 'btn btn-block btn-danger']) }}
+                        {{ link_to_route('musicalRhythm.index', $title = 'Voltar', '', ['class' => 'btn btn-block btn-danger']) }}
                     </div>
                     <div class="col-md-1">
                         {{ Form::submit('Salvar', ['class' => 'btn btn-block btn-success']) }}
@@ -63,7 +63,7 @@
 @endsection
 
 @section('js')
-    <script type="text/javascript" src="{{ asset('assets/admin/js/category.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/admin/js/musicalRhythm.js') }}"></script>
 @endsection
 
 @section('css')

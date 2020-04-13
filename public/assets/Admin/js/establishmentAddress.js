@@ -135,11 +135,11 @@ function searchZipCode(type = '') {
 }
 
 function searchCity(index = '') {
-    let estado = document.getElementById('state_id').value;
+    let state = document.getElementById('state_id').value;
 
-    if (estado.length > 0) {
+    if (state.length > 0) {
         $.ajax({
-            url: "http://localhost/ProjetosLaravel/nightlife/public/citys/" + estado,
+            url: "http://localhost/ProjetosLaravel/nightlife/public/citys/" + state,
             type: 'GET',
             crossDomain: true,
             success: function (data) {
@@ -166,7 +166,7 @@ function searchCity(index = '') {
                 swal("Erro", "Desconhecido, favor recarrega a página e tente novamente!", "error");
             },
         });
-    } else if (estado.length === 0) {
+    } else if (state.length === 0) {
         swal("Erro", "Selecione o estado e tente novamente!", "error");
     }
 }
