@@ -3,8 +3,7 @@
 namespace App\Models\Admin;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Admin\EstablishmentPhones;
-use App\Models\Admin\Establishment;
+use App\Models\Site\City;
 
 class EstablishmentAddress extends Model
 {
@@ -21,11 +20,25 @@ class EstablishmentAddress extends Model
         'city_id'
     ];
 
+    /**
+     * Get establishments of establishmentaddress.
+     */
     public function establishment(){
-        return $this->hasMany(Establishment::class, 'id', 'establishment_id');
+        return $this->belongsTo(Establishment::class, 'establishment_id', 'id');
     }
 
+    /**
+     * Get phones of establishmentaddress.
+     */
     public function establishments_phone(){
         return $this->hasMany(EstablishmentPhones::class, 'establishment_address_id');
+    }
+
+    /**
+     * Get citys of establishmentaddress.
+     */
+    public function city()
+    {
+        return $this->belongsTo(City::class, 'city_id', 'id');
     }
 }

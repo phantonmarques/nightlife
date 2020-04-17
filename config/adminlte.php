@@ -135,8 +135,8 @@ return [
                 [
                     'text' => 'Ritmo Musical',
                     'icon' => 'fas fa-music',
-                    'route' => 'musicalRhythm.index',
-                    'active' => ['musicalRhythm', 'musicalRhythm/*', 'musicalRhythm?*']
+                    'route' => 'rhythm.index',
+                    'active' => ['rhythm', 'rhythm/*', 'rhythm?*']
                 ],
 //                [
 //                    'text'  => 'Faturas',

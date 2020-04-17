@@ -23,14 +23,14 @@
                     <div class="box-title col-xs-6 col-sm-3">
                         <div class="input-group pull-right">
                             <?php if(!isset($_GET['d'])): ?>
-                            <?php echo e(Form::open(['method' => 'GET'])); ?>
+                                <?php echo e(Form::open(['method' => 'GET'])); ?>
 
-                                    <button type="submit" class="btn btn-danger btn-flat">
-                                        Desativados
-                                    </button>
-                                    <?php echo e(Form::hidden('d', 1, array('id' => 'd'))); ?>
+                                <button type="submit" class="btn btn-danger btn-flat">
+                                    Desativados
+                                </button>
+                                <?php echo e(Form::hidden('d', 1, array('id' => 'd'))); ?>
 
-                            <?php echo e(Form::close()); ?>
+                                <?php echo e(Form::close()); ?>
 
                             <?php else: ?>
                                 <a href="<?php echo e(route("establishment.index")); ?>" class="btn btn-success btn-flat">
@@ -44,21 +44,21 @@
                         <?php echo e(Form::open(['method' => 'GET'])); ?>
 
                         <div class="input-group">
-                            <?php if(empty($establishmentsSearch)): ?>
-                                <?php echo e($establishmentsSearch = ''); ?>
+                        <?php if(empty($establishmentsSearch)): ?>
+                            <?php echo e($establishmentsSearch = ''); ?>
 
-                            <?php endif; ?>
-                            <!-- SEARCH PESQUISA INPUT -->
-                            <?php echo e(Form::text('s', $establishmentsSearch, ['placeholder' => 'Pesquisar', 'class' => 'form-control col-md-4'])); ?>
+                        <?php endif; ?>
+                        <!-- SEARCH PESQUISA INPUT -->
+                        <?php echo e(Form::text('s', $establishmentsSearch, ['placeholder' => 'Pesquisar', 'class' => 'form-control col-md-4'])); ?>
 
-                            <!-- FIM SEARCH PESQUISA -->
+                        <!-- FIM SEARCH PESQUISA -->
 
                             <!-- INICIO CASO ESTEJA EM "DESABILITADOS" -->
-                            <?php if(isset($_GET['d'])): ?>
-                                    <?php echo e(Form::hidden('d', 1, array('id' => 'd'))); ?>
+                        <?php if(isset($_GET['d'])): ?>
+                            <?php echo e(Form::hidden('d', 1, array('id' => 'd'))); ?>
 
-                            <?php endif; ?>
-                            <!-- FIM -->
+                        <?php endif; ?>
+                        <!-- FIM -->
                             <div class="input-group-btn">
                                 <button type="submit" class="btn btn-default btn-flat">
                                     <i class="fas fa-search"></i>
@@ -77,14 +77,19 @@
                 </div>
 
                 <div class="box-body table-responsive no-padding">
-                    <table class="table table-hover table-striped">
+                    <table class="table table-bordered table-hover dataTable table-striped">
                         <thead>
                         <tr>
+                            <th class="text-center">
+                                <input class="icheck check-all" type="checkbox" />
+                            </th>
                             <th>Razão Social</th>
                             <th>Inscrição Estadual</th>
                             <th>CNPJ</th>
                             <th>Tipo Licença</th>
                             <th>Situação Empresa</th>
+                            <th>Categoria</th>
+                            <th>Ritmos Musicais</th>
                             <th>E-mail</th>
                             <th>Data de criação</th>
                             <?php if(isset($_GET['d'])): ?>
@@ -99,48 +104,61 @@
                         <?php if(isset($establishments) && sizeof($establishments) > 0): ?>
                             <?php $__currentLoopData = $establishments; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $establishment): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                 <tr>
-                                    <th>
+                                    <td class="text-center">
+                                        <input class="icheck" type="checkbox" name="establishment[id][]" value="<?php echo e($establishment->id); ?>" />
+                                    </td>
+                                    <td>
                                         <?php echo e($establishment->corporate_name); ?>
 
-                                    </th>
-                                    <th>
+                                    </td>
+                                    <td>
                                         <?php echo e($establishment->state_registration); ?>
 
-                                    </th>
-                                    <th>
+                                    </td>
+                                    <td>
                                         <?php echo e(formatCnpjCpf($establishment->users->cpf_cnpj)); ?>
 
-                                    </th>
-                                    <th>
+                                    </td>
+                                    <td>
                                         <?php echo e($establishment->type_license === 'f' ? 'Full' : 'Básica'); ?>
 
-                                    </th>
-                                    <th>
+                                    </td>
+                                    <td>
                                         <?php echo e($establishment->status ? 'Ativa' : 'Inativa'); ?>
 
-                                    </th>
-                                    <th>
+                                    </td>
+                                    <td>
+                                        <?php $__currentLoopData = $establishment->establishments_category()->pluck('name'); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $category): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                            <span class="label label-success"><?php echo e($category); ?></span>
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                    </td>
+                                    <td>
+                                        <?php $__currentLoopData = $establishment->establishments_rhythm()->pluck('name'); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $rhythm): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                            <span class="label label-info"><?php echo e($rhythm); ?></span>
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                    </td>
+                                    <td>
                                         <?php echo e($establishment->users->email); ?>
 
-                                    </th>
-                                    <th>
+                                    </td>
+                                    <td>
                                         <?php echo e($establishment->created_at->format('d/m/Y - H:i')); ?>
 
-                                    </th>
-                                    <th>
+                                    </td>
+                                    <td>
                                         <?php echo e($establishment->updated_at->format('d/m/Y - H:i')); ?>
 
-                                    </th>
-                                    <td class="col-actions">
-                                        <a href="<?php echo e(route('establishment.edit', $establishment)); ?>" class="action-edit"><span class="glyphicon glyphicon-pencil"></span></a>
                                     </td>
-                                    <?php if(!isset($_GET['d'])): ?>
-                                        <td class="col-actions">
-                                            <a href="<?php echo e(route('establishment.destroy', $establishment)); ?>" class="action-delete"><span class="glyphicon glyphicon-trash"></span></a>
-                                        </td>
-                                    <?php endif; ?>
                                     <td class="col-actions">
-                                        <a href="<?php echo e(route('establishment.show', $establishment)); ?>" class="action-show"><span class="glyphicon glyphicon-info-sign"></span></a>
+                                        <a href="<?php echo e(route('establishment.edit', $establishment)); ?>" class="action-edit"><span
+                                                    class="glyphicon glyphicon-pencil"></span></a>
+                                        <?php if(!isset($_GET['d'])): ?>
+                                            <a href="<?php echo e(route('establishment.destroy', $establishment)); ?>"
+                                               class="action-delete"><span class="glyphicon glyphicon-trash"
+                                                                           onsubmit="confirm('Tem certeza?')"></span></a>
+                                        <?php endif; ?>
+                                        <a href="<?php echo e(route('establishment.show', $establishment)); ?>" class="action-show"><span
+                                                    class="glyphicon glyphicon-info-sign"></span></a>
                                     </td>
 
                                 </tr>

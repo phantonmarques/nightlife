@@ -43,11 +43,9 @@
                 'state_registration'    => ['required', 'min:5', 'max:22', 'unique:establishment'. $stateRegisterUnique],
                 'type_license'          => ['required', 'min:1', 'max:1'],
                 'status'                => ['required', 'boolean'],
+                'category'            => ['required'],
+                'rhythm.*'              => ['required'],
             ];
-
-//            if ($this->user()->role->isAdmin()) {
-//                $rules['customer_id'] = 'required';
-//            }
 
             return $rules;
         }
@@ -75,6 +73,8 @@
                 'type_license.max'              => 'Selecione uma opção válida para o tipo de licença do estabelecimento!',
                 'status.required'               => 'Selecione uma opção válida de Status do estabelecimento!',
                 'status.boolean'                => 'Selecione uma opção válida de Status do estabelecimento!',
+                'category.required'           => 'A categoria do estabelecimento deve ser selecionada',
+                'rhythm.*.required'             => 'O ritmo musical do estabelecimento deve ser selecionado',
             ];
         }
     }

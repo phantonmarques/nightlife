@@ -35,8 +35,6 @@ class RoleController extends Controller
         if (! auth()->user()->can('manage-users'))
             return abort(401);
 
-        $userActive = auth()->user()->name;
-
         $roleSearch = $request->query('s');
 
         if (!empty($roleSearch))
@@ -46,8 +44,7 @@ class RoleController extends Controller
 
         return view('admin.role.index',
             compact('roles',
-                'roleSearch',
-                'userActive'));
+                'roleSearch'));
     }
 
     /**
@@ -59,8 +56,6 @@ class RoleController extends Controller
     {
         if (! auth()->user()->can('manage-users'))
             return abort(401);
-
-        $userActive = auth()->user()->name;
 
         /** Create form options */
         $formOptions = [
@@ -77,8 +72,7 @@ class RoleController extends Controller
         return view('admin.role.form',
             compact('formOptions',
                 'permissions',
-                'role',
-                'userActive'));
+                'role'));
     }
 
     /**
@@ -140,11 +134,8 @@ class RoleController extends Controller
         if (! auth()->user()->can('manage-users'))
             return abort(401);
 
-        $userActive = auth()->user()->name;
-
         return view('admin.role.show',
-            compact('role',
-                'userActive'));
+            compact('role'));
     }
 
     /**
@@ -157,8 +148,6 @@ class RoleController extends Controller
     {
         if (! auth()->user()->can('manage-users'))
             return abort(401);
-
-        $userActive = auth()->user()->name;
 
         /** Create form options */
         $formOptions = [
@@ -181,8 +170,7 @@ class RoleController extends Controller
             compact('formOptions',
                 'permissions',
                 'permissionChosen',
-                'role',
-                'userActive'));
+                'role'));
     }
 
     /**

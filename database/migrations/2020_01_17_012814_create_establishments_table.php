@@ -20,7 +20,6 @@ class CreateEstablishmentsTable extends Migration
             $table->string('state_registration');
             $table->enum('type_license', ['b','f']);
             $table->boolean('status');
-            $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();
 

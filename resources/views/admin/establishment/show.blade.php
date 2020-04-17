@@ -43,7 +43,7 @@
                         <div class="col-md-4">
                             @include('adminlte::form.input.static', [
                                 'label' => 'Situação do Estabelecimento',
-                                'value' => ($establishment->status === 1) ? 'Ativo' : 'Inativa'
+                                'value' => ($establishment->status) ? 'Ativo' : 'Inativa'
                             ])
                         </div>
                         <div class="col-md-4">
@@ -54,33 +54,33 @@
                         </div>
                         <div class="col-md-4">
                             @include('adminlte::form.input.static', [
-                                'label' => 'Ultima Atualização',
+                                'label' => ($establishment->status) ? 'Ultima Atualização' : 'Data Cancelamento',
                                 'value' => $establishment->updated_at->format('d/m/Y - H:i')
                             ])
                         </div>
                     </div>
 
                     <div class="col-md-12">
-                        <h4 class="lead">Usuário Vínculado</h4>
+                        <h3 class="lead">Usuário Vínculado</h3>
                     </div>
 
                     <div class="row">
                         <div class="col-md-4">
                             @include('adminlte::form.input.static', [
                                 'label' => 'Nome',
-                                'value' => $userEstablishment->name
+                                'value' => $establishment->users->name
                             ])
                         </div>
                         <div class="col-md-4">
                             @include('adminlte::form.input.static', [
                                 'label' => 'CNPJ',
-                                'value' => formatCnpjCpf($userEstablishment->cpf_cnpj)
+                                'value' => formatCnpjCpf($establishment->users->cpf_cnpj)
                             ])
                         </div>
                         <div class="col-md-4">
                             @include('adminlte::form.input.static', [
                                 'label' => 'E-mail',
-                                'value' => $userEstablishment->email
+                                'value' => $establishment->users->email
                             ])
                         </div>
                     </div>
@@ -89,23 +89,68 @@
                         <div class="col-md-4">
                             @include('adminlte::form.input.static', [
                                 'label' => 'Tipo de Usuário',
-                                'value' => typeUserDescription($userEstablishment->type_user)
+                                'value' => typeUserDescription($establishment->users->type_user)
                             ])
                         </div>
                         <div class="col-md-4">
                             @include('adminlte::form.input.static', [
                                 'label' => 'Cidade',
-                                'value' => $cityUser->name_visible
+                                'value' => $establishment->users->city->name_visible
                             ])
                         </div>
                         <div class="col-md-4">
                             @include('adminlte::form.input.static', [
                                 'label' => 'Estado',
-                                'value' => $stateUser->name_visible
+                                'value' => $establishment->users->city->state->name_visible
                             ])
                         </div>
                     </div>
 
+                    @if(sizeof($establishment->establishments_category)>0)
+                        <div class="col-md-12">
+                            <h3 class="lead">Categoria Estabelecimento</h3>
+                        </div>
+
+                        @foreach($establishment->establishments_category as $key => $category)
+                            <div class="row">
+                                <div class="col-md-4">
+                                    @include('adminlte::form.input.static', [
+                                        'label' => 'Categoria',
+                                        'value' => $category->name
+                                    ])
+                                </div>
+                                <div class="col-md-4">
+                                    @include('adminlte::form.input.static', [
+                                        'label' => 'Data de Criação Categoria',
+                                        'value' => $category->created_at->format('d/m/Y - H:i')
+                                    ])
+                                </div>
+                            </div>
+                        @endforeach
+                    @endif
+
+                    @if(sizeof($establishment->establishments_rhythm)>0)
+                        <div class="col-md-12">
+                            <h3 class="lead">Ritmos Musicais</h3>
+                        </div>
+
+                        @foreach($establishment->establishments_rhythm as $key => $rhythm)
+                            <div class="row">
+                                <div class="col-md-4">
+                                    @include('adminlte::form.input.static', [
+                                        'label' => 'Ritmo Musical ' . ($key+1),
+                                        'value' => $rhythm->name
+                                    ])
+                                </div>
+                                <div class="col-md-4">
+                                    @include('adminlte::form.input.static', [
+                                        'label' => 'Data de Criação Ritmo',
+                                        'value' => $rhythm->created_at->format('d/m/Y - H:i')
+                                    ])
+                                </div>
+                            </div>
+                        @endforeach
+                    @endif
 
                 </div>
 

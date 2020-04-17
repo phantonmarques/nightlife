@@ -31,7 +31,7 @@
                     {{ Form::label('zip_code','CEP ') }} <span class="span-required">*</span>
                     <div class="row">
                         <div class="col-lg-3">
-                            {{ Form::text('zip_code' , (isset($establishmentAddress->id) ? $establishmentAddress->zip_code : ''), ['placeholder' => 'Informe cep do endereço do estabelecimento.', 'class' => 'form-control cep', 'onkeypress' => 'return onlyNumbers(event)']) }}
+                            {{ Form::text('zip_code' , (isset($establishmentAddress->id) ? strlen($establishmentAddress->zip_code) === 7 ? '0'.$establishmentAddress->zip_code : $establishmentAddress->zip_code : ''), ['placeholder' => 'Informe cep do endereço do estabelecimento.', 'class' => 'form-control cep', 'onkeypress' => 'return onlyNumbers(event)']) }}
                         </div>
                         <div class="col-lg-3">
                             <button type="button" class="btn btn-info" onclick="searchZipCode('click')">Buscar</button>
@@ -111,6 +111,15 @@
                         </div>
                     @endif
 
+                    @if ($errors->has('complement'))
+                        <br>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="text-red">{{ $errors->first('complement') }}</div>
+                            </div>
+                        </div>
+                    @endif
+
                     @if ($errors->has('neighborhood'))
                         <br>
                         <div class="row">
@@ -157,7 +166,7 @@
                     <div class="row">
                         <div class="col-lg-3">
                             {{ Form::label('name','Nome Contato') }} <span class="span-required">*</span>
-                            {{ Form::text('contact[0][name]' , (isset($establishmentAddress->id) ? $contacts[0]->name : ''), ['placeholder' => 'Informe nome do contato.', 'class' => 'form-control']) }}
+                            {{ Form::text('contact[0][name]' , (isset($establishmentAddress->id) ? $establishmentAddress->establishments_phone[0]->name : ''), ['placeholder' => 'Informe nome do contato.', 'class' => 'form-control']) }}
                         </div>
                     </div>
                     <br>
@@ -168,19 +177,19 @@
                                 <div class="input-group-addon">
                                     <i class="fa fa-user"></i>
                                 </div>
-                                {{ Form::text('contact[0][phone]' , (isset($establishmentAddress->id) ? $contacts[0]->phone : ''), ['class' => 'form-control phone', 'onkeypress' => 'return onlyNumbers(event)']) }}
+                                {{ Form::text('contact[0][phone]' , (isset($establishmentAddress->id) ? $establishmentAddress->establishments_phone[0]->phone : ''), ['class' => 'form-control phone', 'onkeypress' => 'return onlyNumbers(event)']) }}
                             </div>
                         </div>
                         <div class="col-lg-2">
                             {{ Form::label('Número tem Whatsapp') }} <span class="span-required"></span>
                             <div class="input-group">
                                     <span class="input-group-addon">
-                                        {{ Form::checkbox('contact[0][whatsapp]', 1, (isset($contacts) && $contacts[0]->whatsapp) ? 'checked' : false, ['id' => 'whatsapp']) }}
+                                        {{ Form::checkbox('contact[0][whatsapp]', 1, (isset($establishmentAddress->id)) ? $establishmentAddress->establishments_phone[0]->whatsapp : false, ['id' => 'whatsapp']) }}
                                     </span>
                                 {{ Form::label('whatsapp', 'Sim', ['class' => 'form-control']) }}
                             </div>
                         </div>
-                        {{ Form::hidden('contContact', isset($contacts) ? sizeof($contacts) : 1, array('id' => 'contContact')) }}
+                        {{ Form::hidden('contContact', isset($establishmentAddress->establishments_phone) ? ($establishmentAddress->establishments_phone->count()) : 1, array('id' => 'contContact')) }}
                     </div>
                     @if ($errors->has('contact.*'))
                         <div class="row">
@@ -200,41 +209,50 @@
                             {{ Form::button('-', ['class' => 'form-control', 'id' => 'del']) }}
                         </div>
                     </div>
-                    @if (isset($establishmentAddress->id))
-                        @php unset($contacts[0]); @endphp
-
-                        @foreach($contacts as $key => $contact)
-                            <div class="row" id="r_name_{{ $key }}">
-                                <br><br>
-                                <div class="col-lg-3">
-                                    {{ Form::label('name_' . $key,'Nome Contato ' . $key) }}
-                                    {{ Form::text('contact[' . $key . '][name]' , (isset($contact->id) ? $contact->name : ''), ['placeholder' => 'Informe nome do contato.', 'class' => 'form-control', 'id' => 'name_' . $key]) }}
+                    @if (isset($establishmentAddress->establishments_phone))
+                        @foreach($establishmentAddress->establishments_phone as $key => $contact)
+                            @if($key > 0)
+                                <div class="row" id="r_name_{{ $key }}">
+                                    <br><br>
+                                    <div class="col-lg-3">
+                                        {{ Form::label('name_' . $key,'Nome Contato ' . $key) }}
+                                        {{ Form::text('contact[' . $key . '][name]' , (isset($contact->id) ? $contact->name : ''), ['placeholder' => 'Informe nome do contato.', 'class' => 'form-control', 'id' => 'name_' . $key]) }}
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="row" id="r_phone_{{ $key }}">
-                                <br>
-                                <div class="col-lg-2">
-                                    {{ Form::label('phone_' . $key,'Telefone ' . $key) }}
-                                    <div class="input-group">
-                                        <div class="input-group-addon">
-                                            <i class="fa fa-user"></i>
+                                <div class="row" id="r_phone_{{ $key }}">
+                                    <br>
+                                    <div class="col-lg-2">
+                                        {{ Form::label('phone_' . $key,'Telefone ' . $key) }}
+                                        <div class="input-group">
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-user"></i>
+                                            </div>
+                                            {{ Form::text('contact[' . $key . '][phone]' , (isset($contact->id) ? $contact->phone : ''), ['class' => 'form-control phone', 'onkeypress' => 'return onlyNumbers(event)', 'id' => 'phone_' . $key]) }}
                                         </div>
-                                        {{ Form::text('contact[' . $key . '][phone]' , (isset($contact->id) ? $contact->phone : ''), ['class' => 'form-control phone', 'onkeypress' => 'return onlyNumbers(event)', 'id' => 'phone_' . $key]) }}
+                                    </div>
+                                    <div class="col-lg-2">
+                                        {{ Form::label('Número tem Whatsapp') }}
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                {{ Form::checkbox('contact[' . $key . '][whatsapp]', 1 , ($contact->whatsapp) ? 'checked' : false, ['id' => 'whatsapp_' . $key]) }}
+                                            </span>
+                                            {{ Form::label('whatsapp_' . $key, 'Sim', ['class' => 'form-control']) }}
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-lg-2">
-                                    {{ Form::label('Número tem Whatsapp') }}
-                                    <div class="input-group">
-                                        <span class="input-group-addon">
-                                            {{ Form::checkbox('contact[' . $key . '][whatsapp]', 1 , ($contact->whatsapp) ? 'checked' : false, ['id' => 'whatsapp_' . $key]) }}
-                                        </span>
-                                        {{ Form::label('whatsapp_' . $key, 'Sim', ['class' => 'form-control']) }}
-                                    </div>
-                                </div>
-                            </div>
+                            @endif
                         @endforeach
                     @endif
                 </div>
+
+                @if ($message = Session::get('error'))
+                    <br>
+                    <div class="row">
+                        <div class="col-md-10">
+                            <div class="text-red">{{ $message }}</div>
+                        </div>
+                    </div>
+                @endif
 
                 <div class="box-footer">
                     <div class="col-lg-1" style="margin-left: 83%;">

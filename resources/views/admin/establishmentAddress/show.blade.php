@@ -2,7 +2,7 @@
 @section('title', 'Endereço Estabelecimento · Visualização')
 
 @section('content_header')
-    <h1>Endereço Estabelecimento [{{ $establishmentAddress->establishment }}]</h1>
+    <h1>Endereço Estabelecimento [{{ $establishmentAddress->establishment->corporate_name }}]</h1>
 @stop
 
 @section('breadcrumbs')
@@ -55,7 +55,7 @@
                         <div class="col-md-4">
                             @include('adminlte::form.input.static', [
                                 'label' => 'Cidade',
-                                'value' => $establishmentCity->name_visible
+                                'value' => $establishmentAddress->city->name_visible
                             ])
                         </div>
                     </div>
@@ -64,7 +64,7 @@
                         <div class="col-md-4">
                             @include('adminlte::form.input.static', [
                                 'label' => 'Estado',
-                                'value' => $establishmentState->name_visible
+                                'value' => $establishmentAddress->city->state->name_visible
                             ])
                         </div>
                         <div class="col-md-4">
@@ -81,46 +81,49 @@
                         </div>
                     </div>
 
-                    <div class="col-md-12">
-                        <h4 class="lead">Telefones</h4>
-                    </div>
+                    @if(sizeof($establishmentAddress->establishments_phone)>0)
+                        <div class="col-md-12">
+                            <h3 class="lead">Telefones</h3>
+                        </div>
 
-                    @foreach($establishmentPhone as $key => $phone)
-                        <div class="row">
-                            <div class="col-md-4">
-                                @include('adminlte::form.input.static', [
-                                    'label' => ($phone->main) ? 'Nome Contato Principal' : 'Nome Contato ' . $key,
-                                    'value' => $phone->name
-                                ])
+                        @foreach($establishmentAddress->establishments_phone as $key => $phone)
+                            <div class="row">
+                                <div class="col-md-4">
+                                    @include('adminlte::form.input.static', [
+                                        'label' => ($phone->main) ? 'Nome Contato Principal' : 'Nome Contato ' . $key,
+                                        'value' => $phone->name
+                                    ])
+                                </div>
+                                <div class="col-md-4">
+                                    @include('adminlte::form.input.static', [
+                                        'label' => ($phone->main) ? 'Telefone Principal' : 'Telefone ' . $key,
+                                        'value' => $phone->phone
+                                    ])
+                                </div>
+                                <div class="col-md-4">
+                                    @include('adminlte::form.input.static', [
+                                        'label' => 'Número tem Whatsapp',
+                                        'value' => ($phone->whatsapp) ? 'Sim' : 'Não'
+                                    ])
+                                </div>
                             </div>
-                            <div class="col-md-4">
-                                @include('adminlte::form.input.static', [
-                                    'label' => ($phone->main) ? 'Telefone Principal' : 'Telefone ' . $key,
-                                    'value' => $phone->phone
-                                ])
+                            <div class="row">
+                                <div class="col-md-4">
+                                    @include('adminlte::form.input.static', [
+                                        'label' => 'Data de Criação',
+                                        'value' => $phone->created_at->format('d/m/Y - H:i')
+                                    ])
+                                </div>
+                                <div class="col-md-4">
+                                    @include('adminlte::form.input.static', [
+                                        'label' => 'Ultima Atualização',
+                                        'value' => $phone->updated_at->format('d/m/Y - H:i')
+                                    ])
+                                </div>
                             </div>
-                            <div class="col-md-4">
-                                @include('adminlte::form.input.static', [
-                                    'label' => 'Número tem Whatsapp',
-                                    'value' => ($phone->whatsapp) ? 'Sim' : 'Não'
-                                ])
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-4">
-                                @include('adminlte::form.input.static', [
-                                    'label' => 'Data de Criação',
-                                    'value' => $phone->created_at->format('d/m/Y - H:i')
-                                ])
-                            </div>
-                            <div class="col-md-4">
-                                @include('adminlte::form.input.static', [
-                                    'label' => 'Ultima Atualização',
-                                    'value' => $phone->updated_at->format('d/m/Y - H:i')
-                                ])
-                            </div>
-                        </div>
-                    @endforeach
+                        @endforeach
+                    @endif
+
                 </div>
 
                 <div class="box-footer">

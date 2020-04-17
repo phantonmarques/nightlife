@@ -1,6 +1,8 @@
 window.onload = function() {
     $("#cnpjEstablishment").mask("99.999.999/9999-99");
 
+    $('.select2').select2()
+
     selectUser(document.getElementById('user_id').value);
 };
 
@@ -87,7 +89,14 @@ function validateFormEstablishment(f) {
     }else if (f.user_id.value === ''){
         swal("Erro", "[Nome Usuário] é obrigatório, favor selecione!", "error");
         return false;
+    }else if (f.category.value === ''){
+        swal("Erro", "[Categoria Estabelecimento] é obrigatório, favor selecione!", "error");
+        return false;
+    }else if (f.rhythm.value === ''){
+        swal("Erro", "[Ritmos Musicais] é obrigatório, favor selecione pelo menos um!", "error");
+        return false;
     }
+
 
     $("#cnpjEstablishment").unmask();
 

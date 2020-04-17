@@ -47,56 +47,47 @@
                 </div>
 
                 <div class="box-body table-responsive no-padding">
-                    <table class="table table-hover table-striped">
+                    <table class="table table-bordered table-hover dataTable table-striped">
                         <thead>
-                        <tr>
-                            <th class="text-center">
-                                <input class="icheck check-all" type="checkbox" />
-                            </th>
-                            <th>
-                                ID
-                            </th>
-                            <th>
-                                Título
-                            </th>
-                            <th>
-                                Função
-                            </th>
-                            <th>
-                                Permissões da Função
-                            </th>
-                        </tr>
+                            <tr>
+                                <th class="text-center">
+                                    <input class="icheck check-all" type="checkbox" />
+                                </th>
+                                <th>ID</th>
+                                <th>Título</th>
+                                <th>Função</th>
+                                <th>Permissões da Função</th>
+                                <th class="col-actions"></th>
+                            </tr>
                         </thead>
                         <tbody>
                         @if (isset($roles) && sizeof($roles) > 0)
                             @foreach($roles as $role)
                                 <tr data-entry-id="{{ $role->id }}">
-                                    <th class="text-center">
+                                    <td class="text-center">
                                         <input class="icheck" type="checkbox" name="role[id][]" value="{{ $role->id }}" />
-                                    </th>
-                                    <th>
+                                    </td>
+                                    <td>
                                         {{ $role->id }}
-                                    </th>
-                                    <th>
+                                    </td>
+                                    <td>
                                         {{ $role->name }}
-                                    </th>
-                                    <th>
+                                    </td>
+                                    <td>
                                         {{ $role->slug }}
-                                    </th>
-                                    <th>
+                                    </td>
+                                    <td>
                                         @foreach($role->permissions()->pluck('slug') as $permission)
                                                 <span class="label label-primary">{{ $permission }}</span>
                                         @endforeach
-                                    </th>
+                                    </td>
                                     <td class="col-actions">
                                         <a href="{{ route('role.edit', $role) }}" class="action-edit"><span
                                                     class="glyphicon glyphicon-pencil"></span></a>
-                                    </td>
-                                    <td class="col-actions">
+
                                         <a href="{{ route('role.destroy', $role) }}"
                                            class="action-delete"><span class="glyphicon glyphicon-trash" onsubmit="confirm('Tem certeza?')"></span></a>
-                                    </td>
-                                    <td class="col-actions">
+
                                         <a href="{{ route('role.show', $role) }}" class="action-show"><span
                                                     class="glyphicon glyphicon-info-sign"></span></a>
                                     </td>

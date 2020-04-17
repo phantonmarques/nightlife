@@ -37,3 +37,17 @@
 
         return preg_replace("/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/", "\$1.\$2.\$3/\$4-\$5", $cnpj_cpf);
     }
+
+    /**
+     * Return format of zip code
+     *
+     * @param $value
+     * @return string
+     */
+    function formatZipCode($value)
+    {
+        if (strlen($value)===7)
+            return '0'.substr($value, 0, 4) . '-' . substr($value, 4, 3);
+        else
+            return substr($value, 0, 5) . '-' . substr($value, 5, 3);
+    }

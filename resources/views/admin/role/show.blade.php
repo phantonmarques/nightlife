@@ -58,7 +58,7 @@
                         <h4 class="lead">Informações da Permissão Vinculada a Função</h4>
                     </div>
 
-                    @if(sizeof($role->permissions))
+                    @if(sizeof($role->permissions)>0)
                         @foreach($role->permissions as $key => $permission)
                             <div class="row">
                                 <div class="col-md-4">

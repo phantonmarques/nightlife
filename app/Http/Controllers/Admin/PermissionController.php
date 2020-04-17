@@ -34,8 +34,6 @@ class PermissionController extends Controller
         if (! auth()->user()->can('manage-users'))
             return abort(401);
 
-        $userActive = auth()->user()->name;
-
         $permissionSearch = $request->query('s');
 
         if (!empty($permissionSearch))
@@ -45,8 +43,7 @@ class PermissionController extends Controller
 
         return view('admin.permission.index',
             compact('permissions',
-                'permissionSearch',
-                'userActive'));
+                'permissionSearch'));
     }
 
     /**
@@ -58,8 +55,6 @@ class PermissionController extends Controller
     {
         if (! auth()->user()->can('manage-users'))
             return abort(401);
-
-        $userActive = auth()->user()->name;
 
         /** Create form options */
         $formOptions = [
@@ -73,8 +68,7 @@ class PermissionController extends Controller
 
         return view('admin.permission.form',
             compact('formOptions',
-                'permission',
-                'userActive'));
+                'permission'));
     }
 
     /**
@@ -132,11 +126,8 @@ class PermissionController extends Controller
         if (! auth()->user()->can('manage-users'))
             return abort(401);
 
-        $userActive = auth()->user()->name;
-
         return view('admin.permission.show',
-            compact('permission',
-                'userActive'));
+            compact('permission'));
     }
 
     /**
@@ -150,8 +141,6 @@ class PermissionController extends Controller
         if (! auth()->user()->can('manage-users'))
             return abort(401);
 
-        $userActive = auth()->user()->name;
-
         /** Create form options */
         $formOptions = [
             'route' => ['permission.update', $permission],
@@ -161,8 +150,7 @@ class PermissionController extends Controller
 
         return view('admin.permission.form',
             compact('formOptions',
-                'permission',
-                'userActive'));
+                'permission'));
     }
 
     /**

@@ -23,12 +23,12 @@
                     <div class="box-title col-xs-6 col-sm-3">
                         <div class="input-group pull-right">
                             @if (!isset($_GET['d']))
-                            {{ Form::open(['method' => 'GET']) }}
-                                    <button type="submit" class="btn btn-danger btn-flat">
-                                        Desativados
-                                    </button>
-                                    {{ Form::hidden('d', 1, array('id' => 'd')) }}
-                            {{ Form::close() }}
+                                {{ Form::open(['method' => 'GET']) }}
+                                <button type="submit" class="btn btn-danger btn-flat">
+                                    Desativados
+                                </button>
+                                {{ Form::hidden('d', 1, array('id' => 'd')) }}
+                                {{ Form::close() }}
                             @else
                                 <a href="{{ route("establishment.index") }}" class="btn btn-success btn-flat">
                                     Ativos
@@ -40,18 +40,18 @@
                     <div class="box-title col-xs-6 col-sm-3 no-padding pull-right">
                         {{ Form::open(['method' => 'GET']) }}
                         <div class="input-group">
-                            @if (empty($establishmentsSearch))
-                                {{ $establishmentsSearch = '' }}
-                            @endif
-                            <!-- SEARCH PESQUISA INPUT -->
-                            {{ Form::text('s', $establishmentsSearch, ['placeholder' => 'Pesquisar', 'class' => 'form-control col-md-4']) }}
-                            <!-- FIM SEARCH PESQUISA -->
+                        @if (empty($establishmentsSearch))
+                            {{ $establishmentsSearch = '' }}
+                        @endif
+                        <!-- SEARCH PESQUISA INPUT -->
+                        {{ Form::text('s', $establishmentsSearch, ['placeholder' => 'Pesquisar', 'class' => 'form-control col-md-4']) }}
+                        <!-- FIM SEARCH PESQUISA -->
 
                             <!-- INICIO CASO ESTEJA EM "DESABILITADOS" -->
-                            @if (isset($_GET['d']))
-                                    {{ Form::hidden('d', 1, array('id' => 'd')) }}
-                            @endif
-                            <!-- FIM -->
+                        @if (isset($_GET['d']))
+                            {{ Form::hidden('d', 1, array('id' => 'd')) }}
+                        @endif
+                        <!-- FIM -->
                             <div class="input-group-btn">
                                 <button type="submit" class="btn btn-default btn-flat">
                                     <i class="fas fa-search"></i>
@@ -69,14 +69,19 @@
                 </div>
 
                 <div class="box-body table-responsive no-padding">
-                    <table class="table table-hover table-striped">
+                    <table class="table table-bordered table-hover dataTable table-striped">
                         <thead>
                         <tr>
+                            <th class="text-center">
+                                <input class="icheck check-all" type="checkbox" />
+                            </th>
                             <th>Razão Social</th>
                             <th>Inscrição Estadual</th>
                             <th>CNPJ</th>
                             <th>Tipo Licença</th>
                             <th>Situação Empresa</th>
+                            <th>Categoria</th>
+                            <th>Ritmos Musicais</th>
                             <th>E-mail</th>
                             <th>Data de criação</th>
                             @if (isset($_GET['d']))
@@ -91,40 +96,53 @@
                         @if (isset($establishments) && sizeof($establishments) > 0)
                             @foreach($establishments as $establishment)
                                 <tr>
-                                    <th>
-                                        {{ $establishment->corporate_name }}
-                                    </th>
-                                    <th>
-                                        {{ $establishment->state_registration }}
-                                    </th>
-                                    <th>
-                                        {{ formatCnpjCpf($establishment->users->cpf_cnpj) }}
-                                    </th>
-                                    <th>
-                                        {{ $establishment->type_license === 'f' ? 'Full' : 'Básica' }}
-                                    </th>
-                                    <th>
-                                        {{ $establishment->status ? 'Ativa' : 'Inativa' }}
-                                    </th>
-                                    <th>
-                                        {{ $establishment->users->email }}
-                                    </th>
-                                    <th>
-                                        {{ $establishment->created_at->format('d/m/Y - H:i') }}
-                                    </th>
-                                    <th>
-                                        {{ $establishment->updated_at->format('d/m/Y - H:i') }}
-                                    </th>
-                                    <td class="col-actions">
-                                        <a href="{{ route('establishment.edit', $establishment) }}" class="action-edit"><span class="glyphicon glyphicon-pencil"></span></a>
+                                    <td class="text-center">
+                                        <input class="icheck" type="checkbox" name="establishment[id][]" value="{{ $establishment->id }}" />
                                     </td>
-                                    @if (!isset($_GET['d']))
-                                        <td class="col-actions">
-                                            <a href="{{ route('establishment.destroy', $establishment) }}" class="action-delete"><span class="glyphicon glyphicon-trash"></span></a>
-                                        </td>
-                                    @endif
+                                    <td>
+                                        {{ $establishment->corporate_name }}
+                                    </td>
+                                    <td>
+                                        {{ $establishment->state_registration }}
+                                    </td>
+                                    <td>
+                                        {{ formatCnpjCpf($establishment->users->cpf_cnpj) }}
+                                    </td>
+                                    <td>
+                                        {{ $establishment->type_license === 'f' ? 'Full' : 'Básica' }}
+                                    </td>
+                                    <td>
+                                        {{ $establishment->status ? 'Ativa' : 'Inativa' }}
+                                    </td>
+                                    <td>
+                                        @foreach($establishment->establishments_category()->pluck('name') as $category)
+                                            <span class="label label-success">{{ $category }}</span>
+                                        @endforeach
+                                    </td>
+                                    <td>
+                                        @foreach($establishment->establishments_rhythm()->pluck('name') as $rhythm)
+                                            <span class="label label-info">{{ $rhythm }}</span>
+                                        @endforeach
+                                    </td>
+                                    <td>
+                                        {{ $establishment->users->email }}
+                                    </td>
+                                    <td>
+                                        {{ $establishment->created_at->format('d/m/Y - H:i') }}
+                                    </td>
+                                    <td>
+                                        {{ $establishment->updated_at->format('d/m/Y - H:i') }}
+                                    </td>
                                     <td class="col-actions">
-                                        <a href="{{ route('establishment.show', $establishment) }}" class="action-show"><span class="glyphicon glyphicon-info-sign"></span></a>
+                                        <a href="{{ route('establishment.edit', $establishment) }}" class="action-edit"><span
+                                                    class="glyphicon glyphicon-pencil"></span></a>
+                                        @if (!isset($_GET['d']))
+                                            <a href="{{ route('establishment.destroy', $establishment) }}"
+                                               class="action-delete"><span class="glyphicon glyphicon-trash"
+                                                                           onsubmit="confirm('Tem certeza?')"></span></a>
+                                        @endif
+                                        <a href="{{ route('establishment.show', $establishment) }}" class="action-show"><span
+                                                    class="glyphicon glyphicon-info-sign"></span></a>
                                     </td>
 
                                 </tr>

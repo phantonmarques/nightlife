@@ -1,12 +1,12 @@
 @extends('adminlte::page')
-@section('title', 'Permissões · ')
+@section('title', 'Ritmo musicais · ')
 
 @section('content_header')
-    <h1>Permissões</h1>
+    <h1>Ritmo musicais</h1>
 @stop
 
 @section('breadcrumbs')
-    {{ Breadcrumbs::render(Route::currentRouteName(), $permissions) }}
+    {{ Breadcrumbs::render(Route::currentRouteName(), $rhythms) }}
 @endsection
 
 @section('content')
@@ -15,28 +15,28 @@
             <div class="box box-warning">
                 <div class="box-header with-border">
                     <div class="box-title col-xs-6 no-padding">
-                        <a class="btn btn-success btn-flat" href="{{ route('permission.create')  }}">
-                            <i class="fas fa-sm fa-plus"></i>&nbsp;&nbsp;Nova Permissão
+                        <a class="btn btn-success btn-flat" href="{{ route('rhythm.create')  }}">
+                            <i class="fas fa-sm fa-plus"></i>&nbsp;&nbsp;Novo Ritmo Musical
                         </a>
                     </div>
 
                     <div class="box-title col-xs-6 col-sm-3 no-padding pull-right">
                         {{ Form::open(['method' => 'GET']) }}
                         <div class="input-group">
-                        @if (empty($permissionSearch))
-                            {{ $permissionSearch = '' }}
+                        @if (empty($rhythmSearch))
+                            {{ $rhythmSearch = '' }}
                         @endif
                         <!-- SEARCH PESQUISA INPUT -->
-                        {{ Form::text('s', $permissionSearch, ['placeholder' => 'Pesquisar', 'class' => 'form-control col-md-4']) }}
+                        {{ Form::text('s', $rhythmSearch, ['placeholder' => 'Pesquisar', 'class' => 'form-control col-md-4']) }}
                         <!-- FIM SEARCH PESQUISA -->
 
                             <div class="input-group-btn">
                                 <button type="submit" class="btn btn-default btn-flat">
                                     <i class="fas fa-search"></i>
                                 </button>
-                                @if (!empty($permissionSearch))
+                                @if (!empty($rhythmSearch))
                                     <a title="Limpar" class="btn btn-default"
-                                       href="{{ route('permission.index') }}">
+                                       href="{{ route('rhythm.index') }}">
                                         <i class="fas fa-backspace"></i>
                                     </a>
                                 @endif
@@ -49,40 +49,44 @@
                 <div class="box-body table-responsive no-padding">
                     <table class="table table-bordered table-hover dataTable table-striped">
                         <thead>
-                            <tr>
-                                <th class="text-center">
-                                    <input class="icheck check-all" type="checkbox" />
-                                </th>
-                                <th>ID</th>
-                                <th>Título</th>
-                                <th>Permissão</th>
-                                <th class="col-actions"></th>
-                            </tr>
+                        <tr>
+                            <th class="text-center">
+                                <input class="icheck check-all" type="checkbox" />
+                            </th>
+                            <th>ID</th>
+                            <th>Nome</th>
+                            <th>Data de Criação</th>
+                            <th>Data de Atualização</th>
+                            <th class="col-actions"></th>
+                        </tr>
                         </thead>
                         <tbody>
-                        @if (isset($permissions) && sizeof($permissions) > 0)
-                            @foreach($permissions as $permission)
-                                <tr data-entry-id="{{ $permission->id }}">
+                        @if (isset($rhythms) && sizeof($rhythms) > 0)
+                            @foreach($rhythms as $rhythm)
+                                <tr data-entry-id="{{ $rhythm->id }}">
                                     <td class="text-center">
-                                        <input class="icheck" type="checkbox" name="permission[id][]" value="{{ $permission->id }}" />
+                                        <input class="icheck" type="checkbox" name="rhythm[id][]" value="{{ $rhythm->id }}" />
                                     </td>
                                     <td>
-                                        {{ $permission->id }}
+                                        {{ $rhythm->id }}
                                     </td>
                                     <td>
-                                        {{ $permission->name }}
+                                        {{ $rhythm->name }}
                                     </td>
                                     <td>
-                                        {{ $permission->slug }}
+                                        {{ $rhythm->created_at->format('d/m/Y - H:i') }}
+                                    </td>
+                                    <td>
+                                        {{ $rhythm->updated_at->format('d/m/Y - H:i') }}
                                     </td>
                                     <td class="col-actions">
-                                        <a href="{{ route('permission.edit', $permission) }}" class="action-edit"><span
+                                        <a href="{{ route('rhythm.edit', $rhythm) }}" class="action-edit"><span
                                                     class="glyphicon glyphicon-pencil"></span></a>
 
-                                        <a href="{{ route('permission.destroy', $permission) }}"
+                                        <a href="{{ route('rhythm.destroy', $rhythm) }}"
                                            class="action-delete"><span class="glyphicon glyphicon-trash" onsubmit="confirm('Tem certeza?')"></span></a>
 
-                                        <a href="{{ route('permission.show', $permission) }}" class="action-show"><span
+                                        <a href="{{ route('rhythm.show', $rhythm) }}" class="action-show"><span
                                                     class="glyphicon glyphicon-info-sign"></span></a>
                                     </td>
                                 </tr>
@@ -90,7 +94,7 @@
                         @else
                             <tr>
                                 <td colspan="100%" class="text-center">
-                                    Nenhuma permissão {{ (!empty($permissionSearch)) ? 'encontrada' : 'cadastrada' }}
+                                    Nenhuma categoria {{ (!empty($rhythmSearch)) ? 'encontrada' : 'cadastrada' }}
                                 </td>
                             </tr>
                         @endif
@@ -98,9 +102,9 @@
                     </table>
                 </div>
 
-                @if ($permissions->hasPages())
+                @if ($rhythms->hasPages())
                     <div class="box-footer clearfix">
-                        {{ $permissions->appends(['q' => $permissionSearch])->onEachSide(2)->links() }}
+                        {{ $rhythms->appends(['q' => $rhythmSearch])->onEachSide(2)->links() }}
                     </div>
                 @endif
             </div>
@@ -111,8 +115,7 @@
 @endsection
 
 @section('js')
-    <script type="text/javascript" src="{{ asset('assets/global/js/general.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/admin/js/permission.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/Global/js/general.js') }}"></script>
 @endsection
 
 @section('css')

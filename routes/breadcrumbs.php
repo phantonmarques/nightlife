@@ -6,7 +6,7 @@
     use App\Models\Admin\EstablishmentAddress;
     use App\Models\Admin\Permission;
     use App\Models\Admin\Role;
-    use App\Models\Admin\MusicalRhythm;
+    use App\Models\Admin\Rhythm;
 
     Breadcrumbs::for('home', function ($trail) {
         $trail->push('Home', route('home'));
@@ -150,24 +150,24 @@
 
     # TODO: MUSICAL RHYTHM
 
-    Breadcrumbs::for('musicalRhythm.index', function ($trail) {
+    Breadcrumbs::for('rhythm.index', function ($trail) {
         $trail->parent('home');
-        $trail->push('Ritmos Musicais', route('musicalRhythm.index'));
+        $trail->push('Ritmos Musicais', route('rhythm.index'));
     });
 
-    Breadcrumbs::for('musicalRhythm.create', function ($trail) {
-        $trail->parent('musicalRhythm.index');
-        $trail->push('Novo Ritmo Musical', route('musicalRhythm.create'));
+    Breadcrumbs::for('rhythm.create', function ($trail) {
+        $trail->parent('rhythm.index');
+        $trail->push('Novo Ritmo Musical', route('rhythm.create'));
     });
 
-    Breadcrumbs::for('musicalRhythm.show', function ($trail, MusicalRhythm $musicalRhythm) {
-        $trail->parent('musicalRhythm.index');
-        $trail->push($musicalRhythm->name, route('musicalRhythm.show', $musicalRhythm));
+    Breadcrumbs::for('rhythm.show', function ($trail, Rhythm $rhythm) {
+        $trail->parent('rhythm.index');
+        $trail->push($rhythm->name, route('rhythm.show', $rhythm));
     });
 
-    Breadcrumbs::for('musicalRhythm.edit', function ($trail, MusicalRhythm $musicalRhythm) {
-        $trail->parent('musicalRhythm.index', $musicalRhythm);
-        $trail->push('Editar Ritmo Musical', route('musicalRhythm.edit', $musicalRhythm));
+    Breadcrumbs::for('rhythm.edit', function ($trail, Rhythm $rhythm) {
+        $trail->parent('rhythm.index', $rhythm);
+        $trail->push('Editar Ritmo Musical', route('rhythm.edit', $rhythm));
     });
 
     # TODO: ERROR

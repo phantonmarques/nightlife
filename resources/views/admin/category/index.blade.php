@@ -47,55 +47,44 @@
                 </div>
 
                 <div class="box-body table-responsive no-padding">
-                    <table class="table table-hover table-striped">
+                    <table class="table table-bordered table-hover dataTable table-striped">
                         <thead>
-                        <tr>
-                            <th class="text-center">
-                                <input class="icheck check-all" type="checkbox" />
-                            </th>
-                            <th>
-                                ID
-                            </th>
-                            <th>
-                                Nome
-                            </th>
-                            <th>
-                                Data de Criação
-                            </th>
-                            <th>
-                                Data de Atualização
-                            </th>
-                        </tr>
+                            <tr>
+                                <th class="text-center">
+                                    <input class="icheck check-all" type="checkbox" />
+                                </th>
+                                <th>ID</th>
+                                <th>Nome</th>
+                                <th>Data de Criação</th>
+                                <th>Data de Atualização</th>
+                                <th class="col-actions">
+                                </th>
+                            </tr>
                         </thead>
-
                         <tbody>
                         @if (isset($categorys) && sizeof($categorys) > 0)
                             @foreach($categorys as $category)
                                 <tr data-entry-id="{{ $category->id }}">
-                                    <th class="text-center">
+                                    <td class="text-center">
                                         <input class="icheck" type="checkbox" name="category[id][]" value="{{ $category->id }}" />
-                                    </th>
-                                    <th>
+                                    </td>
+                                    <td>
                                         {{ $category->id }}
-                                    </th>
-                                    <th>
+                                    </td>
+                                    <td>
                                         {{ $category->name }}
-                                    </th>
-                                    <th>
+                                    </td>
+                                    <td>
                                         {{ $category->created_at->format('d/m/Y - H:i') }}
-                                    </th>
-                                    <th>
+                                    </td>
+                                    <td>
                                         {{ $category->updated_at->format('d/m/Y - H:i') }}
-                                    </th>
+                                    </td>
                                     <td class="col-actions">
                                         <a href="{{ route('category.edit', $category) }}" class="action-edit"><span
                                                     class="glyphicon glyphicon-pencil"></span></a>
-                                    </td>
-                                    <td class="col-actions">
                                         <a href="{{ route('category.destroy', $category) }}"
                                            class="action-delete"><span class="glyphicon glyphicon-trash" onsubmit="confirm('Tem certeza?')"></span></a>
-                                    </td>
-                                    <td class="col-actions">
                                         <a href="{{ route('category.show', $category) }}" class="action-show"><span
                                                     class="glyphicon glyphicon-info-sign"></span></a>
                                     </td>

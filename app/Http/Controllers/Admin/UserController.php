@@ -38,8 +38,6 @@
             if (!auth()->user()->can('manage-users'))
                 return abort(401);
 
-            $userActive = auth()->user()->name;
-
             $userSearch = $request->query('s');
 
             if (!empty($userSearch)):
@@ -56,8 +54,7 @@
 
             return view('admin.user.index',
                 compact('users',
-                    'userSearch',
-                    'userActive'));
+                    'userSearch'));
         }
 
         /**
@@ -69,8 +66,6 @@
         {
             if (!auth()->user()->can('manage-users'))
                 return abort(401);
-
-            $userActive = auth()->user()->name;
 
             /** Create form options */
             $formOptions = [
@@ -93,8 +88,7 @@
                     'roles',
                     'states',
                     'typeUsers',
-                    'user',
-                    'userActive'));
+                    'user'));
         }
 
         /**
@@ -156,11 +150,8 @@
             if (! auth()->user()->can('manage-users'))
                 return abort(401);
 
-            $userActive = auth()->user()->name;
-
             return view('admin.user.show',
-                compact('user',
-                    'userActive'));
+                compact('user'));
         }
 
         /**
@@ -173,8 +164,6 @@
         {
             if (! auth()->user()->can('manage-users'))
                 return abort(401);
-
-            $userActive = auth()->user()->name;
 
             /** Create form options */
             $formOptions = [
@@ -194,8 +183,7 @@
                     'roles',
                     'states',
                     'typeUsers',
-                    'user',
-                    'userActive'));
+                    'user'));
         }
 
         /**

@@ -97,8 +97,8 @@
                         <img src="<?php echo e(url('assets\admin\imgs\test.jpg')); ?>" class="img-circle" alt="User Image">
                     </div>
                     <div class="pull-left info">
-                        <?php if(isset($userActive)): ?>
-                            <p><?php echo e($userActive); ?></p>
+                        <?php if(isset(auth()->user()->name)): ?>
+                            <p><?php echo e(auth()->user()->name); ?></p>
                         <?php else: ?>
                             <p>Unknown</p>
                         <?php endif; ?>

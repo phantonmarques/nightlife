@@ -34,8 +34,6 @@ class CategoryController extends Controller
         if (! auth()->user()->can('manage-users'))
             return abort(401);
 
-        $userActive = auth()->user()->name;
-
         $categorySearch = $request->query('s');
 
         if (!empty($categorySearch))
@@ -45,8 +43,7 @@ class CategoryController extends Controller
 
         return view('admin.category.index',
             compact('categorys',
-                'categorySearch',
-                'userActive'));
+                'categorySearch'));
     }
 
     /**
@@ -58,8 +55,6 @@ class CategoryController extends Controller
     {
         if (! auth()->user()->can('manage-users'))
             return abort(401);
-
-        $userActive = auth()->user()->name;
 
         /** Create form options */
         $formOptions = [
@@ -73,8 +68,7 @@ class CategoryController extends Controller
 
         return view('admin.category.form',
             compact('category',
-                'formOptions',
-                'userActive'));
+                'formOptions'));
     }
 
     /**
@@ -132,11 +126,8 @@ class CategoryController extends Controller
         if (! auth()->user()->can('manage-users'))
             return abort(401);
 
-        $userActive = auth()->user()->name;
-
         return view('admin.category.show',
-            compact('category',
-                'userActive'));
+            compact('category'));
     }
 
     /**
@@ -150,8 +141,6 @@ class CategoryController extends Controller
         if (! auth()->user()->can('manage-users'))
             return abort(401);
 
-        $userActive = auth()->user()->name;
-
         /** Create form options */
         $formOptions = [
             'route' => ['category.update', $category],
@@ -161,8 +150,7 @@ class CategoryController extends Controller
 
         return view('admin.category.form',
             compact('category',
-                'formOptions',
-                'userActive'));
+                'formOptions'));
     }
 
     /**

@@ -47,87 +47,86 @@
                 </div>
 
                 <div class="box-body table-responsive no-padding">
-                    <table class="table table-hover table-striped">
+                    <table class="table table-bordered table-hover dataTable table-striped">
                         <thead>
-                        <tr>
-                            <th class="text-center">
-                                <input class="icheck check-all" type="checkbox" />
-                            </th>
-                            <th>
-                                ID
-                            </th>
-                            <th>
-                                Nome
-                            </th>
-                            <th>
-                                E-mail
-                            </th>
-                            <th>
-                                CPF/CNPJ
-                            </th>
-                            <th>
-                                Tipo Usuário
-                            </th>
-                            <th>
-                                Funções
-                            </th>
-                            <th>
-                                Cidade
-                            </th>
-                            <th>
-                                Estado
-                            </th>
-                            <th>
-                                Data de Criação
-                            </th>
-                        </tr>
+                            <tr>
+                                <th class="text-center">
+                                    <input class="icheck check-all" type="checkbox" />
+                                </th>
+                                <th>
+                                    ID
+                                </th>
+                                <th>
+                                    Nome
+                                </th>
+                                <th>
+                                    E-mail
+                                </th>
+                                <th>
+                                    CPF/CNPJ
+                                </th>
+                                <th>
+                                    Tipo Usuário
+                                </th>
+                                <th>
+                                    Funções
+                                </th>
+                                <th>
+                                    Cidade
+                                </th>
+                                <th>
+                                    Estado
+                                </th>
+                                <th>
+                                    Data de Criação
+                                </th>
+                                <th class="col-actions"></th>
+                            </tr>
                         </thead>
 
                         <tbody>
                         @if (isset($users) && sizeof($users) > 0)
                             @foreach($users as $user)
                                 <tr data-entry-id="{{ $user->id }}">
-                                    <th class="text-center">
+                                    <td class="text-center">
                                         <input class="icheck" type="checkbox" name="user[id][]" value="{{ $user->id }}" />
-                                    </th>
-                                    <th>
+                                    </td>
+                                    <td>
                                         {{ $user->id }}
-                                    </th>
-                                    <th>
+                                    </td>
+                                    <td>
                                         {{ $user->name }}
-                                    </th>
-                                    <th>
+                                    </td>
+                                    <td>
                                         {{ $user->email }}
-                                    </th>
-                                    <th>
+                                    </td>
+                                    <td>
                                         {{ formatCnpjCpf($user->cpf_cnpj) }}
-                                    </th>
-                                    <th>
+                                    </td>
+                                    <td>
                                         {{ typeUserDescription($user->type_user) }}
-                                    </th>
-                                    <th>
+                                    </td>
+                                    <td>
                                         @foreach($user->roles()->pluck('slug') as $roles)
                                             <span class="label label-primary">{{ $roles }}</span>
                                         @endforeach
-                                    </th>
-                                    <th>
+                                    </td>
+                                    <td>
                                         {{ $user->city()->value('name_visible') }}
-                                    </th>
-                                    <th>
+                                    </td>
+                                    <td>
                                         {{ $user->city->state->name_visible }}
-                                    </th>
-                                    <th>
+                                    </td>
+                                    <td>
                                         {{ $user->created_at->format('d/m/Y - H:i') }}
-                                    </th>
+                                    </td>
                                     <td class="col-actions">
                                         <a href="{{ route('user.edit', $user) }}" class="action-edit"><span
                                                     class="glyphicon glyphicon-pencil"></span></a>
-                                    </td>
-                                    <td class="col-actions">
+
                                         <a href="{{ route('user.destroy', $user) }}"
                                            class="action-delete"><span class="glyphicon glyphicon-trash" onsubmit="confirm('Tem certeza?')"></span></a>
-                                    </td>
-                                    <td class="col-actions">
+
                                         <a href="{{ route('user.show', $user) }}" class="action-show"><span
                                                     class="glyphicon glyphicon-info-sign"></span></a>
                                     </td>

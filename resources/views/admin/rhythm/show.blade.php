@@ -2,11 +2,11 @@
 @section('title', 'Ritmo Musical · Visualização')
 
 @section('content_header')
-    <h1>Ritmo Musical [{{ $musicalRhythm->name }}]</h1>
+    <h1>Ritmo Musical [{{ $rhythm->name }}]</h1>
 @stop
 
 @section('breadcrumbs')
-    {{ Breadcrumbs::render(Route::currentRouteName(), $musicalRhythm) }}
+    {{ Breadcrumbs::render(Route::currentRouteName(), $rhythm) }}
 @endsection
 
 @section('content')
@@ -22,13 +22,13 @@
                         <div class="col-md-6">
                             @include('adminlte::form.input.static', [
                                 'label' => 'ID',
-                                'value' => $musicalRhythm->id
+                                'value' => $rhythm->id
                             ])
                         </div>
                         <div class="col-md-6">
                             @include('adminlte::form.input.static', [
                                 'label' => 'Nome Ritmo Musical',
-                                'value' => $musicalRhythm->name
+                                'value' => $rhythm->name
                             ])
                         </div>
                     </div>
@@ -37,13 +37,13 @@
                         <div class="col-md-6">
                             @include('adminlte::form.input.static', [
                                 'label' => 'Data de Criação',
-                                'value' => $musicalRhythm->created_at->format('d/m/Y - H:i')
+                                'value' => $rhythm->created_at->format('d/m/Y - H:i')
                             ])
                         </div>
                         <div class="col-md-6">
                             @include('adminlte::form.input.static', [
                                 'label' => 'Ultima Atualização',
-                                'value' => $musicalRhythm->updated_at->format('d/m/Y - H:i')
+                                'value' => $rhythm->updated_at->format('d/m/Y - H:i')
                             ])
                         </div>
                     </div>
@@ -51,10 +51,10 @@
 
                 <div class="box-footer">
                     <div class="col-md-1">
-                        {{ link_to_route('musicalRhythm.index', $title = 'Voltar', '', ['class' => 'btn btn-block btn-danger']) }}
+                        {{ link_to_route('rhythm.index', $title = 'Voltar', '', ['class' => 'btn btn-block btn-danger']) }}
                     </div>
                     <div class="col-md-1">
-                        {{ link_to_route('musicalRhythm.edit', $title = 'Editar', $musicalRhythm, ['class' => 'btn btn-block btn-primary']) }}
+                        {{ link_to_route('rhythm.edit', $title = 'Editar', $rhythm, ['class' => 'btn btn-block btn-primary']) }}
                     </div>
                 </div>
             </div>

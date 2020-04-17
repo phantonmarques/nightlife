@@ -42,8 +42,8 @@ Route::get('category/{category}/destroy', 'Admin\\CategoryController@destroy')->
 Route::resource('category', 'Admin\\CategoryController')->except(['destroy'])->middleware('auth');
 
 # Musical Rhythm
-Route::get('musicalRhythm/{musicalRhythm}/destroy', 'Admin\\MusicalRhythmController@destroy')->name('musicalRhythm.destroy')->middleware('auth');
-Route::resource('musicalRhythm', 'Admin\\MusicalRhythmController')->except(['destroy'])->middleware('auth');
+Route::get('rhythm/{rhythm}/destroy', 'Admin\\RhythmController@destroy')->name('rhythm.destroy')->middleware('auth');
+Route::resource('rhythm', 'Admin\\RhythmController')->except(['destroy'])->middleware('auth');
 
 # Establishment
 Route::get('establishment/{establishment}/destroy', 'Admin\\EstablishmentController@destroy')->name('establishment.destroy')->middleware('auth');

@@ -96,8 +96,8 @@
                         <img src="{{ url('assets\admin\imgs\test.jpg') }}" class="img-circle" alt="User Image">
                     </div>
                     <div class="pull-left info">
-                        @if (isset($userActive))
-                            <p>{{ $userActive }}</p>
+                        @if (isset(auth()->user()->name))
+                            <p>{{ auth()->user()->name }}</p>
                         @else
                             <p>Unknown</p>
                         @endif

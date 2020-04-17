@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests\CreateOrUpdateMusicalRhythm;
-use App\Models\Admin\MusicalRhythm;
+use App\Http\Requests\CreateOrUpdateRhythm;
+use App\Models\Admin\Rhythm;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 
-class MusicalRhythmController extends Controller
+class RhythmController extends Controller
 {
     protected $paginate = 10;
 
@@ -34,19 +34,16 @@ class MusicalRhythmController extends Controller
         if (! auth()->user()->can('manage-users'))
             return abort(401);
 
-        $userActive = auth()->user()->name;
+        $rhythmSearch = $request->query('s');
 
-        $musicalRhythmSearch = $request->query('s');
-
-        if (!empty($musicalRhythmSearch))
-            $musicalRhythms = MusicalRhythm::where('name', 'like' , "%{$musicalRhythmSearch}%")->paginate($this->paginate);
+        if (!empty($rhythmSearch))
+            $rhythms = Rhythm::where('name', 'like' , "%{$rhythmSearch}%")->paginate($this->paginate);
         else
-            $musicalRhythms = MusicalRhythm::paginate($this->paginate);
+            $rhythms = Rhythm::paginate($this->paginate);
 
-        return view('admin.musicalRhythm.index',
-            compact('musicalRhythms',
-                'musicalRhythmSearch',
-                'userActive'));
+        return view('admin.rhythm.index',
+            compact('rhythms',
+                'rhythmSearch'));
     }
 
     /**
@@ -59,31 +56,28 @@ class MusicalRhythmController extends Controller
         if (! auth()->user()->can('manage-users'))
             return abort(401);
 
-        $userActive = auth()->user()->name;
-
         /** Create form options */
         $formOptions = [
-            'route' => 'musicalRhythm.store',
+            'route' => 'rhythm.store',
             'method' => Request::METHOD_POST,
             'files' => false,
-            'onsubmit' => 'return validateFormMusicalRhythm(this)'
+            'onsubmit' => 'return validateFormRhythm(this)'
         ];
 
-        $musicalRhythm = new MusicalRhythm();
+        $rhythm = new Rhythm();
 
-        return view('admin.musicalRhythm.form',
+        return view('admin.rhythm.form',
             compact('formOptions',
-                'musicalRhythm',
-                'userActive'));
+                'rhythm'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\CreateOrUpdateMusicalRhythm  $request
+     * @param  \App\Http\Requests\CreateOrUpdateRhythm  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(CreateOrUpdateMusicalRhythm $request)
+    public function store(CreateOrUpdateRhythm $request)
     {
         if (! auth()->user()->can('manage-users'))
             return abort(401);
@@ -93,29 +87,29 @@ class MusicalRhythmController extends Controller
         DB::beginTransaction();
 
         try {
-            $musicalRhythmExists = MusicalRhythm::where('name', $data["name"])->count();
+            $rhythmExists = Rhythm::where('name', $data["name"])->count();
 
-            if ($musicalRhythmExists > 0)
+            if ($rhythmExists > 0)
                 return redirect()
-                    ->route('musicalRhythm.create')
+                    ->route('rhythm.create')
                     ->withInput()
                     ->with('error', 'Ritmo musical já cadastrado, favor informe outro nome!');
 
-            $musicalRhythm = MusicalRhythm::create($data);
+            $rhythm = Rhythm::create($data);
 
-            if (!$musicalRhythm->exists)
+            if (!$rhythm->exists)
                 throw new \Exception('Não foi possível criar o ritmo musical!');
 
             DB::commit();
 
             return redirect()
-                ->route('musicalRhythm.index')
+                ->route('rhythm.index')
                 ->with('success', 'Ritmo musical criado com sucesso!');
         } catch (\Exception $e) {
             DB::rollBack();
 
             return redirect()
-                ->route('musicalRhythm.create')
+                ->route('rhythm.create')
                 ->withInput()
                 ->with('error', $e->getMessage());
         }
@@ -124,55 +118,49 @@ class MusicalRhythmController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Admin\MusicalRhythm  $musicalRhythm
+     * @param  \App\Models\Admin\Rhythm  $rhythm
      * @return \Illuminate\Http\Response
      */
-    public function show(MusicalRhythm $musicalRhythm)
+    public function show(Rhythm $rhythm)
     {
         if (! auth()->user()->can('manage-users'))
             return abort(401);
 
-        $userActive = auth()->user()->name;
-
-        return view('admin.musicalRhythm.show',
-            compact('musicalRhythm',
-                'userActive'));
+        return view('admin.rhythm.show',
+            compact('rhythm'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Admin\MusicalRhythm  $musicalRhythm
+     * @param  \App\Models\Admin\Rhythm  $rhythm
      * @return \Illuminate\Http\Response
      */
-    public function edit(MusicalRhythm $musicalRhythm)
+    public function edit(Rhythm $rhythm)
     {
         if (! auth()->user()->can('manage-users'))
             return abort(401);
 
-        $userActive = auth()->user()->name;
-
         /** Create form options */
         $formOptions = [
-            'route' => ['musicalRhythm.update', $musicalRhythm],
+            'route' => ['rhythm.update', $rhythm],
             'method' => Request::METHOD_PUT,
-            'onsubmit' => 'return validateFormMusicalRhythm(this)',
+            'onsubmit' => 'return validateFormRhythm(this)',
         ];
 
-        return view('admin.musicalRhythm.form',
+        return view('admin.rhythm.form',
             compact('formOptions',
-                'musicalRhythm',
-                'userActive'));
+                'rhythm'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  CreateOrUpdateMusicalRhythm  $request
-     * @param  \App\Models\Admin\MusicalRhythm  $musicalRhythm
+     * @param  CreateOrUpdateRhythm  $request
+     * @param  \App\Models\Admin\Rhythm  $rhythm
      * @return \Illuminate\Http\Response
      */
-    public function update(CreateOrUpdateMusicalRhythm $request, MusicalRhythm $musicalRhythm)
+    public function update(CreateOrUpdateRhythm $request, Rhythm $rhythm)
     {
         if (! auth()->user()->can('manage-users'))
             return abort(401);
@@ -182,22 +170,22 @@ class MusicalRhythmController extends Controller
         DB::beginTransaction();
 
         try {
-            $musicalRhythm->fill($data);
+            $rhythm->fill($data);
 
-            if ($musicalRhythm->isDirty())
-                if (!$musicalRhythm->save())
+            if ($rhythm->isDirty())
+                if (!$rhythm->save())
                     throw new \Exception('Não foi possível atualizar o ritmo musical');
 
             DB::commit();
 
             return redirect()
-                ->route('musicalRhythm.index')
+                ->route('rhythm.index')
                 ->with('success', 'Ritmo musical atualizado com sucesso');
         } catch (\Exception $e) {
             DB::rollBack();
 
             return redirect()
-                ->route('musicalRhythm.edit', compact('musicalRhythm'))
+                ->route('rhythm.edit', compact('rhythm'))
                 ->withInput()
                 ->with('error', $e->getMessage());
         }
@@ -206,10 +194,10 @@ class MusicalRhythmController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Admin\MusicalRhythm  $musicalRhythm
+     * @param  \App\Models\Admin\Rhythm  $rhythm
      * @return \Illuminate\Http\Response
      */
-    public function destroy(MusicalRhythm $musicalRhythm)
+    public function destroy(Rhythm $rhythm)
     {
         if (! auth()->user()->can('manage-users'))
             return abort(401);
@@ -217,17 +205,17 @@ class MusicalRhythmController extends Controller
         DB::beginTransaction();
 
         try {
-            if ($musicalRhythm->delete()) :
+            if ($rhythm->delete()) :
                 DB::commit();
 
                 return redirect()
-                    ->route('musicalRhythm.index')
+                    ->route('rhythm.index')
                     ->with('success', 'Ritmo musical excluído com sucesso');
             else:
                 DB::rollBack();
 
                 return redirect()
-                    ->route('musicalRhythm.index', compact('musicalRhythm'))
+                    ->route('rhythm.index', compact('rhythm'))
                     ->withInput()
                     ->with('error', 'Ocorreu um erro desconhecido ao excluir o ritmo musical, tente novamente.');
             endif;
@@ -235,7 +223,7 @@ class MusicalRhythmController extends Controller
             DB::rollBack();
 
             return redirect()
-                ->route('musicalRhythm.index', compact('musicalRhythm'))
+                ->route('rhythm.index', compact('rhythm'))
                 ->withInput()
                 ->with('error', $e->getMessage());
         }

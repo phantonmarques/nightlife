@@ -1,5 +1,6 @@
 .action-delete {
     color: #605ca8;
+    padding-right: 15%;
 }
 
 .action-delete:hover {
@@ -8,6 +9,7 @@
 
 .action-edit{
     color: black;
+    padding-right: 15%;
 }
 
 .action-show{
@@ -26,4 +28,9 @@
 .select2-results__option {
     padding-left: 0px;
     padding-right: 0px;
+}
+
+.table td.col-actions {
+    width: 6%;
+    text-align: center;
 }

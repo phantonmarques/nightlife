@@ -3,10 +3,10 @@
     namespace App\Http\Controllers\Admin;
 
     use App\Http\Requests\CreateOrUpdateEstablishment;
+    use App\Models\Admin\Category;
     use App\Models\Admin\Establishment;
+    use App\Models\Admin\Rhythm;
     use App\Models\Site\User;
-    use App\Models\Site\City;
-    use App\Models\Site\State;
     use Illuminate\Http\Request;
     use App\Http\Controllers\Controller;
     use Illuminate\Support\Facades\DB;
@@ -36,24 +36,21 @@
             if (! auth()->user()->can('manage-establishment'))
                 return abort(401);
 
-            $userActive = auth()->user()->name;
-
             $establishmentsDisabled = $request->query('d');
 
             $establishmentsSearch = $request->query('s');
 
             if (!empty(trim($establishmentsDisabled)) && !empty(trim($establishmentsSearch)))
-                $establishments = $establishments->with('users')->where('status', 0)->where('corporate_name', 'like', "%{$establishmentsSearch}%")->paginate($this->paginate);
+                $establishments = $establishments->where([['status', 0],['corporate_name', 'like', "%{$establishmentsSearch}%"]])->paginate($this->paginate);
             else if (!empty(trim($establishmentsDisabled)))
-                $establishments = $establishments->with('users')->where('status', 0)->paginate($this->paginate);
+                $establishments = $establishments->where('status', 0)->paginate($this->paginate);
             else if (!empty(trim($establishmentsSearch)))
-                $establishments = $establishments->with('users')->where('status', 1)->where('corporate_name', 'like', "%{$establishmentsSearch}%")->paginate($this->paginate);
+                $establishments = $establishments->where([['status', 1],['corporate_name', 'like', "%{$establishmentsSearch}%"]])->paginate($this->paginate);
             else
-                $establishments = $establishments->with('users')->where('status', 1)->paginate($this->paginate);
+                $establishments = $establishments->where('status', 1)->paginate($this->paginate);
 
             return view('admin.establishment.index',
                 compact('establishments',
-                    'userActive',
                     'establishmentsSearch'));
         }
 
@@ -67,8 +64,6 @@
             if (! auth()->user()->can('manage-establishment'))
                 return abort(401);
 
-            $userActive = auth()->user()->name;
-
             /** Create form options */
             $formOptions = [
                 'route' => 'establishment.store',
@@ -77,15 +72,20 @@
                 'onsubmit' => 'return validateFormEstablishment(this)'
             ];
 
+            $categorys = Category::get()->pluck('name', 'id');
+
             $users = User::where('type_user', 'e')->whereNotIn('id', function ($q) {
                 $q->select('user_id')->from('establishment');
             })->get();
+
+            $rhythms = Rhythm::get()->pluck('name', 'id');
 
             $establishment = new Establishment();
 
             return view('admin.establishment.form',
                 compact('users',
-                    'userActive',
+                    'categorys',
+                    'rhythms',
                     'establishment',
                     'formOptions'));
         }
@@ -110,6 +110,12 @@
 
                 if (!$establishment->exists)
                     throw new \Exception('Não foi possível criar o estabelecimento!');
+
+                $establishment->establishments_category()->attach($data["category"]);
+
+                foreach ($data["rhythm"] as $rhythm):
+                    $establishment->establishments_rhythm()->attach($rhythm);
+                endforeach;
 
                 DB::commit();
 
@@ -137,23 +143,8 @@
             if (! auth()->user()->can('manage-establishment'))
                 return abort(401);
 
-            $userActive = auth()->user()->name;
-
-            /** @var  $userEstablishment - Relation Linked User */
-            $userEstablishment = $establishment->users()->first();
-
-            /** @var  $cityUser - Relation Linked City User */
-            $cityUser = City::find($userEstablishment->city_id, ['name_visible']);
-
-            /** @var  $stateUser - Relation Linked State User */
-            $stateUser = State::find($userEstablishment->state_id, ['name_visible']);
-
             return view('admin.establishment.show',
-                compact('establishment',
-                'userEstablishment',
-                'cityUser',
-                'stateUser',
-                'userActive'));
+                compact('establishment'));
         }
 
         /**
@@ -167,25 +158,24 @@
             if (! auth()->user()->can('manage-establishment'))
                 return abort(401);
 
-            $userActive = auth()->user()->name;
-
             /** Create form options */
             $formOptions = [
                 'route' => ['establishment.update', $establishment],
                 'method' => Request::METHOD_PUT,
             ];
 
-            $userOld = User::select(['id', 'name', 'email', 'cpf_cnpj'])->where('id', $establishment->user_id)
-                ->first();
+            $categorys = Category::get()->pluck('name', 'id');
 
             $users = User::where('type_user', 'e')->whereNotIn('id', function ($q) {
                 $q->select('user_id')->from('establishment');
             })->get();
 
+            $rhythms = Rhythm::get()->pluck('name', 'id');
+
             return view('admin.establishment.form',
                 compact('users',
-                'userOld',
-                'userActive',
+                'categorys',
+                'rhythms',
                 'establishment',
                 'formOptions'));
         }
@@ -215,6 +205,16 @@
                         throw new \Exception('Não foi possível atualizar o estabelecimento');
                     endif;
                 endif;
+
+                if (isset($data["category"]))
+                    $establishment->establishments_category()->sync($data["category"]);
+                else
+                    $establishment->establishments_category()->detach();
+
+                if (isset($data["rhythm"]))
+                    $establishment->establishments_rhythm()->sync($data["rhythm"]);
+                else
+                    $establishment->establishments_rhythm()->detach();
 
                 DB::commit();
 
@@ -248,7 +248,7 @@
                 $establishment->status = 0;
 
                 if (!$establishment->save())
-                    throw new \Exception('Não foi possível atualizar o veículo');
+                    throw new \Exception('Não foi possível atualizar o estabelecimento');
 
                 DB::commit();
 

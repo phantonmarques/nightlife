@@ -16,7 +16,6 @@
                 <div class="box-header with-border">
                     <div class="box-title col-xs-6 no-padding">
                         <a class="btn btn-success btn-flat" href="{{ route('establishmentAddress.create')  }}">
-                            <!--  //route('vehicles.create')  -->
                             <i class="fas fa-sm fa-plus"></i>&nbsp;&nbsp;Novo Endereço
                         </a>
                     </div>
@@ -46,70 +45,73 @@
                 </div>
 
                 <div class="box-body table-responsive no-padding">
-                    <table class="table table-hover">
+                    <table class="table table-bordered table-hover dataTable table-striped">
                         <thead>
-                        <tr>
-                            <th>Estabelecimento</th>
-                            <th>Endereço</th>
-                            <th>Número</th>
-                            <th>CEP</th>
-                            <th>Cidade</th>
-                            <th>Estado</th>
-                            <th>Nome Contato</th>
-                            <th>Telefone</th>
-                            <th>Whatsapp</th>
-                            <th>Data de criação</th>
-                            <th>Data de atualização</th>
-                            <th class="col-actions"></th>
-                        </tr>
+                            <tr>
+                                <th class="text-center">
+                                    <input class="icheck check-all" type="checkbox" />
+                                </th>
+                                <th>Estabelecimento</th>
+                                <th>Endereço</th>
+                                <th>Número</th>
+                                <th>CEP</th>
+                                <th>Cidade</th>
+                                <th>Estado</th>
+                                <th>Nome Contato</th>
+                                <th>Telefone</th>
+                                <th>Whatsapp</th>
+                                <th>Data de criação</th>
+                                <th>Data de atualização</th>
+                                <th class="col-actions"></th>
+                            </tr>
                         </thead>
                         <tbody>
                         @if (isset($establishmentsAddress) && sizeof($establishmentsAddress) > 0)
                             @foreach($establishmentsAddress as $address)
                                 <tr>
-                                    <th>
-                                        {{ $establishment }}
-                                    </th>
-                                    <th>
+                                    <td class="text-center">
+                                        <input class="icheck" type="checkbox" name="establishmentAddress[id][]" value="{{ $address->id }}" />
+                                    </td>
+                                    <td>
+                                        {{ $address->establishment->corporate_name }}
+                                    </td>
+                                    <td>
                                         {{ $address->street_name }}
-                                    </th>
-                                    <th>
+                                    </td>
+                                    <td>
                                         {{ $address->building_number }}
-                                    </th>
-                                    <th>
-                                        {{ $address->zip_code }}
-                                    </th>
-                                    <th>
-                                        {{ $address->city_name }}
-                                    </th>
-                                    <th>
-                                        {{ $address->state_name }}
-                                    </th>
-                                    <th>
+                                    </td>
+                                    <td>
+                                        {{ formatZipCode($address->zip_code) }}
+                                    </td>
+                                    <td>
+                                        {{ $address->city->name_visible }}
+                                    </td>
+                                    <td>
+                                        {{ $address->city->state->name_visible }}
+                                    </td>
+                                    <td>
                                         {{ $address->establishments_phone[0]->name }}
-                                    </th>
-                                    <th>
+                                    </td>
+                                    <td>
                                         {{ $address->establishments_phone[0]->phone }}
-                                    </th>
-                                    <th>
+                                    </td>
+                                    <td>
                                         {{ ($address->establishments_phone[0]->whatsapp) ? 'Sim' : 'Não' }}
-                                    </th>
-                                    <th>
+                                    </td>
+                                    <td>
                                         {{ $address->created_at->format('d/m/Y - H:i') }}
-                                    </th>
+                                    </td>
                                     <th>
                                         {{ $address->updated_at->format('d/m/Y - H:i') }}
                                     </th>
                                     <td class="col-actions">
                                         <a href="{{ route('establishmentAddress.edit', $address) }}" class="action-edit"><span class="glyphicon glyphicon-pencil"></span></a>
-                                    </td>
-                                    <td class="col-actions">
+
                                         <a href="{{ route('establishmentAddress.destroy', $address) }}" class="action-delete"><span class="glyphicon glyphicon-trash"></span></a>
-                                    </td>
-                                    <td class="col-actions">
+
                                         <a href="{{ route('establishmentAddress.show', $address) }}"><span class="glyphicon glyphicon-info-sign"></span></a>
                                     </td>
-
                                 </tr>
                             @endforeach
                         @else

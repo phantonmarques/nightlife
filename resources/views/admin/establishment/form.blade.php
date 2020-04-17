@@ -38,10 +38,11 @@
                         </div>
                     @endif
 
+                    <br>
+
                     <div class="row">
-                        <div class="col-md-10">
-                            {{ Form::label('state_registration','Inscrição Estadual ') }} <span
-                                    class="span-required">*</span>
+                        <div class="col-md-3">
+                            {{ Form::label('state_registration','Inscrição Estadual ') }} <span class="span-required">*</span>
                             {{ Form::text('state_registration' , (isset($establishment->id) ? $establishment->state_registration : ''), ['placeholder' => 'Informe a inscrição estadual', 'class' => 'form-control required', 'onkeypress' => 'return onlyNumbers(event)']) }}
                         </div>
                     </div>
@@ -54,52 +55,85 @@
                         </div>
                     @endif
 
+                    <br>
+
                     <div class="row">
-                        <div class="col-md-5">
+                        <div class="col-md-4">
                             {{ Form::label('type_license','Tipo Conta ') }} <span class="span-required">*</span>
+                        </div>
+                        <div class="col-md-4">
+                            {{ Form::label('category','Categoria Estabelecimento ') }} <span class="span-required">*</span>
                         </div>
                     </div>
 
                     <div class="row">
-                        <div class="col-lg-1">
+                        <div class="col-md-2">
                             <div class="input-group">
                                 <span class="input-group-addon">
                                     &nbsp;{{ Form::radio('type_license', 'b', (isset($establishment->type_license) && $establishment->type_license === 'b') ? true : false, [ 'id' => 'basicAccount']) }}
                                 </span>
-                                {{ Form::label('basicAccount','Básica', ['class' => 'form-control']) }}
+                                {{ Form::label('basicAccount','Plano Basico', ['class' => 'form-control']) }}
                             </div>
                         </div>
-                        <div class="col-lg-1">
+                        <div class="col-md-2">
                             <div class="input-group">
                                 <span class="input-group-addon">
                                     {{ Form::radio('type_license', 'f', (isset($establishment->type_license) && $establishment->type_license === 'f') ? true : false, [  'id' => 'fullAccount' ]) }}
                                 </span>
-                                {{ Form::label('fullAccount','Completa', ['class' => 'form-control']) }}
+                                {{ Form::label('fullAccount','Plano Completo', ['class' => 'form-control']) }}
                             </div>
+                        </div>
+                        <div class="col-md-4">
+                            {{Form::select('category', $categorys, isset($establishment->establishments_category) ? $establishment->establishments_category : null, array('class' => 'form-control'))}}
                         </div>
                     </div>
 
-                    @if ($errors->has('type_license'))
-                        <div class="row">
-                            <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-6">
+                            @if ($errors->has('type_license'))
                                 <div class="text-red">{{ $errors->first('type_license') }}</div>
+                            @endif
+                        </div>
+                        <div class="col-md-6">
+                            @if ($errors->has('category'))
+                                <div class="text-red">{{ $errors->first('category') }}</div>
+                            @endif
+                        </div>
+                    </div>
+
+                    <br>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            {{ Form::label('rhythm','Ritmos Musicais ') }} <span class="span-required">*</span>
+                            {{Form::select('rhythm', $rhythms, isset($establishment->establishments_rhythm) ? $establishment->establishments_rhythm : null, array('multiple' => 'multiple', 'name' => 'rhythm[]', 'class' => 'form-control select2'))}}
+                        </div>
+                    </div>
+
+                    @if ($errors->has('rhythm'))
+                        <div class="row">
+                            <div class="col-md-10">
+                                <div class="text-red">{{ $errors->first('rhythm') }}</div>
                             </div>
                         </div>
                     @endif
 
-                    @if (isset($establishment->status) && $establishment->status === 0)
-                            <div class="row">
-                                <div class="col-md-5">
-                                    {{ Form::label('status','Status Estabelecimento ') }} <span
-                                            class="span-required">*</span>
-                                </div>
-                            </div>
 
-                            <div class="row">
-                                <div class="col-md-1">
-                                    {{ Form::select('status', [1 => 'Ativo', 0 => 'Inativo'], (isset($establishment->status) && $establishment->status === 1) ? 1 : 0, ['class' => 'form-control']) }}
-                                </div>
+                    @if (isset($establishment->status) && $establishment->status === 0)
+                        <br>
+
+                        <div class="row">
+                            <div class="col-md-5">
+                                {{ Form::label('status','Status Estabelecimento ') }} <span
+                                        class="span-required">*</span>
                             </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-1">
+                                {{ Form::select('status', [1 => 'Ativo', 0 => 'Inativo'], (isset($establishment->status) && $establishment->status) ? 1 : 0, ['class' => 'form-control']) }}
+                            </div>
+                        </div>
                     @else
                         {{ Form::hidden('status', 1, array('id' => 'status')) }}
                     @endif
@@ -120,7 +154,6 @@
                             <h6 class="lead">Dados Usuário a Vincular</h6>
                         </div>
                     </div>
-
                     <div class="row">
                         <div class="col-md-12">
                             <div class="row">
@@ -130,14 +163,14 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-3">
-                                    @if(sizeof($users) === 0 && !isset($userOld))
+                                    @if(sizeof($users) === 0 && !isset($establishment->users))
                                         <span class="span-required">{{ 'Nenhum usuário do tipo ESTABELECIMENTO cadastrado, faça o cadastro e tente novamente!' }}</span>
                                     @else
                                         <select class="form-control" name="user_id" id="user_id"
                                                 onchange="javascript: selectUser(this.value)">
                                             <option value="">---- SELECIONE USUÁRIO ----</option>
-                                            @if (isset($userOld))
-                                                <option value="{{$userOld->id}}" selected>{{$userOld->name}}</option>
+                                            @if (isset($establishment->users))
+                                                <option value="{{$establishment->users->id}}" selected>{{$establishment->users->name}}</option>
                                             @endif
                                             @foreach($users as $user)
                                                 <option value="{{$user->id}}">{{$user->name}}</option>
@@ -148,7 +181,7 @@
                             </div>
                         </div>
                     </div>
-                    @if(sizeof($users) > 0 || isset($userOld))
+                    @if(sizeof($users) > 0 || isset($establishment->users))
                         <div class="row" id="divEmail" style="display:none">
                             <div class="col-md-12">
                                 <div class="row">
@@ -159,8 +192,8 @@
                                 <div class="row">
                                     <div class="col-md-3">
                                         <select class="form-control" name="userEmail" id="userEmail" disabled>
-                                            @if (isset($userOld))
-                                                <option value="{{$userOld->id}}" selected>{{$userOld->email}}</option>
+                                            @if (isset($establishment->users))
+                                                <option value="{{$establishment->users->id}}" selected>{{$establishment->users->email}}</option>
                                             @endif
                                             @foreach($users as $user)
                                                 <option value="{{$user->id}}">{{$user->email}}</option>
@@ -180,8 +213,9 @@
                                 <div class="row">
                                     <div class="col-md-3">
                                         <select class="form-control" name="userCNPJ" id="userCNPJ" disabled>
-                                            @if (isset($userOld))
-                                                <option value="{{$userOld->id}}" selected>{{ formatCnpjCpf($userOld->cpf_cnpj) }}</option>
+                                            @if (isset($establishment->users))
+                                                <option value="{{$establishment->users->id}}"
+                                                        selected>{{ formatCnpjCpf($establishment->users->cpf_cnpj) }}</option>
                                             @endif
                                             @foreach($users as $user)
                                                 <option value="{{$user->id}}">{{ formatCnpjCpf($user->cpf_cnpj) }}</option>
@@ -204,6 +238,15 @@
                     @endif
                 </div>
 
+                @if ($message = Session::get('error'))
+                    <br>
+                    <div class="row">
+                        <div class="col-md-10">
+                            <div class="text-red">{{ $message }}</div>
+                        </div>
+                    </div>
+                @endif
+
                 <div class="box-footer">
                     <div class="col-lg-1" style="margin-left: 83%;">
                         {{ link_to_route('establishment.index', $title = 'Voltar', '', ['class' => 'btn btn-block btn-danger']) }}
@@ -220,4 +263,8 @@
 
 @section('js')
     <script type="text/javascript" src="{{ asset('assets/admin/js/establishment.js') }}"></script>
+@endsection
+
+@section('css')
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/Global/css/general.css') }}"/>
 @endsection

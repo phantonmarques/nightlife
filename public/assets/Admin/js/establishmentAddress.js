@@ -2,6 +2,10 @@ $(document).ready(function () {
     $('.phone').mask('(00) 00000-0000');
     $('.cep').mask('00000-000');
 
+    if (document.getElementById('complement').disable) {
+        document.getElementById('complement').disable = false;
+    }
+
     if (document.getElementById('zip_code').value !== '')
         searchZipCode();
 
@@ -244,6 +248,10 @@ function validateFormEstablishmentAddress(f) {
     } else if (f.elements["contact[0][phone]"].value.length < 10) {
         swal("Erro", "O campo [Telefone] é obrigatório e deve conter no mínimo 11 números, favor preencha corretamente!", "error");
         return false;
+    }
+
+    if (f.complement.value.length === undefined || f.complement.value === '') {
+        f.complement.disabled = true;
     }
 
     if (f.street_name.disabled) {

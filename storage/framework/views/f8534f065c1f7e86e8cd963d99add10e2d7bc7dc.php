@@ -43,7 +43,7 @@
                         <div class="col-md-4">
                             <?php echo $__env->make('adminlte::form.input.static', [
                                 'label' => 'Situação do Estabelecimento',
-                                'value' => ($establishment->status === 1) ? 'Ativo' : 'Inativa'
+                                'value' => ($establishment->status) ? 'Ativo' : 'Inativa'
                             ], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
                         </div>
                         <div class="col-md-4">
@@ -54,58 +54,103 @@
                         </div>
                         <div class="col-md-4">
                             <?php echo $__env->make('adminlte::form.input.static', [
-                                'label' => 'Ultima Atualização',
+                                'label' => ($establishment->status) ? 'Ultima Atualização' : 'Data Cancelamento',
                                 'value' => $establishment->updated_at->format('d/m/Y - H:i')
                             ], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
                         </div>
                     </div>
 
                     <div class="col-md-12">
-                        <h4 class="lead">Usuário Vínculado</h4>
+                        <h3 class="lead">Usuário Vínculado</h3>
                     </div>
 
                     <div class="row">
                         <div class="col-md-4">
                             <?php echo $__env->make('adminlte::form.input.static', [
                                 'label' => 'Nome',
-                                'value' => $userEstablishment->name
+                                'value' => $establishment->users->name
                             ], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
                         </div>
                         <div class="col-md-4">
                             <?php echo $__env->make('adminlte::form.input.static', [
                                 'label' => 'CNPJ',
-                                'value' => formatCnpjCpf($userEstablishment->cpf_cnpj)
+                                'value' => formatCnpjCpf($establishment->users->cpf_cnpj)
                             ], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
                         </div>
                         <div class="col-md-4">
                             <?php echo $__env->make('adminlte::form.input.static', [
                                 'label' => 'E-mail',
-                                'value' => $userEstablishment->email
+                                'value' => $establishment->users->email
                             ], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
                         </div>
                     </div>
-                    
+
                     <div class="row">
                         <div class="col-md-4">
                             <?php echo $__env->make('adminlte::form.input.static', [
                                 'label' => 'Tipo de Usuário',
-                                'value' => typeUserDescription($userEstablishment->type_user)
+                                'value' => typeUserDescription($establishment->users->type_user)
                             ], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
                         </div>
                         <div class="col-md-4">
                             <?php echo $__env->make('adminlte::form.input.static', [
                                 'label' => 'Cidade',
-                                'value' => $cityUser->name_visible
+                                'value' => $establishment->users->city->name_visible
                             ], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
                         </div>
                         <div class="col-md-4">
                             <?php echo $__env->make('adminlte::form.input.static', [
                                 'label' => 'Estado',
-                                'value' => $stateUser->name_visible
+                                'value' => $establishment->users->city->state->name_visible
                             ], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
                         </div>
                     </div>
 
+                    <?php if(sizeof($establishment->establishments_category)>0): ?>
+                        <div class="col-md-12">
+                            <h3 class="lead">Categoria Estabelecimento</h3>
+                        </div>
+
+                        <?php $__currentLoopData = $establishment->establishments_category; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $category): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <?php echo $__env->make('adminlte::form.input.static', [
+                                        'label' => 'Categoria',
+                                        'value' => $category->name
+                                    ], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+                                </div>
+                                <div class="col-md-4">
+                                    <?php echo $__env->make('adminlte::form.input.static', [
+                                        'label' => 'Data de Criação Categoria',
+                                        'value' => $category->created_at->format('d/m/Y - H:i')
+                                    ], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+                                </div>
+                            </div>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                    <?php endif; ?>
+
+                    <?php if(sizeof($establishment->establishments_rhythm)>0): ?>
+                        <div class="col-md-12">
+                            <h3 class="lead">Ritmos Musicais</h3>
+                        </div>
+
+                        <?php $__currentLoopData = $establishment->establishments_rhythm; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $rhythm): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <?php echo $__env->make('adminlte::form.input.static', [
+                                        'label' => 'Ritmo Musical ' . ($key+1),
+                                        'value' => $rhythm->name
+                                    ], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+                                </div>
+                                <div class="col-md-4">
+                                    <?php echo $__env->make('adminlte::form.input.static', [
+                                        'label' => 'Data de Criação Ritmo',
+                                        'value' => $rhythm->created_at->format('d/m/Y - H:i')
+                                    ], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+                                </div>
+                            </div>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                    <?php endif; ?>
 
                 </div>
 

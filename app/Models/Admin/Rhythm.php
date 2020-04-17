@@ -4,12 +4,12 @@ namespace App\Models\Admin;
 
 use Illuminate\Database\Eloquent\Model;
 
-class MusicalRhythm extends Model
+class Rhythm extends Model
 {
     /**
      * @var string $table
      */
-    protected $table = 'musical_rhythm';
+    protected $table = 'rhythm';
 
     /**
      * @var array $fillable
