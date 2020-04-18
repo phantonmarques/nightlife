@@ -22,15 +22,8 @@ Route::group(['middleware' => ['auth'], 'prefix' => '/site'], function () {
 
 #######################################################################################################################################
 
-Route::get('control/', 'ControlAdmin\AdminController@index')->name('home.page.admin');
-//Route::group(['middleware' => ['auth'], 'prefix' => '/control'], function () {
-//    Route::get('/', 'ControlAdmin\AdminController@index')->name('home.page.admin');
-//
-//    # Rotas para administrador (sócios)
-//    Route::get('criar-estabelecimento', 'ControlAdmin\AdminController@criarEstabelecimento');
-//    Route::post('inserir-estabelecimento', 'ControlAdmin\AdminController@inserirEstabelecimento')->name('inserirEstabelecimento');
-//    Route::get('lista-estabelecimento', 'ControlAdmin\AdminController@listarEstabelecimentos')->name('listaEstabelecimentos');
-//});
+Route::get('control/', 'Admin\\AdminController@index')->name('admin.page');
+
 
 /**
  *  Página de admin, com níveis de privilégio.
@@ -66,6 +59,11 @@ Route::resource('role', 'Admin\\RoleController')->except(['destroy'])->middlewar
 Route::get('permission/{permission}/destroy', 'Admin\\PermissionController@destroy')->name('permission.destroy')->middleware('auth');
 Route::delete('massDestroy', 'Admin\PermissionController@massDestroy')->name('permission.massDestroy')->middleware('auth');;
 Route::resource('permission', 'Admin\\PermissionController')->except(['destroy'])->middleware('auth');
+
+# Event
+Route::get('event/{event}/destroy', 'Admin\\EventController@destroy')->name('event.destroy')->middleware('auth');
+Route::get('event/prepareIndex', 'Admin\\EventController@prepareIndex')->name('event.prepareIndex')->middleware('auth');
+Route::resource('event', 'Admin\\EventController')->except(['destroy'])->middleware('auth');
 
 #######################################################################################################################################
 

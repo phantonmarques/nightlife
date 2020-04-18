@@ -1,5 +1,5 @@
 @extends('adminlte::page')
-@section('title', 'Ritmo musicais · ')
+@section('title', 'Ritmos musicais · ')
 
 @section('content_header')
     <h1>Ritmo musicais</h1>

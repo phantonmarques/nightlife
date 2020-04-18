@@ -53,7 +53,7 @@ class EstablishmentAddressController extends Controller
      * @param \Illuminate\Http\Request
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request, EstablishmentAddress $establishmentAddress)
+    public function index(Request $request)
     {
         if (! auth()->user()->can('manage-establishment'))
             return abort(401);
@@ -74,10 +74,10 @@ class EstablishmentAddressController extends Controller
                 ->with('error', 'Selecione o estabelecimento novamente!');
 
         if (!empty($establishmentAddressSearch))
-            $establishmentsAddress = $establishmentAddress->where([['establishment_id', $establishmentAddressPrepare],
+            $establishmentsAddress = EstablishmentAddress::where([['establishment_id', $establishmentAddressPrepare],
                                         ['street_name', 'like', "%{$establishmentAddressSearch}%"]])->paginate($this->paginate);
         else
-            $establishmentsAddress = $establishmentAddress->with(['establishments_phone' => function($q){
+            $establishmentsAddress =  EstablishmentAddress::with(['establishments_phone' => function($q){
                 $q->where('main', 1);}])->where('establishment_id', $establishmentAddressPrepare)->paginate($this->paginate);
 
         return view('admin.establishmentAddress.index',

@@ -7,6 +7,8 @@
     use App\Models\Admin\Permission;
     use App\Models\Admin\Role;
     use App\Models\Admin\Rhythm;
+    use App\Models\Admin\Event;
+
 
     Breadcrumbs::for('home', function ($trail) {
         $trail->push('Home', route('home'));
@@ -168,6 +170,33 @@
     Breadcrumbs::for('rhythm.edit', function ($trail, Rhythm $rhythm) {
         $trail->parent('rhythm.index', $rhythm);
         $trail->push('Editar Ritmo Musical', route('rhythm.edit', $rhythm));
+    });
+
+    # TODO: EVENT ESTABLISHMENT
+
+    Breadcrumbs::for('event.prepareIndex', function ($trail) {
+        $trail->parent('home');
+        $trail->push('Estabelecimentos', route('event.prepareIndex'));
+    });
+
+    Breadcrumbs::for('event.index', function ($trail) {
+        $trail->parent('home');
+        $trail->push('Eventos Estabelecimento', route('event.index'));
+    });
+
+    Breadcrumbs::for('event.create', function ($trail) {
+        $trail->parent('event.index');
+        $trail->push('Novo Evento', route('event.create'));
+    });
+
+    Breadcrumbs::for('event.show', function ($trail, Event $event) {
+        $trail->parent('event.index');
+        $trail->push($event->name, route('event.show', $event));
+    });
+
+    Breadcrumbs::for('event.edit', function ($trail, Event $event) {
+        $trail->parent('event.index', $event);
+        $trail->push('Editar Evento', route('event.edit', $event));
     });
 
     # TODO: ERROR

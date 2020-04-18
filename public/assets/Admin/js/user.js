@@ -128,7 +128,7 @@ function searchCity(index = '') {
 
     if (state.length > 0) {
         $.ajax({
-            url: "http://localhost/ProjetosLaravel/nightlife/public/citys/" + state,
+            url: "/ProjetosLaravel/nightlife/public/citys/" + state,
             type: 'GET',
             crossDomain: true,
             success: function (data) {

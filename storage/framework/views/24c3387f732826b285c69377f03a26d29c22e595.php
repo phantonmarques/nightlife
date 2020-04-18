@@ -8,7 +8,7 @@
 <body>
     <h1>Pagina de usuário</h1>
     <br>
-    <a href="<?php echo e(Route('home.page.admin')); ?>">ADMIN</a>
+    <a href="<?php echo e(Route('admin.page')); ?>">ADMIN</a>
     <!-- 
         <a href="{ Route('admin-page') }}">ADMIN</a>
         <a href="{ Route('/') }}">PÁGINA INICIAL</a>

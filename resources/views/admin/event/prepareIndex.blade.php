@@ -1,8 +1,8 @@
 @extends('adminlte::page')
-@section('title', 'Estabelecimentos · ')
+@section('title', 'Eventos · ')
 
 @section('content_header')
-    <h1>Endereços Estabelecimentos</h1>
+    <h1>Eventos Estabelecimento</h1>
 @stop
 
 @section('breadcrumbs')
@@ -18,7 +18,7 @@
                 </div>
                 <div class="box-body">
                     @if (!empty($establishments))
-                        {{  Form::open( array('route' => 'establishmentAddress.index', 'method' => 'GET') )  }}
+                        {{  Form::open( array('route' => 'event.index', 'method' => 'GET') )  }}
 
                         {{ Form::select('e', $establishments, 0, ['class' => 'form-control-p']) }}
 
@@ -39,5 +39,5 @@
 @endsection
 
 @section('css')
-    <link rel="stylesheet" type="text/css" href="{{ asset('assets/admin/css/establishmentAddress.css') }}"/>
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/admin/css/event.css') }}"/>
 @endsection
