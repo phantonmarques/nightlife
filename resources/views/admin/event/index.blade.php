@@ -1,8 +1,8 @@
 @extends('adminlte::page')
-@section('title', 'Funções · ')
+@section('title', 'Eventos · ')
 
 @section('content_header')
-    <h1>Funções</h1>
+    <h1>Eventos</h1>
 @stop
 
 @section('breadcrumbs')
@@ -13,40 +13,40 @@
     <div class="row">
         <div class="col-md-12">
             <body class="box box-warning">
-                <div class="box-header with-border">
-                    <div class="box-title col-xs-6 no-padding">
-                        <a class="btn btn-success btn-flat" href="{{ route('event.create')  }}">
-                            <i class="fas fa-sm fa-plus"></i>&nbsp;&nbsp;Novo evento
-                        </a>
-                    </div>
-
-                    <div class="box-title col-xs-6 col-sm-3 no-padding pull-right">
-                        {{ Form::open(['method' => 'GET']) }}
-                        <div class="input-group">
-                        @if (empty($eventSearch))
-                            {{ $eventSearch = '' }}
-                        @endif
-                        <!-- SEARCH PESQUISA INPUT -->
-                        {{ Form::text('s', $eventSearch, ['placeholder' => 'Pesquisar', 'class' => 'form-control col-md-4']) }}
-                        <!-- FIM SEARCH PESQUISA -->
-
-                            <div class="input-group-btn">
-                                <button type="submit" class="btn btn-default btn-flat">
-                                    <i class="fas fa-search"></i>
-                                </button>
-                                @if (!empty($eventSearch))
-                                    <a title="Limpar" class="btn btn-default"
-                                       href="{{ route('event.index') }}">
-                                        <i class="fas fa-backspace"></i>
-                                    </a>
-                                @endif
-                            </div>
-                        </div>
-                        {{ Form::close() }}
-                    </div>
+            <div class="box-header with-border">
+                <div class="box-title col-xs-6 no-padding">
+                    <a class="btn btn-success btn-flat" href="{{ route('event.create')  }}">
+                        <i class="fas fa-sm fa-plus"></i>&nbsp;&nbsp;Novo evento
+                    </a>
                 </div>
 
+                <div class="box-title col-xs-6 col-sm-3 no-padding pull-right">
+                    {{ Form::open(['method' => 'GET']) }}
+                    <div class="input-group">
+                    @if (empty($eventSearch))
+                        {{ $eventSearch = '' }}
+                    @endif
+                    <!-- SEARCH PESQUISA INPUT -->
+                    {{ Form::text('s', $eventSearch, ['placeholder' => 'Pesquisar', 'class' => 'form-control col-md-4']) }}
+                    <!-- FIM SEARCH PESQUISA -->
 
+                        <div class="input-group-btn">
+                            <button type="submit" class="btn btn-default btn-flat">
+                                <i class="fas fa-search"></i>
+                            </button>
+                            @if (!empty($eventSearch))
+                                <a title="Limpar" class="btn btn-default"
+                                   href="{{ route('event.index') }}">
+                                    <i class="fas fa-backspace"></i>
+                                </a>
+                            @endif
+                        </div>
+                    </div>
+                    {{ Form::close() }}
+                </div>
+            </div>
+
+            @if(isset($events) && sizeof($events))
                 <div class="cards">
                     <div class="card__wrapper">
                         <div class="card">
@@ -94,16 +94,24 @@
                         </div>
                     </div>
                 </div>
-
-
-
-                @if ($events->hasPages())
-                    <div class="box-footer clearfix">
-                        {{ $events->appends(['q' => $eventSearch])->onEachSide(2)->links() }}
+            @else
+                <div class="cards">
+                    <div class="card__wrapper">
+                        <div class="card" style="text-align: center">
+                            Nenhum evento cadastrado
+                        </div>
                     </div>
-                @endif
-            </div>
+                </div>
+            @endif
+
+
+            @if ($events->hasPages())
+                <div class="box-footer clearfix">
+                    {{ $events->appends(['q' => $eventSearch])->onEachSide(2)->links() }}
+                </div>
+            @endif
         </div>
+    </div>
     </div>
 
     @include('vendor/flash-message')

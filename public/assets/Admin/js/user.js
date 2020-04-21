@@ -163,7 +163,7 @@ function searchCity(index = '') {
 function searchState(state) {
     if (state.length > 0) {
         $.ajax({
-            url: "http://localhost/ProjetosLaravel/nightlife/public/state/" + state,
+            url: "/ProjetosLaravel/nightlife/public/state/" + state,
             type: 'GET',
             crossDomain: true,
             success: function (data) {

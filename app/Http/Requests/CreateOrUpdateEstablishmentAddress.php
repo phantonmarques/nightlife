@@ -25,7 +25,7 @@
                 "contact.*.name"        => ['string', 'min:3'],
                 "contact.*.phone"       => ['string', 'min:11'],
                 "contact.*.whatsapp"    => ['min:1'],
-                "zip_code"              => ['required', 'integer', 'digits_between:8,9'],
+                "zip_code"              => ['required', 'digits_between:8,9'],
                 "street_name"           => ['required', 'string', 'min:5'],
                 "building_number"       => ['required', 'integer'],
                 "neighborhood"          => ['required', 'string', 'min:3'],

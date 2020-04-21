@@ -8,9 +8,7 @@ use Illuminate\Support\Facades\Route;
  */
 Route::get('/', 'SiteInstitucional\SiteInstController@index')->name('home');
 
-
 #######################################################################################################################################
-
 
 /**
  *  Página do usuário comum e todos.

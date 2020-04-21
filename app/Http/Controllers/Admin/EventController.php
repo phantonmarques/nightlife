@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Admin\EstablishmentAddress;
 use App\Models\Admin\Event;
 use App\Models\Admin\Establishment;
 use Illuminate\Http\Request;
@@ -85,7 +86,30 @@ class EventController extends Controller
      */
     public function create()
     {
-        //
+        if (! auth()->user()->can('manage-establishment') && ! auth()->user()->can('establishment-manager'))
+            return abort(401);
+
+        /** Create form options */
+        $formOptions = [
+            'route' => 'event.store',
+            'method' => Request::METHOD_POST,
+            'files' => true,
+            'onsubmit' => 'return validateFormEvent(this)'
+        ];
+
+        if (auth()->user()->establishments()->count() > 0)
+            $establishment_id = auth()->user()->establishments()->id;
+        else
+            $establishment_id = session()->get('establishment');
+
+        $address = EstablishmentAddress::where('establishment_id', $establishment_id)->get()->pluck('street_name', 'id');
+
+        $event = new Event();
+
+        return view('admin.event.form',
+            compact('formOptions',
+                'address',
+                'event'));
     }
 
     /**

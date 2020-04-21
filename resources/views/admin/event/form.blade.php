@@ -1,13 +1,13 @@
 @extends('adminlte::page')
-@section('title', (isset($role->id) ? 'Editar ' : 'Criar ') . 'Função · ')
+@section('title', (isset($event->id) ? 'Editar ' : 'Criar ') . 'Evento · ')
 
 @section('content_header')
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <h1>&nbsp;</h1>
     <ol class="breadcrumb">
         <li><a href="#">Inicio</a></li>
-        <li><a href="#">Funções</a></li>
-        <li><a href="#">{{ (isset($role->id) ? 'Editar ' : 'Criar ') }} Função</a></li>
+        <li><a href="#">Eventos</a></li>
+        <li><a href="#">{{ (isset($event->id) ? 'Editar ' : 'Criar ') }} Evento</a></li>
     </ol>
 @stop
 
@@ -16,17 +16,17 @@
         <div class="col-md-12">
             <div class="box box-warning">
                 <div class="box-header with-border">
-                    <h3 class="box-title">{{ (isset($role->id) ? 'Editar Função' : 'Cadastrar nova Função') }}</h3>
+                    <h3 class="box-title">{{ (isset($event->id) ? 'Editar Evento' : 'Cadastrar nova Evento') }}</h3>
                     <h6 align="right" style="color:red">* Campos obrigatórios</h6>
                 </div>
 
-                {{ Form::model($role, $formOptions) }}
+                {{ Form::model($event, $formOptions) }}
                 {!! csrf_field() !!}
                 <div class="box-body">
                     <div class="row">
                         <div class="col-md-10">
                             {{ Form::label('name','Nome') }} <span class="span-required">*</span>
-                            {{ Form::text('name', (isset($role->id) ? $role->name : ''), ['placeholder' => 'Informe nome da função', 'class' => 'form-control required']) }}
+                            {{ Form::text('name', (isset($event->id) ? $event->name : ''), ['placeholder' => 'Informe nome do evento', 'class' => 'form-control required']) }}
                         </div>
                     </div>
 
@@ -38,24 +38,31 @@
                             </div>
                         </div>
                     @endif
-
                     <br>
+
+                    $table->string('name');
+                    $table->date('date_event');
+                    $table->double('price', 10, 2);
+                    $table->string('cover_path')->unique();
+                    $table->longText('description');
+                    $table->boolean('status');
+                    $table->unsignedInteger('establishment_address_id');
+                    $table->unsignedInteger('establishment_id');
+                    $table->timestamps();
 
                     <div class="row">
                         <div class="col-md-10">
-                            {{ Form::label('slug','Função') }} <span class="span-required">*</span>
-                            {{ Form::text('slug', (isset($role->id) ? $role->slug : ''), ['placeholder' => 'Informe função', 'class' => 'form-control required']) }}
+                            <div class="form-group">
+                                @if (auth()->user()->image != null)
+                                    <img src="{{ url('storage/users/'.auth()->user()->image) }}" alt="{{ auth()->user()->name }}" style="max-width: 50px;">
+                                @endif
+
+                                <label for="image">Imagem: </label>
+                                <input type="file" name="image" class="form-control">
+                            </div>
                         </div>
                     </div>
 
-                    <br>
-
-                    <div class="row">
-                        <div class="col-md-10">
-                            {{Form::label('permission', 'Permissões')}} <span class="span-required">*</span>
-                            {{Form::select('permission', $permissions, isset($permissionChosen) ? $permissionChosen : null, array('multiple' => 'multiple', 'name' => 'permission[]', 'class' => 'form-control select2'))}}
-                        </div>
-                    </div>
 
                     @if ($message = Session::get('error'))
                         <br>
@@ -69,7 +76,7 @@
 
                 <div class="box-footer">
                     <div class="col-lg-1" style="margin-left: 83%;">
-                        {{ link_to_route('role.index', $title = 'Voltar', '', ['class' => 'btn btn-block btn-danger']) }}
+                        {{ link_to_route('event.index', $title = 'Voltar', '', ['class' => 'btn btn-block btn-danger']) }}
                     </div>
                     <div class="col-md-1">
                         {{ Form::submit('Salvar', ['class' => 'btn btn-block btn-success']) }}
@@ -82,7 +89,7 @@
 @endsection
 
 @section('js')
-    <script type="text/javascript" src="{{ asset('assets/admin/js/role.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/admin/js/event.js') }}"></script>
 @endsection
 
 @section('css')
