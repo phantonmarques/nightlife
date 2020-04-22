@@ -2,7 +2,7 @@
 @section('title', 'Eventos · ')
 
 @section('content_header')
-    <h1>Eventos</h1>
+    <h1>Eventos Agendados</h1>
 @stop
 
 @section('breadcrumbs')
@@ -46,59 +46,31 @@
                 </div>
             </div>
 
-            @if(isset($events) && sizeof($events))
+            @if(isset($events) && sizeof($events) > 0)
                 <div class="cards">
-                    <div class="card__wrapper">
-                        <div class="card">
-                            <figure class="card__figure">
-                                <img class="card__image"
-                                     src="https://media.gazetadopovo.com.br/2019/09/27183838/volkswagen-golf-gti-hatch-1-960x540.jpg">
-                            </figure>
-                            <div class="card__title">Coloque aqui o título do evento!</div>
-                            <div class="card__date">01/01/2000</div>
-                            <div class="card__links">
-                                <a href="#" class="card__link card__link--danger">EXCLUIR</a>
-                                <a href="#" class="card__link card__link--success">EDITAR</a>
-                                <a href="#" class="card__link card__link--info">VISUALIZAR</a>
+                    @foreach ($events as $event)
+                        <div class="card__wrapper">
+                            <div class="card">
+                                <figure class="card__figure">
+                                    <img class="card__image"
+                                         src="{{ ".." . Storage::url('app/'.$event->cover_path) }}" alt="{{ $event->name }}">
+                                </figure>
+                                <div class="card__title">{{ $event->name }}</div>
+                                <div class="card__date">{{ formatDate($event->date_event) }}</div>
+                                <div class="card__links">
+                                    <a href="{{ route('event.destroy', $event) }}" class="card__link card__link--danger" onsubmit="confirm('Tem certeza?')">EXCLUIR</a>
+                                    <a href="{{ route('event.edit', $event) }}" class="card__link card__link--success">EDITAR</a>
+                                    <a href="{{ route('event.show', $event) }}" class="card__link card__link--info">VISUALIZAR</a>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="card__wrapper">
-                        <div class="card">
-                            <figure class="card__figure">
-                                <img class="card__image"
-                                     src="https://media.gazetadopovo.com.br/2019/09/27183838/volkswagen-golf-gti-hatch-1-960x540.jpg">
-                            </figure>
-                            <div class="card__title">Coloque aqui o título do evento!</div>
-                            <div class="card__date">01/01/2000</div>
-                            <div class="card__links">
-                                <a href="#" class="card__link card__link--danger">EXCLUIR</a>
-                                <a href="#" class="card__link card__link--success">EDITAR</a>
-                                <a href="#" class="card__link card__link--info">VISUALIZAR</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card__wrapper">
-                        <div class="card">
-                            <figure class="card__figure">
-                                <img class="card__image"
-                                     src="https://media.gazetadopovo.com.br/2019/09/27183838/volkswagen-golf-gti-hatch-1-960x540.jpg">
-                            </figure>
-                            <div class="card__title">Coloque aqui o título do evento!</div>
-                            <div class="card__date">01/01/2000</div>
-                            <div class="card__links">
-                                <a href="#" class="card__link card__link--danger">EXCLUIR</a>
-                                <a href="#" class="card__link card__link--success">EDITAR</a>
-                                <a href="#" class="card__link card__link--info">VISUALIZAR</a>
-                            </div>
-                        </div>
-                    </div>
+                    @endforeach
                 </div>
             @else
                 <div class="cards">
                     <div class="card__wrapper">
                         <div class="card" style="text-align: center">
-                            Nenhum evento cadastrado
+                            Nenhum evento cadastrado/disponível
                         </div>
                     </div>
                 </div>
@@ -111,7 +83,6 @@
                 </div>
             @endif
         </div>
-    </div>
     </div>
 
     @include('vendor/flash-message')

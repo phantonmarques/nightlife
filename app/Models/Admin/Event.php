@@ -17,11 +17,18 @@ class Event extends Model
     protected $fillable = ['name', 'date_event', 'price', 'cover_path', 'description', 'status', 'establishment_id', 'establishment_address_id'];
 
     /**
-     * Get the category record associated with the establishment.
+     * Get the establishment record associated with the event.
      */
     public function establishment()
     {
         return $this->belongsTo(Establishment::class,'establishment_id');
+    }
 
+    /**
+     * Get the establishment address record associated with the event.
+     */
+    public function establishment_address()
+    {
+        return $this->belongsTo(EstablishmentAddress::class,'establishment_address_id');
     }
 }

@@ -27,7 +27,7 @@
 
             $emailUnique = '';
             $cpfcnpjUnique = '';
-            $passwordRequired = ", 'required'";
+            $passwordRequired = 'required';
 
             /** @var \App\Models\Admin\Establishment The establishment to update */
             $user = $this->route()
@@ -45,7 +45,7 @@
                 'email' => ['required', 'string', 'unique:user' . $emailUnique],
                 'email_verified_at' => ['required'],
                 'user_role' => ['min:1'],
-                'password' => ['min:6' . $passwordRequired],
+                'password' => ['min:6', $passwordRequired],
                 'cpf_cnpj' => ['required', 'string', 'min:11', 'unique:user' . $cpfcnpjUnique],
                 'city_id' => ['required'],
                 'state_id' => ['required'],

@@ -163,11 +163,11 @@
                 </div>
 
                 <div class="box-footer">
-                    <div class="col-lg-1" style="margin-left: 83%;">
-                        {{ link_to_route('user.index', $title = 'Voltar', '', ['class' => 'btn btn-block btn-danger']) }}
-                    </div>
-                    <div class="col-md-1">
+                    <div class="col-lg-2 pull-right">
                         {{ Form::submit('Salvar', ['class' => 'btn btn-block btn-success']) }}
+                    </div>
+                    <div class="col-lg-2 pull-right">
+                        {{ link_to_route('user.index', $title = 'Voltar', '', ['class' => 'btn btn-block btn-danger']) }}
                     </div>
                 </div>
                 {{ Form::close() }}

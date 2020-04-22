@@ -14,6 +14,13 @@ class SiteInstController extends Controller
         return view('siteinstitucional.home.home');
     }
 
+    /** PROVISÓRIO
+     */
+    public function login()
+    {
+        return view('siteinstitucional.auth.login');
+    }
+
     public function searchCitys($stateSelect){
         return City::where('state_id', $stateSelect)->select( 'id', 'name', 'name_visible')->get()->toJson();
     }

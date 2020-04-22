@@ -81,7 +81,7 @@ Route::get('register', ['uses' => 'Auth\RegisterController@showRegistrationForm'
 Route::post('register', ['uses' => 'Auth\RegisterController@register'])->name('register.action');
 
 # Rotas de autenticação para todos usuários
-Route::get('login', ['as' => 'login', 'uses' => 'Auth\LoginController@showLoginForm']);
+Route::get('login', ['as' => 'login', 'uses' => 'SiteInstitucional\SiteInstController@login']);
 Route::post('login', ['as' => '', 'uses' => 'Auth\LoginController@login']);
 Route::post('logout', ['as' => 'logout', 'uses' => 'Auth\LoginController@logout']);
 

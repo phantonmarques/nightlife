@@ -1,6 +1,6 @@
 <?php
 
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +13,10 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+# Auth Users
+Route::post('login', 'Api\\UserController@login');
+Route::post('register', 'Api\\UserController@store');
+
+Route::middleware('check_token')->group(function() {
+    Route::get('/eventos_recomendados', 'Api\\UserController@index');
 });

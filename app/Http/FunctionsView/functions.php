@@ -51,3 +51,14 @@
         else
             return substr($value, 0, 5) . '-' . substr($value, 5, 3);
     }
+
+    /**
+     * Return format date br
+     *
+     * @param $value
+     * @return string
+     */
+    function formatDate($value)
+    {
+        return date("d/m/Y", strtotime($value));
+    }

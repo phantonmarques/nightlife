@@ -2,7 +2,6 @@
 @section('title', (isset($event->id) ? 'Editar ' : 'Criar ') . 'Evento · ')
 
 @section('content_header')
-    <meta name="csrf-token" content="{{ csrf_token() }}">
     <h1>&nbsp;</h1>
     <ol class="breadcrumb">
         <li><a href="#">Inicio</a></li>
@@ -40,29 +39,119 @@
                     @endif
                     <br>
 
-                    $table->string('name');
-                    $table->date('date_event');
-                    $table->double('price', 10, 2);
-                    $table->string('cover_path')->unique();
-                    $table->longText('description');
-                    $table->boolean('status');
-                    $table->unsignedInteger('establishment_address_id');
-                    $table->unsignedInteger('establishment_id');
-                    $table->timestamps();
+                    <div class="row">
+                        <div class="col-md-2">
+                            <div class="custom-file">
+                                @if (!empty($event->cover_path))
+                                    <img src="{{ "../../.." . Storage::url('app/' . $event->cover_path) }}" alt="{{ $event->name }}"
+                                         style="max-width: 30vh;">
+                                @endif
+                                <br><br>
+                            </div>
+
+                            <div class="input-file-container">
+                                {{ Form::file('cover_path', ['class' => 'input-file']) }}
+                                {{ Form::label('cover_path', (!empty($event->cover_path) ? 'Mudar ' : '') . 'Capa Evento', ['class' => 'input-file-trigger']) }}
+                            </div>
+                            <p class="file-return"></p>
+                        </div>
+                    </div>
+                    <br>
+
+                    @if ($errors->has('cover_path'))
+                        <br>
+                        <div class="row">
+                            <div class="col-md-10">
+                                <div class="text-red">{{ $errors->first('cover_path') }}</div>
+                            </div>
+                        </div>
+                    @endif
 
                     <div class="row">
-                        <div class="col-md-10">
+                        <div class="col-md-5">
                             <div class="form-group">
-                                @if (auth()->user()->image != null)
-                                    <img src="{{ url('storage/users/'.auth()->user()->image) }}" alt="{{ auth()->user()->name }}" style="max-width: 50px;">
-                                @endif
+                                {{ Form::label('datepicker', 'Data Evento') }} <span class="span-required">*</span>
 
-                                <label for="image">Imagem: </label>
-                                <input type="file" name="image" class="form-control">
+                                <div class="input-group date">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </div>
+                                    {{ Form::text('date', (isset($event->id) ? formatDate($event->date_event) : ''), ['class' => 'form-control pull-right', 'id' => 'datepicker' , 'onChange' => 'FillDate(this.value)'] ) }}
+                                </div>
                             </div>
                         </div>
                     </div>
 
+                    {!! Form::hidden('date_event', '', ['id' => 'date_event']) !!}
+
+                    <br>
+
+                    @if ($errors->has('date_event'))
+                        <br>
+                        <div class="row">
+                            <div class="col-md-10">
+                                <div class="text-red">{{ $errors->first('cover_path') }}</div>
+                            </div>
+                        </div>
+                    @endif
+
+                    <div class="row">
+                        <div class="col-md-5">
+                            {{ Form::label('establishment_address_id','Endereço do Evento') }} <span class="span-required">*</span>
+
+                            <select name="establishment_address_id" class="form-control">
+                                <option value="">---- Selecione ----</option>
+                                @foreach($addresses as $address)
+                                    <option value="{{ $address->id }}" {{ (isset($event->id) ? (($event->establishment_address_id === $address->id) ? 'selected' : '') : '') }} >{{ $address->street_name . " " . $address->building_number . " (" .  formatZipCode($address->zip_code) . ")" }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <br>
+
+                    @if ($errors->has('establishment_address_id'))
+                        <br>
+                        <div class="row">
+                            <div class="col-md-10">
+                                <div class="text-red">{{ $errors->first('cover_path') }}</div>
+                            </div>
+                        </div>
+                    @endif
+
+                    <div class="row">
+                        <div class="col-md-5">
+                            {{ Form::label('price','Preço Evento') }} <span class="span-required">*</span>
+                            {{ Form::text('price', (isset($event->id) ? number_format($event->price, 2, ',', '.') : ''), ['placeholder' => 'Informe preço do evento', 'class' => 'form-control money', 'onkeypress' => 'return onlyNumbers(event)']) }}
+                        </div>
+                    </div>
+                    <br>
+
+                    @if ($errors->has('price'))
+                        <br>
+                        <div class="row">
+                            <div class="col-md-10">
+                                <div class="text-red">{{ $errors->first('cover_path') }}</div>
+                            </div>
+                        </div>
+                    @endif
+
+                    <div class="row">
+                        <div class="col-md-10">
+                            {{ Form::label('description','Descrição Evento') }} <span class="span-required">*</span>
+                            {!! Form::textarea('description', (isset($event->id) ? $event->description : ''), ['class'=>'form-control', 'id' => 'description']) !!}
+                        </div>
+                    </div>
+
+                    @if ($errors->has('description'))
+                        <br>
+                        <div class="row">
+                            <div class="col-md-10">
+                                <div class="text-red">{{ $errors->first('description') }}</div>
+                            </div>
+                        </div>
+                    @endif
+
+                    {!! Form::hidden('status', 1) !!}
 
                     @if ($message = Session::get('error'))
                         <br>
@@ -75,11 +164,11 @@
                 </div>
 
                 <div class="box-footer">
-                    <div class="col-lg-1" style="margin-left: 83%;">
-                        {{ link_to_route('event.index', $title = 'Voltar', '', ['class' => 'btn btn-block btn-danger']) }}
-                    </div>
-                    <div class="col-md-1">
+                    <div class="col-lg-2 pull-right">
                         {{ Form::submit('Salvar', ['class' => 'btn btn-block btn-success']) }}
+                    </div>
+                    <div class="col-lg-2 pull-right">
+                        {{ link_to_route('event.index', $title = 'Voltar', '', ['class' => 'btn btn-block btn-danger']) }}
                     </div>
                 </div>
                 {{ Form::close() }}
@@ -90,8 +179,12 @@
 
 @section('js')
     <script type="text/javascript" src="{{ asset('assets/admin/js/event.js') }}"></script>
+    <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="{{ asset('vendor/unisharp/laravel-ckeditor/ckeditor.js') }}"></script>
 @endsection
 
 @section('css')
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/Global/css/general.css') }}"/>
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/admin/css/event.css') }}"/>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
 @endsection

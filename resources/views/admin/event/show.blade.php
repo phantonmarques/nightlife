@@ -1,12 +1,12 @@
 @extends('adminlte::page')
-@section('title', 'Função · Visualização')
+@section('title', 'Evento · Visualização')
 
 @section('content_header')
-    <h1>Função [{{ $role->name }}]</h1>
+    <h1>Evento [{{ $event->name }}]</h1>
 @stop
 
 @section('breadcrumbs')
-    {{ Breadcrumbs::render(Route::currentRouteName(), $role) }}
+    {{ Breadcrumbs::render(Route::currentRouteName(), $event) }}
 @endsection
 
 @section('content')
@@ -14,82 +14,123 @@
         <div class="col-md-12">
             <div class="box box-warning">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Informações da Função</h3>
+                    <h3 class="box-title">Informações do Evento</h3>
                 </div>
 
                 <div class="box-body">
                     <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-5">
                             @include('adminlte::form.input.static', [
-                                'label' => 'ID',
-                                'value' => $role->id
+                                'label' => 'Título Evento',
+                                'value' => $event->name
                             ])
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-sm-5">
+                            {{ Form::label('Capa do Evento') }}
+                            <img class="img-responsive" style="width: 50vh"
+                                 src="{{ "../.." . Storage::url('app/'.$event->cover_path) }}" alt="{{ $event->name }}">
+                        </div>
+                    </div>
+
+                    <br><br>
+
+                    <div class="row">
+                        <div class="col-md-5">
                             @include('adminlte::form.input.static', [
-                                'label' => 'Nome Função',
-                                'value' => $role->name
+                                'label' => 'Data do Evento',
+                                'value' => formatDate($event->date_event)
                             ])
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-5">
                             @include('adminlte::form.input.static', [
-                                'label' => 'Função',
-                                'value' => $role->slug
+                                'label' => 'Preço mínimo do Evento',
+                                'value' => number_format($event->price, 2, ',', '.')
                             ])
                         </div>
                     </div>
 
+                    <br>
+
                     <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-10">
+                            {{ Form::label('Descrição do Evento') }}
+                            {!! $event->description !!}
+                        </div>
+                    </div>
+
+                    <br>
+
+                    <div class="row">
+                        <div class="col-md-5">
                             @include('adminlte::form.input.static', [
                                 'label' => 'Data de Criação',
-                                'value' => $role->created_at->format('d/m/Y - H:i')
+                                'value' => $event->created_at->format('d/m/Y - H:i')
                             ])
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-5">
                             @include('adminlte::form.input.static', [
                                 'label' => 'Ultima Atualização',
-                                'value' => $role->updated_at->format('d/m/Y - H:i')
+                                'value' => $event->updated_at->format('d/m/Y - H:i')
                             ])
                         </div>
                     </div>
 
                     <div class="col-md-12">
-                        <h4 class="lead">Informações da Permissão Vinculada a Função</h4>
+                        <h4 class="lead">Informações do Endereço vinculado ao Evento</h4>
                     </div>
 
-                    @if(sizeof($role->permissions)>0)
-                        @foreach($role->permissions as $key => $permission)
-                            <div class="row">
-                                <div class="col-md-4">
-                                    @include('adminlte::form.input.static', [
-                                        'label' => 'Nome Permissão ' . ($key+1),
-                                        'value' => $permission->name
-                                    ])
-                                </div>
-                                <div class="col-md-4">
-                                    @include('adminlte::form.input.static', [
-                                        'label' => 'Permissão ' . ($key+1),
-                                        'value' => $permission->slug
-                                    ])
-                                </div>
-                                <div class="col-md-4">
-                                    @include('adminlte::form.input.static', [
-                                        'label' => 'Data de Criação Permissão ' . ($key+1),
-                                        'value' => $permission->created_at->format('d/m/Y - H:i')
-                                    ])
-                                </div>
-                            </div>
-                        @endforeach
-                    @endif
+                    <div class="row">
+                        <div class="col-md-5">
+                            @include('adminlte::form.input.static', [
+                                'label' => 'Data de Criação',
+                                'value' => $event->created_at->format('d/m/Y - H:i')
+                            ])
+                        </div>
+                        <div class="col-md-5">
+                            @include('adminlte::form.input.static', [
+                                'label' => 'Ultima Atualização',
+                                'value' => $event->updated_at->format('d/m/Y - H:i')
+                            ])
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-5">
+                            @include('adminlte::form.input.static', [
+                                'label' => 'Endereço do Evento',
+                                'value' => $event->establishment_address->street_name . " " . $event->establishment_address->building_number
+                            ])
+                        </div>
+                        <div class="col-md-5">
+                            @include('adminlte::form.input.static', [
+                                'label' => 'CEP',
+                                'value' => formatZipCode($event->establishment_address->zip_code)
+                            ])
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-5">
+                            @include('adminlte::form.input.static', [
+                                'label' => 'Cidade',
+                                'value' => $event->establishment_address->city->name_visible
+                            ])
+                        </div>
+                        <div class="col-md-5">
+                            @include('adminlte::form.input.static', [
+                                'label' => 'Estado',
+                                'value' => $event->establishment_address->city->state->name_visible
+                            ])
+                        </div>
+                    </div>
                 </div>
 
                 <div class="box-footer">
-                    <div class="col-md-1">
-                        {{ link_to_route('role.index', $title = 'Voltar', '', ['class' => 'btn btn-block btn-danger']) }}
+                    <div class="col-md-2 pull-right">
+                        {{ link_to_route('event.edit', $title = 'Editar', $event, ['class' => 'btn btn-block btn-primary']) }}
                     </div>
-                    <div class="col-md-1">
-                        {{ link_to_route('role.edit', $title = 'Editar', $role, ['class' => 'btn btn-block btn-primary']) }}
+                    <div class="col-md-2 pull-right">
+                        {{ link_to_route('event.index', $title = 'Voltar', '', ['class' => 'btn btn-block btn-danger']) }}
                     </div>
                 </div>
             </div>

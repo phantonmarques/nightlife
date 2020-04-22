@@ -3,7 +3,6 @@ window.onload = function() {
     alert = document.getElementById("alert-sync");
 
     if (typeof(alert) != 'undefined' && alert != null) {
-        console.log('oibb')
         window.setTimeout('hideAlert(alert)', 4000);
     }
 

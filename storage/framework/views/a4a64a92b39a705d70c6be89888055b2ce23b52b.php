@@ -259,12 +259,12 @@
                 <?php endif; ?>
 
                 <div class="box-footer">
-                    <div class="col-lg-1" style="margin-left: 83%;">
-                        <?php echo e(link_to_route('establishment.index', $title = 'Voltar', '', ['class' => 'btn btn-block btn-danger'])); ?>
+                    <div class="col-lg-2 pull-right">
+                        <?php echo e(Form::submit('Salvar', ['class' => 'btn btn-block btn-success'])); ?>
 
                     </div>
-                    <div class="col-md-1">
-                        <?php echo e(Form::submit('Salvar', ['class' => 'btn btn-block btn-success'])); ?>
+                    <div class="col-lg-2 pull-right">
+                        <?php echo e(link_to_route('establishment.index', $title = 'Voltar', '', ['class' => 'btn btn-block btn-danger'])); ?>
 
                     </div>
                 </div>

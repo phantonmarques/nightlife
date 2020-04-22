@@ -22,7 +22,7 @@
 
                         {{ Form::select('e', $establishments, 0, ['class' => 'form-control-p']) }}
 
-                        <div class="col-md-2 form-save-p" style="margin-left: 83%;">
+                        <div class="col-lg-3 pull-right form-save-p">
                             {{ Form::submit('Buscar', ['class' => 'btn btn-block btn-success']) }}
                         </div>
                         {{ Form::close() }}
