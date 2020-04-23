@@ -1,0 +1,54 @@
+<?php
+
+    namespace App\Http\Requests\Api;
+
+    use Illuminate\Foundation\Http\FormRequest as LaravelFormRequest;
+    use \Illuminate\Contracts\Validation\Validator;
+    use Waavi\Sanitizer\Laravel\SanitizesInput;
+    use Illuminate\Validation\ValidationException;
+
+
+    abstract class FormRequest extends LaravelFormRequest
+    {
+        use SanitizesInput;
+
+        /**
+         * For more sanitizer rule check https://github.com/Waavi/Sanitizer
+         */
+        public function validateResolved()
+        {
+            {
+                $this->sanitize();
+                parent::validateResolved();
+            }
+        }
+
+        /**
+         * Get the validation rules that apply to the request.
+         *
+         * @return array
+         */
+        abstract public function rules();
+
+        /**
+         * Determine if the user is authorized to make this request.
+         *
+         * @return bool
+         */
+        abstract public function authorize();
+
+        /**
+         * Handle a failed validation attempt.
+         *
+         * @param  Validator  $validator
+         * @return mixed
+         */
+        protected function failedValidation(Validator $validator)
+        {
+            exit(json_encode([
+                'message' => 'Não foi possível criar a conta!',
+                'status' => false,
+                'errors' => $validator->errors()->messages()
+            ]));
+        }
+    }

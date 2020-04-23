@@ -45,4 +45,11 @@ class Establishment extends Model
         return $this->belongsToMany(Rhythm::class,'establishments_rhythm');
 
     }
+
+    /**
+     * Get statistics of establishment.
+     */
+    public function establishment_statistics(){
+        return $this->hasMany(EstablishmentStatistics::class, 'establishment_id');
+    }
 }

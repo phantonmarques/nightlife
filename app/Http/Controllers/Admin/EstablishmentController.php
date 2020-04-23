@@ -111,6 +111,12 @@
                 if (!$establishment->exists)
                     throw new \Exception('Não foi possível criar o estabelecimento!');
 
+                $created = $establishment->establishment_statistics()->create(['establishment_id' => $establishment->id]);
+
+                if (!$created)
+                    throw new \Exception('Não foi possível criar a estatistica do estabelecimento!');
+
+
                 $establishment->establishments_category()->attach($data["category"]);
 
                 foreach ($data["rhythm"] as $rhythm):
