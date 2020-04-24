@@ -4,7 +4,7 @@ use Illuminate\Database\Seeder;
 use App\Models\Admin\Permission;
 
 
-class PermissionSeeder extends Seeder
+class PermissionTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -13,6 +13,11 @@ class PermissionSeeder extends Seeder
      */
     public function run()
     {
+        $accessAdmin = new Permission();
+        $accessAdmin->name = 'Acesso Administradores';
+        $accessAdmin->slug = 'access-admin';
+        $accessAdmin->save();
+
         $manageUser = new Permission();
         $manageUser->name = 'Gerenciar Usuários';
         $manageUser->slug = 'manage-users';

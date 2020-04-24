@@ -68,14 +68,13 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        dd('oibb - estou em registercontroller.php');
+        dd('exit');
         return User::create([
             'name' => $data['name'],
             'login' => $data['login'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
             'city_id' => $data['city_id'],
-            'state_id' => $data['state_id'],
             'contact_main' => $data['contact_main'],
             'ddd_main' => $data['ddd_main'],
             'phone_main' => $data['phone_main'],

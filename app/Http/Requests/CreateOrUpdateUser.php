@@ -48,7 +48,6 @@
                 'password' => ['min:6', $passwordRequired],
                 'cpf_cnpj' => ['required', 'string', 'min:11', 'unique:user' . $cpfcnpjUnique],
                 'city_id' => ['required'],
-                'state_id' => ['required'],
                 'type_user' => ['required', 'min:1'],
             ];
 
@@ -77,7 +76,6 @@
                 'cpf_cnpj.min' => 'O campo [CPF/CNPJ] deve conter no mínimo 11 números!',
                 'cpf_cnpj.unique' => 'Já existe esse cpf/cnpj cadastrado, favor informe outro!',
                 'city_id.required' => 'Erro, selecione uma cidade!',
-                'state_id.required' => 'Erro, selecione um estado!',
                 'type_user.required' => 'Erro, selecione o tipo de usuário!',
                 'type_user.min' => 'Erro, selecione o tipo de usuário!',
             ];

@@ -13,15 +13,10 @@ use Illuminate\Support\Facades\DB;
 class UserController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * Login user common
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function index()
-    {
-        dd(auth()->user());
-    }
-
     public function login(Request $request){
         $user = User::where('email', $request->email)->first();
 
@@ -30,9 +25,15 @@ class UserController extends Controller
                 $token = Str::random(90);
                 $user->remember_token = $token;
                 $user->update();
+
+                $admin = false;
+                if ($user->type_user !== 'u')
+                    $admin = true;
+
                 return response()->json([
                     'message' => 'Login efetuado com sucesso',
                     'status' => true,
+                    'is_admin' => $admin,
                     'token' => $token,
                 ]);
             } else if (empty($user->email_verified_at)){
@@ -57,10 +58,9 @@ class UserController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\Api\CreateOrUpdateUser  $request
-     * @return \Illuminate\Http\Response
+     * Register user common
+     * @param CreateOrUpdateUser $request
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(CreateOrUpdateUser $request)
     {
@@ -100,24 +100,22 @@ class UserController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * Update user common
+     * @param Request $request
+     * @param User $user
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, User $user)
     {
         //
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove user common
      *
-     * @param  int  $id
+     * @param  User  $user
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($user)
     {
         //
     }

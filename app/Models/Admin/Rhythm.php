@@ -16,4 +16,11 @@ class Rhythm extends Model
      */
     protected $fillable = ['name'];
 
+    /**
+     * Get statistics of establishment.
+     */
+    public function rhythm_statistics(){
+        return $this->hasMany(RhythmStatistics::class, 'rhythm_id');
+    }
+
 }

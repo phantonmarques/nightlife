@@ -16,7 +16,6 @@ class EstablishmentAddress extends Model
         'building_number',
         'complement',
         'neighborhood',
-        'state_id',
         'city_id'
     ];
 

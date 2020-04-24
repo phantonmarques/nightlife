@@ -24,9 +24,9 @@ class EstablishmentAddressController extends Controller
      */
     public function __construct()
     {
-        #SOMENTE AUTENTICADOS
+        #ONLY AUTH
         $this->middleware('auth');
-        #SOMENTE COM A FUNÇÃO ATIVA [ADMIN]
+        #ONLY WITH ROLE ACTIVE [ADMIN]
         $this->middleware('role:admin');
     }
 

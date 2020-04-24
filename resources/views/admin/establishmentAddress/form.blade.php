@@ -66,7 +66,7 @@
                         <div class="row">
                             <div class="col-lg-6">
                                 {{ Form::label('state_id','Estado') }} <span class="span-required">*</span>
-                                {{ Form::select('state_id', $states, (isset($establishmentAddress->id) ? $establishmentAddress->state_id : ''), ['class' => 'form-control', 'id' => 'state_id', 'onchange' => 'searchCity()']) }}
+                                {{ Form::select('state_id', $states, (isset($establishmentAddress->id) ? $establishmentAddress->city->state->id : ''), ['class' => 'form-control', 'id' => 'state_id', 'onchange' => 'searchCity()']) }}
                             </div>
                             <div class="col-lg-6">
                                 {{ Form::label('city_id','Cidade') }} <span class="span-required">*</span>
@@ -125,15 +125,6 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="text-red">{{ $errors->first('neighborhood') }}</div>
-                            </div>
-                        </div>
-                    @endif
-
-                    @if ($errors->has('state_id'))
-                        <br>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="text-red">{{ $errors->first('state_id') }}</div>
                             </div>
                         </div>
                     @endif

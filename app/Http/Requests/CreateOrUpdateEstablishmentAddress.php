@@ -30,7 +30,6 @@
                 "building_number"       => ['required', 'integer'],
                 "neighborhood"          => ['required', 'string', 'min:3'],
                 "complement"            => ['min:3'],
-                "state_id"              => ['required', 'min:1'],
                 "city_id"               => ['required', 'integer'],
             ];
 
@@ -59,8 +58,6 @@
                 'complement.min'                => 'O complemento deve conter no mínimo três caracteres',
                 'neighborhood.required'         => 'Selecione um bairro!',
                 'neighborhood.min'              => 'Selecione um bairro!',
-                'state_id.required'             => 'Selecione um estado!',
-                'state_id.min'                  => 'Selecione um estado!',
                 'city_id.required'              => 'Selecione uma cidade!',
                 'city_id.integer'               => 'Selecione uma cidade!',
             ];

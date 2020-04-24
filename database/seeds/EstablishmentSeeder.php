@@ -2,7 +2,8 @@
 
 use Illuminate\Database\Seeder;
 use App\Models\Admin\Establishment;
-
+use App\Models\Admin\Category;
+use App\Models\Admin\Rhythm;
 
 class EstablishmentSeeder extends Seeder
 {
@@ -13,12 +14,23 @@ class EstablishmentSeeder extends Seeder
      */
     public function run()
     {
-        Establishment::create([
-            'user_id'                => 2,
-            'corporate_name'         => 'AUTHENTIC OUTLET',
-            'state_registration'     => '1234567890000000',
-            'type_license'           => 'f',
-            'status'                 => true,
-        ]);
+        $category = Category::where('name','Bares')->first();
+        $rhythm1 = Rhythm::where('name','Sertanejo')->first();
+        $rhythm2 = Rhythm::where('name','Funk')->first();
+        $rhythm3 = Rhythm::where('name','Rock')->first();
+
+        $establishment = new Establishment();
+        $establishment->user_id = 2;
+        $establishment->corporate_name = 'AUTHENTIC OUTLET';
+        $establishment->state_registration = '1234567890000000';
+        $establishment->type_license = 'f';
+        $establishment->status = true;
+        $establishment->save();
+        $establishment->establishments_category()->attach($category);
+        $establishment->establishments_rhythm()->attach($rhythm1);
+        $establishment->establishments_rhythm()->attach($rhythm2);
+        $establishment->establishments_rhythm()->attach($rhythm3);
+        $establishment->establishment_statistics()->create(['establishment_id' => $establishment->id]);
+
     }
 }

@@ -105,8 +105,10 @@ function searchLocation() {
             success: function (data) {
                 if (typeof (data.logradouro) != "undefined") {
                     searchState(data.uf);
-                    var city = data.localidade;
-                    searchCity(removeAccentsSpace(city));
+                    setTimeout(function() {
+                        var city = data.localidade;
+                        searchCity(removeAccentsSpace(city));
+                    }, (500));
                 } else {
                     swal("Erro", "Cep não localizado!", "error");
 

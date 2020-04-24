@@ -1,21 +1,28 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-class AdminController extends Controller
+class EventController extends Controller
 {
 
     /**
-     * AdminController constructor.
+     * EventController constructor.
      */
     public function __construct()
     {
         #ONLY AUTH
-        $this->middleware('auth');
+//        $this->middleware('auth');
     }
+
+
+    public function eventsRecommended()
+    {
+        dd(auth()->user()->city_id);
+    }
+
 
     /**
      * Display a listing of the resource.
@@ -24,7 +31,7 @@ class AdminController extends Controller
      */
     public function index()
     {
-        return view('admin.home.index');
+        //
     }
 
     /**

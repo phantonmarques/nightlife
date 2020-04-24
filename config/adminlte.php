@@ -196,8 +196,15 @@ return [
             'text'      => 'Eventos',
             'icon'      => 'far fa-calendar-alt',
             'route'     => 'event.prepareIndex',
-            'active'    => ['event', 'event/*', 'event?*']
-            //'can'     => 'EstablishmentPolicy'
+            'active'    => ['event', 'event/*', 'event?*'],
+            'can'       => 'manage-establishment'
+        ],
+        [
+            'text'      => 'Eventos',
+            'icon'      => 'far fa-calendar-alt',
+            'route'     => 'event.index',
+            'active'    => ['event', 'event/*', 'event?*'],
+            'can'       => 'establishment-manager',
         ],
         [
             'text'      => 'Chamados',

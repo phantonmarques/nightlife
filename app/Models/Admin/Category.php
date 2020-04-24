@@ -16,5 +16,10 @@ class Category extends Model
      */
     protected $fillable = ['name'];
 
-
+    /**
+     * Get statistics of category.
+     */
+    public function category_statistics(){
+        return $this->hasMany(CategoryStatistics::class, 'category_id');
+    }
 }

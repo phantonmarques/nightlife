@@ -127,7 +127,7 @@
                     <div class="row">
                         <div class="col-lg-6">
                             {{ Form::label('state_id','Estado') }} <span class="span-required">*</span>
-                            {{ Form::select('state_id', $states, (isset($user->id) ? $user->state_id : ''), ['class' => 'form-control', 'id' => 'state_id', 'onchange' => 'searchCity()']) }}
+                            {{ Form::select('state_id', $states, (isset($user->id) ? $user->city->state->id : ''), ['class' => 'form-control', 'id' => 'state_id', 'onchange' => 'searchCity()']) }}
                         </div>
                         <div class="col-lg-6">
                             {{ Form::label('city_id','Cidade') }} <span class="span-required">*</span>
