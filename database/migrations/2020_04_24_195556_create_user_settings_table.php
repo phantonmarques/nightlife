@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateEstablishmentsTable extends Migration
+class CreateUserSettingsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,13 @@ class CreateEstablishmentsTable extends Migration
      */
     public function up()
     {
-        Schema::create('establishment', function (Blueprint $table) {
+        Schema::create('user_settings', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('profile_path')->unique()->nullable();
+            $table->json('favorite_categorys')->nullable();
+            $table->json('favorite_rhythms')->nullable();
             $table->unsignedInteger('user_id');
-            $table->string('corporate_name');
-            $table->string('state_registration');
-            $table->enum('type_license', ['b','f']);
-            $table->boolean('status');
             $table->timestamps();
-            $table->softDeletes();
 
             $table->foreign('user_id')->references('id')->on('user')->onDelete('cascade');
         });
@@ -34,6 +32,6 @@ class CreateEstablishmentsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('establishment');
+        Schema::dropIfExists('user_settings');
     }
 }

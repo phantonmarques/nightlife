@@ -80,6 +80,7 @@ use App\Models\Admin\Permission;
         $user4->type_user = 'u';
         $user4->email_verified_at = date('Y-m-d H:i:s');
         $user4->save();
+        $user4->user_settings()->create(['user_id' => $user4->id]);
 
         #
 
@@ -91,6 +92,7 @@ use App\Models\Admin\Permission;
         $user5->city_id = 1050;
         $user5->type_user = 'u';
         $user5->save();
+        $user5->user_settings()->create(['user_id' => $user5->id]);
 
     }
 }

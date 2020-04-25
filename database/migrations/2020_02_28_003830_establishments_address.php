@@ -21,7 +21,6 @@ class EstablishmentsAddress extends Migration
             $table->string('building_number')->nullable();
             $table->string('complement')->nullable();
             $table->string('neighborhood');
-            $table->unsignedInteger('state_id')->nullable();
             $table->unsignedInteger('city_id')->nullable();
             $table->timestamps();
             $table->softDeletes();
@@ -29,10 +28,6 @@ class EstablishmentsAddress extends Migration
             $table->foreign('establishment_id')
                 ->references('id')
                 ->on('establishment');
-
-            $table->foreign('state_id')
-                ->references('id')
-                ->on('state');
 
             $table->foreign('city_id')
                 ->references('id')

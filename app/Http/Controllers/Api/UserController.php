@@ -77,6 +77,11 @@ class UserController extends Controller
             if (!$user->exists)
                 throw new \Exception('Validação de conta falhou!');
 
+            $created = $user->user_settings()->create($user->id);
+
+            if (!$created)
+                throw new \Exception('Ocorreu um erro desconhecido ao criar a conta, tente novamente!');
+
             //CRIAR FLUXO PARA ENVIO DE LINK DE CONFIRMAÇÃO PELO E-MAIL
 
             DB::commit();

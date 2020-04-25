@@ -3,6 +3,7 @@
 namespace App\Models\Site;
 
 use App\Models\Admin\Establishment;
+use App\Models\Admin\UserSettings;
 use App\Models\Site\City;
 use App\Models\Admin\Traits\HasRolesAndPermissions;
 use Illuminate\Notifications\Notifiable;
@@ -56,6 +57,14 @@ class User extends Authenticatable
     public function city()
     {
         return $this->belongsTo(City::class, 'city_id', 'id');
+    }
+
+    /**
+     * Get users_settings of users (USER COMMON)
+     */
+    public function user_settings()
+    {
+        return $this->hasOne(UserSettings::class, 'user_id');
     }
 
 
