@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\DB;
 
 class CategoryController extends Controller
 {
-
     protected $paginate = 10;
 
     /**
@@ -58,10 +57,10 @@ class CategoryController extends Controller
 
         /** Create form options */
         $formOptions = [
-            'route' => 'category.store',
-            'method' => Request::METHOD_POST,
-            'files' => false,
-            'onsubmit' => 'return validateFormCategory(this)'
+            'route'     => 'category.store',
+            'method'    => Request::METHOD_POST,
+            'files'     => false,
+            'onsubmit'  => 'return validateFormCategory(this)'
         ];
 
         $category = new Category();
@@ -143,9 +142,10 @@ class CategoryController extends Controller
 
         /** Create form options */
         $formOptions = [
-            'route' => ['category.update', $category],
-            'method' => Request::METHOD_PUT,
-            'onsubmit' => 'return validateFormCategory(this)',
+            'route'     => ['category.update', $category],
+            'method'    => Request::METHOD_PUT,
+            'files'     => false,
+            'onsubmit'  => 'return validateFormCategory(this)',
         ];
 
         return view('admin.category.form',

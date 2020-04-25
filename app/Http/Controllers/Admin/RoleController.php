@@ -59,10 +59,10 @@ class RoleController extends Controller
 
         /** Create form options */
         $formOptions = [
-            'route' => 'role.store',
-            'method' => Request::METHOD_POST,
-            'files' => false,
-            'onsubmit' => 'return validateFormRole(this)'
+            'route'     => 'role.store',
+            'method'    => Request::METHOD_POST,
+            'files'     => false,
+            'onsubmit'  => 'return validateFormRole(this)'
         ];
 
         $permissions = Permission::get()->pluck('name', 'id');
@@ -151,25 +151,17 @@ class RoleController extends Controller
 
         /** Create form options */
         $formOptions = [
-            'route' => ['role.update', $role],
-            'method' => Request::METHOD_PUT,
-            'onsubmit' => 'return validateFormRole(this)',
+            'route'     => ['role.update', $role],
+            'method'    => Request::METHOD_PUT,
+            'files'     => false,
+            'onsubmit'  => 'return validateFormRole(this)',
         ];
 
         $permissions = Permission::get()->pluck('name', 'id');
 
-        $permissionChosen = array();
-
-        if (sizeof($role->permissions) > 0) :
-            foreach ($role->permissions as $permission) :
-                $permissionChosen[] = $permission->id;
-            endforeach;
-        endif;
-
         return view('admin.role.form',
             compact('formOptions',
                 'permissions',
-                'permissionChosen',
                 'role'));
     }
 

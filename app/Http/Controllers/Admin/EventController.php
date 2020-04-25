@@ -95,10 +95,10 @@
 
             /** Create form options */
             $formOptions = [
-                'route' => 'event.store',
-                'method' => Request::METHOD_POST,
-                'files' => true,
-                'onsubmit' => 'return validateFormEvent(this)'
+                'route'     => 'event.store',
+                'method'    => Request::METHOD_POST,
+                'files'     => true,
+                'onsubmit'  => 'return validateFormEvent(this)'
             ];
 
             if (auth()->user()->establishments()->count() > 0)
@@ -194,10 +194,10 @@
 
             /** Create form options */
             $formOptions = [
-                'route' => ['event.update', $event],
-                'method' => Request::METHOD_PUT,
-                'files' => true,
-                'onsubmit' => 'return validateFormEvent(this)',
+                'route'     => ['event.update', $event],
+                'method'    => Request::METHOD_PUT,
+                'files'     => true,
+                'onsubmit'  => 'return validateFormEvent(this)',
             ];
 
 

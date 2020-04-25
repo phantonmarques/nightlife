@@ -17,7 +17,8 @@ class UserController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function login(Request $request){
+    public function login(Request $request)
+    {
         $user = User::where('email', $request->email)->first();
 
         if ($user) {
@@ -30,13 +31,13 @@ class UserController extends Controller
                     'status' => true,
                     'user' => $user,
                 ]);
-            } else if (empty($user->email_verified_at)){
+            } else if (empty($user->email_verified_at)) {
                 // enviar novo link de confirmação
                 return response()->json([
                     'message' => 'Cadastro não confirmado, favor acesse o link de confirmação enviado no e-mail cadastrado!',
                     'status' => false
                 ]);
-            }else {
+            } else {
                 return response()->json([
                     'message' => 'Senha inválida',
                     'status' => false
@@ -68,10 +69,9 @@ class UserController extends Controller
             //REMOVER DEPOIS
             $data["email_verified_at"] = date('Y-m-d H:i:s');
 
-						$user = User::create($data);
-						
-						$token = Str::random(90);
-            $user->remember_token = $token;
+            $user = User::create($data);
+
+            $user->remember_token = Str::random(90);
             $user->update();
 
             if (!$user->exists)
@@ -115,7 +115,7 @@ class UserController extends Controller
     /**
      * Remove user common
      *
-     * @param  User  $user
+     * @param User $user
      * @return \Illuminate\Http\Response
      */
     public function destroy($user)

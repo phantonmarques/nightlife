@@ -58,10 +58,10 @@ class PermissionController extends Controller
 
         /** Create form options */
         $formOptions = [
-            'route' => 'permission.store',
-            'method' => Request::METHOD_POST,
-            'files' => false,
-            'onsubmit' => 'return validateFormPermission(this)'
+            'route'     => 'permission.store',
+            'method'    => Request::METHOD_POST,
+            'files'     => false,
+            'onsubmit'  => 'return validateFormPermission(this)'
         ];
 
         $permission = new Permission();
@@ -143,9 +143,10 @@ class PermissionController extends Controller
 
         /** Create form options */
         $formOptions = [
-            'route' => ['permission.update', $permission],
-            'method' => Request::METHOD_PUT,
-            'onsubmit' => 'return validateFormPermission(this)'
+            'route'     => ['permission.update', $permission],
+            'method'    => Request::METHOD_PUT,
+            'files'     => false,
+            'onsubmit'  => 'return validateFormPermission(this)'
         ];
 
         return view('admin.permission.form',

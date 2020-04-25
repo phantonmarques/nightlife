@@ -58,10 +58,10 @@ class RhythmController extends Controller
 
         /** Create form options */
         $formOptions = [
-            'route' => 'rhythm.store',
-            'method' => Request::METHOD_POST,
-            'files' => false,
-            'onsubmit' => 'return validateFormRhythm(this)'
+            'route'     => 'rhythm.store',
+            'method'    => Request::METHOD_POST,
+            'files'     => false,
+            'onsubmit'  => 'return validateFormRhythm(this)'
         ];
 
         $rhythm = new Rhythm();
@@ -143,9 +143,10 @@ class RhythmController extends Controller
 
         /** Create form options */
         $formOptions = [
-            'route' => ['rhythm.update', $rhythm],
-            'method' => Request::METHOD_PUT,
-            'onsubmit' => 'return validateFormRhythm(this)',
+            'route'     => ['rhythm.update', $rhythm],
+            'method'    => Request::METHOD_PUT,
+            'files'     => false,
+            'onsubmit'  => 'return validateFormRhythm(this)',
         ];
 
         return view('admin.rhythm.form',

@@ -118,25 +118,25 @@ return [
                     'text'      => 'Categoria',
                     'icon'      => 'fas fa-list-ul',
                     'route'     => 'category.index',
-                    'active'    => ['category', 'category/*', 'category?*']
+                    'active'    => ['control/category', 'control/category/*', 'control/category?*']
                 ],
                 [
                     'text'      => 'Endereços',
                     'icon'      => 'fas fa-map-marked-alt',
                     'route'     => 'establishmentAddress.prepareIndex',
-                    'active'    => ['establishmentAddress', 'establishmentAddress/*', 'establishmentAddress?*']
+                    'active'    => ['control/establishmentAddress', 'control/establishmentAddress/*', 'control/establishmentAddress?*']
                 ],
                 [
                     'text'      => 'Estabelecimento',
                     'icon'      => 'far fa-building',
                     'route'     => 'establishment.index',
-                    'active'    => ['establishment', 'establishment/*', 'establishment?*'],
+                    'active'    => ['control/establishment', 'control/establishment/*', 'control/establishment?*'],
                 ],
                 [
                     'text'      => 'Ritmo Musical',
                     'icon'      => 'fas fa-music',
                     'route'     => 'rhythm.index',
-                    'active'    => ['rhythm', 'rhythm/*', 'rhythm?*']
+                    'active'    => ['control/rhythm', 'control/rhythm/*', 'control/rhythm?*']
                 ],
 //                [
 //                    'text'  => 'Faturas',
@@ -153,20 +153,20 @@ return [
                 [
                     'text'      => 'Usuários',
                     'icon'      => 'fas fa-users',
-                    'active'    => ['user', 'user/*', 'user?*'],
                     'route'     => 'user.index',
+                    'active'    => ['control/user', 'control/user/*', 'control/user?*'],
                 ],
                 [
                     'text'      => 'Permissões',
-                    'active'    => ['permission', 'permission/*', 'permission?*'],
-                    'route'     => 'permission.index',
                     'icon'      => 'fas fa-user-shield',
+                    'route'     => 'permission.index',
+                    'active'    => ['control/permission', 'control/permission/*', 'control/permission?*'],
                 ],
                 [
                     'text'      => 'Funções',
-                    'active'    => ['role', 'role/*', 'role?*'],
-                    'route'     => 'role.index',
                     'icon'      => 'fas fa-cog',
+                    'route'     => 'role.index',
+                    'active'    => ['control/role', 'control/role/*', 'control/role?*'],
                 ],
             ],
         ],
@@ -176,9 +176,9 @@ return [
         ],
         [
             'text'      => 'Chamados',
-            'url'       => 'admin/pages',
-            'active'    => ['roles', 'roles/*', 'roles?*'],
             'icon'      => 'fas fa-phone-volume',
+            'url'       => 'admin/pages',
+            'active'    => ['control/roles', 'control/roles/*', 'control/roles?*'],
             //'can'     => 'WorkerPolicy'
         ],
         [
@@ -188,28 +188,28 @@ return [
         ],
         [
             'text'      => 'Dashboard',
-            'url'       => 'admin/settings',
             'icon'      => 'fas fa-chart-line',
+            'url'       => 'admin/settings',
 //            'can'       => 'manage-establishment'
         ],
         [
             'text'      => 'Eventos',
             'icon'      => 'far fa-calendar-alt',
             'route'     => 'event.prepareIndex',
-            'active'    => ['event', 'event/*', 'event?*'],
+            'active'    => ['control/event', 'control/event/*', 'control/event?*'],
             'can'       => 'manage-establishment'
         ],
         [
             'text'      => 'Eventos',
             'icon'      => 'far fa-calendar-alt',
             'route'     => 'event.index',
-            'active'    => ['event', 'event/*', 'event?*'],
+            'active'    => ['control/event', 'control/event/*', 'control/event?*'],
             'can'       => 'establishment-manager',
         ],
         [
             'text'      => 'Chamados',
-            'url'       => 'admin/settings',
             'icon'      => 'fas fa-phone-alt',
+            'url'       => 'admin/settings',
             //'can'     => 'EstablishmentPolicy'
         ],
         [
@@ -219,31 +219,31 @@ return [
             'submenu'   => [
                 [
                     'text'      => 'Configurações Perfil',
-                    'url'       => '#',
                     'icon'      => 'far fa-list-alt',
+                    'url'       => '#',
                 ],
                 [
                     'text'      => 'Fotos Perfil',
-                    'url'       => '#',
                     'icon'      => 'fas fa-images',
+                    'url'       => '#',
                 ],
                 [
                     'text'          => 'Detalhes Conta',
-                    'url'           => '#',
                     'icon'          => 'fas fa-info-circle',
                     'icon_color'    => 'red',
+                    'url'           => '#',
                 ],
                 [
                     'text'      => 'Mudar Senha',
+                    'icon'      => 'fas fa-key',
                     'url'       => '#',
-                    'icon'      => 'fas fa-key'
                 ],
             ],
         ],
         [
             'text'      => 'Relatórios',
-            'url'       => '#',
             'icon'      => 'far fa-file-alt',
+            'url'       => '#',
             //'can'     => 'EstablishmentPolicy'
         ],
     ],
