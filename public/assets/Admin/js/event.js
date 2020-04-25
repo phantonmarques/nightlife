@@ -47,7 +47,12 @@ $(document).ready(function() {
 
     $('.money').mask('#.##0,00', {reverse: true});
 
-    FillDate($( "#datepicker" ).val());
+    if ($('#date_event').val() !== ''){
+        $( "#datepicker" ).val($('#date_event').val());
+        FillDate($( "#datepicker" ).val());
+    }else{
+        FillDate($( "#datepicker" ).val());
+    }
 });
 
 function onlyNumbers(e) {

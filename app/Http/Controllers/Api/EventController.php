@@ -20,7 +20,8 @@ class EventController extends Controller
 
     public function eventsRecommended()
     {
-        dd(auth()->user()->city_id);
+        dd(auth()->user()->user_settings->favorite_categorys);
+//        dd(auth()->user()->city_id);
     }
 
 

@@ -5,7 +5,7 @@ use App\Models\Admin\Establishment;
 use App\Models\Admin\Category;
 use App\Models\Admin\Rhythm;
 
-class EstablishmentSeeder extends Seeder
+class EstablishmentTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.

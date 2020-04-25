@@ -21,6 +21,7 @@
                 $table->string('cover_path')->unique();
                 $table->longText('description');
                 $table->boolean('status');
+                $table->string('views')->default(0);
                 $table->unsignedInteger('establishment_address_id');
                 $table->unsignedInteger('establishment_id');
                 $table->timestamps();

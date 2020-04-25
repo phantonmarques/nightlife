@@ -21,7 +21,6 @@ class CreateCitysTable extends Migration
             $table->integer('state_id')->unsigned();
             $table->timestamps();
 
-            //FOREIGNS KEYS
             $table->foreign('state_id')->references('id')->on('state')->onDelete('cascade');
 
         });

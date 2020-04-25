@@ -76,13 +76,13 @@
                                     <div class="input-group-addon">
                                         <i class="fa fa-calendar"></i>
                                     </div>
-                                    {{ Form::text('date', (isset($event->id) ? formatDate($event->date_event) : ''), ['class' => 'form-control pull-right', 'id' => 'datepicker' , 'onChange' => 'FillDate(this.value)'] ) }}
+                                    {{ Form::text('date', '', ['class' => 'form-control pull-right', 'id' => 'datepicker' , 'onChange' => 'FillDate(this.value)'] ) }}
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    {!! Form::hidden('date_event', '', ['id' => 'date_event']) !!}
+                    {!! Form::hidden('date_event', (isset($event->id) ? formatDate($event->date_event) : ''), ['id' => 'date_event']) !!}
 
                     <br>
 
