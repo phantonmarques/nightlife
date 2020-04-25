@@ -112,10 +112,10 @@
                                         @endforeach
                                     </td>
                                     <td>
-                                        {{ $user->city()->value('name_visible') }}
+                                        {{ !empty($user->city_id) ? $user->city()->value('name_visible') : '' }}
                                     </td>
                                     <td>
-                                        {{ $user->city->state->name_visible }}
+                                        {{ !empty($user->city_id) ? $user->city->state->name_visible : '' }}
                                     </td>
                                     <td>
                                         {{ $user->created_at->format('d/m/Y - H:i') }}

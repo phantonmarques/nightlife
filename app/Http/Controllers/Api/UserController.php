@@ -71,13 +71,14 @@ class UserController extends Controller
 
             $user = User::create($data);
 
-            $user->remember_token = Str::random(90);
-            $user->update();
-
             if (!$user->exists)
                 throw new \Exception('Validação de conta falhou!');
 
-            $created = $user->user_settings()->create($user->id);
+            $token = Str::random(90);
+            $user->remember_token = $token;
+            $user->update();
+
+            $created = $user->user_settings()->create(['user_id' => $user->id]);
 
             if (!$created)
                 throw new \Exception('Ocorreu um erro desconhecido ao criar a conta, tente novamente!');

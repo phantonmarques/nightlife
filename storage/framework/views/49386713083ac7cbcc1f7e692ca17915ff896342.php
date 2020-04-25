@@ -65,37 +65,19 @@
     </head>
     <body>
         <div class="flex-center position-ref full-height">
-            <?php if(Route::has('login')): ?>
-                <div class="top-right links">
-                    <?php if(auth()->guard()->check()): ?>
-                        <a href="<?php echo e(url('/home')); ?>">Home</a>
-                        <form action="<?php echo e(url('/logout')); ?>" method="post">
-                            <?php echo csrf_field(); ?>
-                            <button>Logout</button>
-                        </form>
-                    <?php else: ?>
-                        <a href="<?php echo e(route('login')); ?>">Login</a>
-
-                        <?php if(Route::has('register')): ?>
-                            <a href="<?php echo e(route('register')); ?>">Register</a>
-                        <?php endif; ?>
-                    <?php endif; ?>
-                </div>
-            <?php endif; ?>
-
             <div class="content">
                 <div class="title m-b-md">
-                    Laravel
-                </div>
-
-                <div class="links">
-                    <a href="https://laravel.com/docs">Testando</a>
-                    <a href="https://laracasts.com">Laracasts</a>
-                    <a href="https://laravel-news.com">News</a>
-                    <a href="https://blog.laravel.com">Blog</a>
-                    <a href="https://nova.laravel.com">Nova</a>
-                    <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://github.com/laravel/laravel">GitHub</a>
+                    <?php if(Route::has('login')): ?>
+                        <?php if(auth()->guard()->check()): ?>
+                            <a href="<?php echo e(route('admin.page')); ?>">Home</a>
+                            <form action="<?php echo e(route('logout')); ?>" method="post">
+                                <?php echo csrf_field(); ?>
+                                <button>Logout</button>
+                            </form>
+                        <?php else: ?>
+                            <a href="<?php echo e(route('login')); ?>">Login</a>
+                        <?php endif; ?>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>

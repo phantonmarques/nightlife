@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Admin\Event;
 
 class EventController extends Controller
 {
@@ -20,7 +21,22 @@ class EventController extends Controller
 
     public function eventsRecommended()
     {
-        dd(auth()->user()->user_settings->favorite_categorys);
+        if (!empty(auth()->user()->city_id) && (!empty(auth()->user()->user_settings->favorite_categorys) || !empty(auth()->user()->user_settings->favorite_rhythms))):
+//            Event::where('');
+            echo 'if1';
+        elseif (!empty(auth()->user()->city_id)):
+            $events = Event::with(array('establishment_address' => function($query) {
+                $query->where('establishment_address.city_id', auth()->user()->city_id);
+            }))->orderBy('name')->get();
+            dd($events);
+            echo 'if2';
+        elseif (!empty(auth()->user()->user_settings->favorite_categorys) || !empty(auth()->user()->user_settings->favorite_rhythms)):
+            echo 'if3';
+        else:
+            echo 'if4';
+        endif;
+
+
 //        dd(auth()->user()->city_id);
     }
 
