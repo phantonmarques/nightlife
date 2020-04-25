@@ -25,16 +25,10 @@ class UserController extends Controller
                 $token = Str::random(90);
                 $user->remember_token = $token;
                 $user->update();
-
-                $admin = false;
-                if ($user->type_user !== 'u')
-                    $admin = true;
-
                 return response()->json([
                     'message' => 'Login efetuado com sucesso',
                     'status' => true,
-                    'is_admin' => $admin,
-                    'token' => $token,
+                    'user' => $user,
                 ]);
             } else if (empty($user->email_verified_at)){
                 // enviar novo link de confirmação
@@ -74,7 +68,11 @@ class UserController extends Controller
             //REMOVER DEPOIS
             $data["email_verified_at"] = date('Y-m-d H:i:s');
 
-            $user = User::create($data);
+						$user = User::create($data);
+						
+						$token = Str::random(90);
+            $user->remember_token = $token;
+            $user->update();
 
             if (!$user->exists)
                 throw new \Exception('Validação de conta falhou!');
@@ -86,7 +84,7 @@ class UserController extends Controller
             return response()->json([
                 'message' => 'Conta criada com sucesso',
                 'status' => true,
-                'success' => 'Acesse seu e-mail para confirmar o cadastro.'
+                'user' => $user
             ]);
         } catch (\Exception $e) {
             DB::rollBack();
