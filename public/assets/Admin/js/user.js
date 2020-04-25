@@ -318,13 +318,13 @@ function validateCpfCnpj(val) {
 }
 
 function validateFormUser(f) {
-    if (f.name.value.length === undefined || f.name.value === '') {
+    if (f.name.value.length === 0 || f.name.value.trim() === '') {
         swal("Erro", "O campo [Nome] é obrigatório, favor preencha!", "error");
         return false;
-    } else if (f.email.value.length === undefined || f.email.value === '') {
+    } else if (f.email.value.length === 0 || f.email.value.trim() === '') {
         swal("Erro", "O campo [E-mail] é obrigatório, favor preencha!", "error");
         return false;
-    } else if (f.cpf_cnpj.value.length === undefined || f.cpf_cnpj.value === '') {
+    } else if (f.cpf_cnpj.value.length === 0 || f.cpf_cnpj.value.trim() === '') {
         swal("Erro", "O campo [CPF/CNPJ] é obrigatório, favor preencha!", "error");
         return false;
     } else if (!validateEmail(f.email.value)) {
@@ -333,25 +333,25 @@ function validateFormUser(f) {
     } else if (!validateCpfCnpj(f.cpf_cnpj.value)) {
         swal("Erro", "Cpf/Cnpj inválido, favor digite outro!", "error");
         return false;
-    } else if (f.type_user.value.length === undefined || f.type_user.value === '') {
+    } else if (f.type_user.value.length === 0 || f.type_user.value.trim() === '') {
         swal("Erro", "O campo [Tipo Usuário] é obrigatório, favor preencha!", "error");
         return false;
-    } else if ((f.password.value.length === undefined || f.password.value === '') && f.city.value === '') {
+    } else if ((f.password.value.length === 0 || f.password.value.trim() === '') && f.city.value.trim() === '') {
         swal("Erro", "O campo [Nova Senha] é obrigatório, favor preencha!", "error");
         return false;
-    } else if ((f.confirm_password.value.length === undefined || f.confirm_password.value === '') && f.city.value === '') {
+    } else if ((f.confirm_password.value.length === 0 || f.confirm_password.value.trim() === '') && f.city.value.trim() === '') {
         swal("Erro", "O campo [Confirme nova Senha] é obrigatório, favor preencha!", "error");
         return false;
     } else if (f.password.value !== f.confirm_password.value) {
         swal("Erro", "Senha e confirmação não iguais, favor verifique!", "error");
         return false;
-    } else if (f.state_id.value.length === undefined || f.state_id.value === '') {
+    } else if (f.state_id.value.length === 0 || f.state_id.value.trim() === '') {
         swal("Erro", "O campo [Estado] é obrigatório, favor preencha!", "error");
         return false;
-    } else if (f.city_id.value.length === undefined || f.city_id.value === '') {
+    } else if (f.city_id.value.length === 0 || f.city_id.value.trim() === '') {
         swal("Erro", "O campo [Cidade] é obrigatório, favor preencha!", "error");
         return false;
-    } else if (f.password.value === '' && f.confirm_password.value === '' && f.city.value !== ''){
+    } else if (f.password.value.trim() === '' && f.confirm_password.value.trim() === '' && f.city.value !== ''){
         f.password.disabled = true;
     }
 

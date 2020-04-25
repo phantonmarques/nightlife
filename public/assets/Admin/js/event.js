@@ -74,16 +74,16 @@ function FillDate(data) {
 }
 
 function validateFormEvent(f) {
-    if (f.name.value.length === 0 || f.name.value === '') {
+    if (f.name.value.length === 0 || f.name.value.trim() === '') {
         swal("Erro", "O campo [Nome] é obrigatório, favor preencha!", "error");
         return false;
-    }else if (f.date_event.value.length === 0 || f.date_event.value === '') {
+    }else if (f.date_event.value.length === 0 || f.date_event.value.trim() === '') {
         swal("Erro", "O campo [Data Evento] é obrigatório, favor selecione!", "error");
         return false;
-    }else if (f.establishment_address_id.value.length === 0 || f.establishment_address_id.value === '') {
+    }else if (f.establishment_address_id.value.length === 0 || f.establishment_address_id.value.trim() === '') {
         swal("Erro", "O campo [Endereço do Estabelecimento] é obrigatório, favor selecione!", "error");
         return false;
-    }else if (f.price.value.length === 0 || f.price.value === '') {
+    }else if (f.price.value.length === 0 || f.price.value.trim() === '') {
         swal("Erro", "O campo [Preço Evento] é obrigatório, favor preencha!", "error");
         return false;
     }
