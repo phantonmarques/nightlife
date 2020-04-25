@@ -53,7 +53,7 @@
                     <div class="row">
                         <div class="col-md-10">
                             {{Form::label('permission', 'Permissões')}} <span class="span-required">*</span>
-                            {{Form::select('permission', $permissions, isset($permissionChosen) ? $permissionChosen : null, array('multiple' => 'multiple', 'name' => 'permission[]', 'class' => 'form-control select2'))}}
+                            {{Form::select('permission', $permissions, isset($role->id) ? $role->permissions : null, array('multiple' => 'multiple', 'name' => 'permission[]', 'class' => 'form-control select2'))}}
                         </div>
                     </div>
 

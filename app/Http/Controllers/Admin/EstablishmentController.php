@@ -66,10 +66,10 @@
 
             /** Create form options */
             $formOptions = [
-                'route' => 'establishment.store',
-                'method' => Request::METHOD_POST,
-                'files' => false,
-                'onsubmit' => 'return validateFormEstablishment(this)'
+                'route'     => 'establishment.store',
+                'method'    => Request::METHOD_POST,
+                'files'     => false,
+                'onsubmit'  => 'return validateFormEstablishment(this)'
             ];
 
             $categorys = Category::get()->pluck('name', 'id');
@@ -166,8 +166,10 @@
 
             /** Create form options */
             $formOptions = [
-                'route' => ['establishment.update', $establishment],
-                'method' => Request::METHOD_PUT,
+                'route'     => ['establishment.update', $establishment],
+                'method'    => Request::METHOD_PUT,
+                'files'     => false,
+                'onsubmit'  => 'return validateFormEstablishment(this)'
             ];
 
             $categorys = Category::get()->pluck('name', 'id');

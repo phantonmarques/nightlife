@@ -218,28 +218,28 @@ function onlyNumbers(e) {
 }
 
 function validateFormEstablishmentAddress(f) {
-    if (f.zip_code.value.length === undefined || f.zip_code.value === '') {
+    if (f.zip_code.value.length === 0 || f.zip_code.value.trim() === '') {
         swal("Erro", "O campoo [CEP] é obrigatório, favor preencha!", "error");
         return false;
-    } else if (f.street_name.value.length === undefined || f.street_name.value === '') {
+    } else if (f.street_name.value.length === 0 || f.street_name.value.trim() === '') {
         swal("Erro", "Cep inválido ou não localizado, insira e clique em [Buscar]!", "error");
         return false;
-    } else if (f.building_number.value.length === undefined  || f.building_number.value === '') {
+    } else if (f.building_number.value.length === 0 || f.building_number.value.trim() === '') {
         swal("Erro", "O campo [Número] é obrigatório, favoor preencha!", "error");
         return false;
-    } else if (f.state_id.value.length === undefined || f.state_id.value === '') {
+    } else if (f.state_id.value.length === 0 || f.state_id.value.trim() === '') {
         swal("Erro", "O campo [Estado] é obrigatório, favor preencha!", "error");
         return false;
-    }else if (f.city_id.value.length === undefined || f.city_id.value === '') {
+    }else if (f.city_id.value.length === 0 || f.city_id.value.trim() === '') {
         swal("Erro", "O campo [Cidade] é obrigatório, favor preencha!", "error");
         return false;
-    }else if (f.neighborhood.value.length === undefined || f.neighborhood.value === '') {
+    }else if (f.neighborhood.value.length === 0 || f.neighborhood.value.trim() === '') {
         swal("Erro", "O campo [Bairro] é obrigatório, favor preencha!", "error");
         return false;
-    }else if (!f.elements["contact[0][name]"].value.length) {
+    }else if (!f.elements["contact[0][name]"].value.length || f.elements["contact[0][name]"].value.trim() === '') {
         swal("Erro", "O campo [Nome Contato] é obrigatório, favor preencha!", "error");
         return false;
-    } else if (!f.elements["contact[0][phone]"].value.length) {
+    } else if (!f.elements["contact[0][phone]"].value.length || f.elements["contact[0][phone]"].value.trim() === '') {
         swal("Erro", "O campo [Telefone] é obrigatório, favor preencha!", "error");
         return false;
     }else if (f.elements["contact[0][name]"].value.length < 2) {
@@ -250,7 +250,7 @@ function validateFormEstablishmentAddress(f) {
         return false;
     }
 
-    if (f.complement.value.length === undefined || f.complement.value === '') {
+    if (f.complement.value.length === 0 || f.complement.value.trim() === '') {
         f.complement.disabled = true;
     }
 

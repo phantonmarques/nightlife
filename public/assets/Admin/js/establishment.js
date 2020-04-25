@@ -74,29 +74,28 @@ function onlyNumbers(e) {
 }
 
 function validateFormEstablishment(f) {
-    if (f.corporate_name.value === ''){
+    if (f.corporate_name.value.length === 0 || f.corporate_name.value.trim() === ''){
         swal("Erro", "O campo [Razão Social] é obrigatório, favor preencha!", "error");
         return false;
-    }else if (f.state_registration.value === ''){
+    }else if (f.state_registration.value.length === 0 || f.state_registration.value.trim() === ''){
         swal("Erro", "O campo [Inscrição Estadual] é obrigatório, favor preencha!", "error");
         return false;
-    }else if (f.type_license.value === ''){
+    }else if (f.type_license.value.length === 0 || f.type_license.value.trim() === ''){
         swal("Erro", "O campo [Tipo Conta] é obrigatório, favor preencha!", "error");
         return false;
-    }else if (f.status.value === ''){
+    }else if (f.status.value.length === 0 || f.status.value.trim() === ''){
         swal("Erro", "[Status Estabelecimento] é obrigatório, favor selecione!", "error");
         return false;
-    }else if (f.user_id.value === ''){
+    }else if (f.user_id.value.length === 0 || f.user_id.value.trim() === ''){
         swal("Erro", "[Nome Usuário] é obrigatório, favor selecione!", "error");
         return false;
-    }else if (f.category.value === ''){
+    }else if (f.category.value.length === 0 || f.category.value.trim() === ''){
         swal("Erro", "[Categoria Estabelecimento] é obrigatório, favor selecione!", "error");
         return false;
-    }else if (f.rhythm.value === ''){
+    }else if (f.rhythm.value.length === 0 || f.rhythm.value.trim() === ''){
         swal("Erro", "[Ritmos Musicais] é obrigatório, favor selecione pelo menos um!", "error");
         return false;
     }
-
 
     $("#cnpjEstablishment").unmask();
 

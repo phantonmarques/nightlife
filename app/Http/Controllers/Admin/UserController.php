@@ -69,10 +69,10 @@
 
             /** Create form options */
             $formOptions = [
-                'route' => 'user.store',
-                'method' => Request::METHOD_POST,
-                'files' => false,
-                'onsubmit' => 'return validateFormUser(this)'
+                'route'     => 'user.store',
+                'method'    => Request::METHOD_POST,
+                'files'     => false,
+                'onsubmit'  => 'return validateFormUser(this)'
             ];
 
             $states = State::get()->pluck('name_visible', 'id');
@@ -167,9 +167,10 @@
 
             /** Create form options */
             $formOptions = [
-                'route' => ['user.update', $user],
-                'method' => Request::METHOD_PUT,
-                'onsubmit' => 'return validateFormUser(this)',
+                'route'     => ['user.update', $user],
+                'method'    => Request::METHOD_PUT,
+                'files'     => false,
+                'onsubmit'  => 'return validateFormUser(this)',
             ];
 
             $states = State::get()->pluck('name_visible', 'id');

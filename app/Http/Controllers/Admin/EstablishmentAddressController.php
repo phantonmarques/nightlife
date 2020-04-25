@@ -99,6 +99,7 @@ class EstablishmentAddressController extends Controller
         $formOptions = [
             'route'     => 'establishmentAddress.store',
             'method'    => Request::METHOD_POST,
+            'files'     => false,
             'onsubmit'  => 'return validateFormEstablishmentAddress(this)'
         ];
 
@@ -204,8 +205,8 @@ class EstablishmentAddressController extends Controller
         $formOptions = [
             'route'     => ['establishmentAddress.update', $establishmentAddress],
             'method'    => Request::METHOD_PUT,
+            'files'     => false,
             'onsubmit'  => 'return validateFormEstablishmentAddress(this)'
-
         ];
 
         /** @var array States array for select */

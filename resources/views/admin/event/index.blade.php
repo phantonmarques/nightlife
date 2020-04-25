@@ -53,7 +53,7 @@
                             <div class="card">
                                 <figure class="card__figure">
                                     <img class="card__image"
-                                         src="{{ ".." . Storage::url('app/'.$event->cover_path) }}" alt="{{ $event->name }}">
+                                         src="{{ "../../" . Storage::url('app/'.$event->cover_path) }}" alt="{{ $event->name }}">
                                 </figure>
                                 <div class="card__title">{{ $event->name }}</div>
                                 <div class="card__date">{{ formatDate($event->date_event) }}</div>
