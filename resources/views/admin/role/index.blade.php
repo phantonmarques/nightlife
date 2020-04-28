@@ -86,7 +86,7 @@
                                                     class="glyphicon glyphicon-pencil"></span></a>
 
                                         <a href="{{ route('role.destroy', $role) }}"
-                                           class="action-delete"><span class="glyphicon glyphicon-trash" onsubmit="confirm('Tem certeza?')"></span></a>
+                                           class="action-delete"><span class="glyphicon glyphicon-trash"></span></a>
 
                                         <a href="{{ route('role.show', $role) }}" class="action-show"><span
                                                     class="glyphicon glyphicon-info-sign"></span></a>

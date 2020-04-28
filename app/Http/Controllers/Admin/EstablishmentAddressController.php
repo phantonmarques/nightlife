@@ -302,12 +302,7 @@ class EstablishmentAddressController extends Controller
                     ->route('establishmentAddress.index')
                     ->with('success', 'Endereço do estabelecimento excluído com sucesso');
             else:
-                DB::rollBack();
-
-                return redirect()
-                    ->route('establishmentAddress.index', compact('establishmentAddress'))
-                    ->withInput()
-                    ->with('error', 'Ocorreu um erro desconhecido ao excluir o endereço, tente novamente.');
+                throw new \Exception('Não foi possível excluir o endereço!');
             endif;
         } catch (\Exception $e) {
             DB::rollBack();

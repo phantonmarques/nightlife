@@ -99,6 +99,11 @@ class CategoryController extends Controller
             if (!$category->exists)
                 throw new \Exception('Não foi possível criar a categoria!');
 
+            $created = $category->category_statistics()->create(['category_id' => $category->id]);
+
+            if (!$created)
+                throw new \Exception('Ocorreu algum erro desconhecido ao criar a categoria!');
+
             DB::commit();
 
             return redirect()
@@ -205,6 +210,9 @@ class CategoryController extends Controller
         DB::beginTransaction();
 
         try {
+            if(!$category->category_statistics()->delete())
+                throw new \Exception('Ocorreu um erro desconhecido ao excluir a categoria, tente novamente.');
+
             if ($category->delete()) :
                 DB::commit();
 
@@ -212,12 +220,7 @@ class CategoryController extends Controller
                     ->route('category.index')
                     ->with('success', 'Categoria excluída com sucesso');
             else:
-                DB::rollBack();
-
-                return redirect()
-                    ->route('category.index', compact('category'))
-                    ->withInput()
-                    ->with('error', 'Ocorreu um erro desconhecido ao excluir a categoria, tente novamente.');
+                throw new \Exception('Não foi possível excluir a categoria!');
             endif;
         } catch (\Exception $e) {
             DB::rollBack();

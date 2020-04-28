@@ -4,7 +4,6 @@ use Illuminate\Database\Seeder;
 
 use App\Models\Admin\Establishment;
 use App\Models\Admin\EstablishmentAddress;
-use App\Models\Admin\EstablishmentPhones;
 
 class EstablishmentAddressTableSeeder extends Seeder
 {

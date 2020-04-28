@@ -84,7 +84,7 @@
                                                     class="glyphicon glyphicon-pencil"></span></a>
 
                                         <a href="{{ route('rhythm.destroy', $rhythm) }}"
-                                           class="action-delete"><span class="glyphicon glyphicon-trash" onsubmit="confirm('Tem certeza?')"></span></a>
+                                           class="action-delete"><span class="glyphicon glyphicon-trash"></span></a>
 
                                         <a href="{{ route('rhythm.show', $rhythm) }}" class="action-show"><span
                                                     class="glyphicon glyphicon-info-sign"></span></a>

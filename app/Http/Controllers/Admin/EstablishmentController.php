@@ -116,7 +116,6 @@
                 if (!$created)
                     throw new \Exception('Não foi possível criar a estatistica do estabelecimento!');
 
-
                 $establishment->establishments_category()->attach($data["category"]);
 
                 foreach ($data["rhythm"] as $rhythm):
@@ -256,7 +255,7 @@
                 $establishment->status = 0;
 
                 if (!$establishment->save())
-                    throw new \Exception('Não foi possível atualizar o estabelecimento');
+                    throw new \Exception('Não foi possível desativar o estabelecimento');
 
                 DB::commit();
 

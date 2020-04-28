@@ -25,16 +25,29 @@ class EventController extends Controller
 //            Event::where('');
             echo 'if1';
         elseif (!empty(auth()->user()->city_id)):
-            $events = Event::with(array('establishment_address' => function($query) {
-                $query->where('establishment_address.city_id', auth()->user()->city_id);
-            }))->orderBy('name')->get();
-            dd($events);
-            echo 'if2';
+//            $events = Event::with(array('establishment_address' => function($query) {
+//                $query->where('establishment_address.city_id', auth()->user()->city_id);
+//            }))->orderBy('name')->get()->toJson();
+
+            $events = Event::whereHas('establishment_address', function ($q) {
+                $q->where('city_id', auth()->user()->city_id);})->orderBy('views')->get();
         elseif (!empty(auth()->user()->user_settings->favorite_categorys) || !empty(auth()->user()->user_settings->favorite_rhythms)):
             echo 'if3';
-        else:
-            echo 'if4';
         endif;
+
+        if (count($events) === 0):
+            echo "hoehe";
+        endif;
+
+        return response()->json([
+            'status' => true,
+            'return' => $events
+        ]);
+//
+//        1: Localização + Gostos
+//		2: Localização
+//		3: Gostos
+//		4: Mais vistos
 
 
 //        dd(auth()->user()->city_id);

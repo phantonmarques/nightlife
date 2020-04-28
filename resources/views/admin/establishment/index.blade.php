@@ -138,8 +138,7 @@
                                                     class="glyphicon glyphicon-pencil"></span></a>
                                         @if (!isset($_GET['d']))
                                             <a href="{{ route('establishment.destroy', $establishment) }}"
-                                               class="action-delete"><span class="glyphicon glyphicon-trash"
-                                                                           onsubmit="confirm('Tem certeza?')"></span></a>
+                                               class="action-delete" data-title="establishment"><span class="glyphicon glyphicon-trash"></span></a>
                                         @endif
                                         <a href="{{ route('establishment.show', $establishment) }}" class="action-show"><span
                                                     class="glyphicon glyphicon-info-sign"></span></a>

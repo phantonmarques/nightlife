@@ -213,12 +213,7 @@ class PermissionController extends Controller
                     ->route('permission.index')
                     ->with('success', 'Permissão excluído com sucesso');
             else:
-                DB::rollBack();
-
-                return redirect()
-                    ->route('permission.index', compact('permission'))
-                    ->withInput()
-                    ->with('error', 'Ocorreu um erro desconhecido ao excluir a permissão, tente novamente.');
+                throw new \Exception('Não foi possível excluir a permissão');
             endif;
         } catch (\Exception $e) {
             DB::rollBack();

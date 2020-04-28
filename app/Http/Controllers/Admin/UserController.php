@@ -262,12 +262,7 @@
                         ->route('user.index')
                         ->with('success', 'Usuário excluído com sucesso');
                 else:
-                    DB::rollBack();
-
-                    return redirect()
-                        ->route('user.index', compact('user'))
-                        ->withInput()
-                        ->with('error', 'Ocorreu um erro desconhecido ao excluir o usuário, tente novamente.');
+                    throw new \Exception('Não foi possível excluir o usuário');
                 endif;
             } catch (\Exception $e) {
                 DB::rollBack();

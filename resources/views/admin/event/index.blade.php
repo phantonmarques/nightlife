@@ -58,7 +58,7 @@
                                 <div class="card__title">{{ $event->name }}</div>
                                 <div class="card__date">{{ formatDate($event->date_event) }}</div>
                                 <div class="card__links">
-                                    <a href="{{ route('event.destroy', $event) }}" class="card__link card__link--danger" onsubmit="confirm('Tem certeza?')">EXCLUIR</a>
+                                    <a href="{{ route('event.destroy', $event) }}" class="card__link card__link--danger action-delete">EXCLUIR</a>
                                     <a href="{{ route('event.edit', $event) }}" class="card__link card__link--success">EDITAR</a>
                                     <a href="{{ route('event.show', $event) }}" class="card__link card__link--info">VISUALIZAR</a>
                                 </div>

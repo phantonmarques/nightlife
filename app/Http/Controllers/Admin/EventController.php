@@ -284,8 +284,11 @@
             try {
                 $event->status = 0;
 
+                if (!Storage::delete($event->cover_path))
+                    throw new \Exception('Não foi possível excluir a foto do evento!');
+
                 if (!$event->save())
-                    throw new \Exception('Não foi possível atualizar o evento');
+                    throw new \Exception('Não foi possível excluir o evento');
 
                 DB::commit();
 

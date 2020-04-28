@@ -84,7 +84,7 @@
                                         <a href="{{ route('category.edit', $category) }}" class="action-edit"><span
                                                     class="glyphicon glyphicon-pencil"></span></a>
                                         <a href="{{ route('category.destroy', $category) }}"
-                                           class="action-delete"><span class="glyphicon glyphicon-trash" onsubmit="confirm('Tem certeza?')"></span></a>
+                                           class="action-delete"><span class="glyphicon glyphicon-trash"></span></a>
                                         <a href="{{ route('category.show', $category) }}" class="action-show"><span
                                                     class="glyphicon glyphicon-info-sign"></span></a>
                                     </td>

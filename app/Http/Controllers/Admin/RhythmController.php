@@ -100,6 +100,11 @@ class RhythmController extends Controller
             if (!$rhythm->exists)
                 throw new \Exception('Não foi possível criar o ritmo musical!');
 
+            $created = $rhythm->rhythm_statistics()->create(['rhythm_id' => $rhythm->id]);
+
+            if (!$created)
+                throw new \Exception('Ocorreu algum erro desconhecido ao excluir o ritmo musical!');
+
             DB::commit();
 
             return redirect()
@@ -206,6 +211,9 @@ class RhythmController extends Controller
         DB::beginTransaction();
 
         try {
+            if (!$rhythm->rhythm_statistics()->delete())
+                throw new \Exception('Ocorreu algum erro desconhecido ao excluir o ritmo musical!');
+
             if ($rhythm->delete()) :
                 DB::commit();
 
@@ -213,12 +221,7 @@ class RhythmController extends Controller
                     ->route('rhythm.index')
                     ->with('success', 'Ritmo musical excluído com sucesso');
             else:
-                DB::rollBack();
-
-                return redirect()
-                    ->route('rhythm.index', compact('rhythm'))
-                    ->withInput()
-                    ->with('error', 'Ocorreu um erro desconhecido ao excluir o ritmo musical, tente novamente.');
+                throw new \Exception('Não foi possível excluir o ritmo musical');
             endif;
         } catch (\Exception $e) {
             DB::rollBack();

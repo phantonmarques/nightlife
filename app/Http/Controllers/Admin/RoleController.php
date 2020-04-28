@@ -231,12 +231,7 @@ class RoleController extends Controller
                     ->route('role.index')
                     ->with('success', 'Função excluída com sucesso');
             else:
-                DB::rollBack();
-
-                return redirect()
-                    ->route('role.index', compact('role'))
-                    ->withInput()
-                    ->with('error', 'Ocorreu um erro desconhecido ao excluir a permissão, tente novamente.');
+                throw new \Exception('Não foi possível excluir a função');
             endif;
         } catch (\Exception $e) {
             DB::rollBack();
