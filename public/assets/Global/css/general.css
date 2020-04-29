@@ -31,10 +31,15 @@
 }
 
 .table td.col-actions {
-    width: 6%;
+    padding-right: 5vh;
+    font-size: 125%;
     text-align: center;
+    white-space: nowrap;
 }
 
 .swal-footer {
     text-align: center;
 }
+
+
+

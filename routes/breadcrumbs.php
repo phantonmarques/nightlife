@@ -10,8 +10,14 @@
     use App\Models\Admin\Event;
 
 
-    Breadcrumbs::for('home', function ($trail) {
-        $trail->push('Home', route('home'));
+    # TODO: ESTABLSIHMENT ROUTES ACESS
+
+    Breadcrumbs::for('control', function ($trail) {
+        $trail->push('Home', route('admin.page'));
+    });
+
+    Breadcrumbs::for('admin.dashboard', function ($trail) {
+        $trail->push('Dashboard', route('admin.dashboard'));
     });
 
     # TODO: ESTABLISHMENT

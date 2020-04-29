@@ -22,13 +22,9 @@ class EventController extends Controller
     public function eventsRecommended()
     {
         if (!empty(auth()->user()->city_id) && (!empty(auth()->user()->user_settings->favorite_categorys) || !empty(auth()->user()->user_settings->favorite_rhythms))):
-//            Event::where('');
-            echo 'if1';
+            $events = Event::whereHas('establishment_address', function ($q) {
+                $q->where('city_id', auth()->user()->city_id);})->orderBy('views')->get();
         elseif (!empty(auth()->user()->city_id)):
-//            $events = Event::with(array('establishment_address' => function($query) {
-//                $query->where('establishment_address.city_id', auth()->user()->city_id);
-//            }))->orderBy('name')->get()->toJson();
-
             $events = Event::whereHas('establishment_address', function ($q) {
                 $q->where('city_id', auth()->user()->city_id);})->orderBy('views')->get();
         elseif (!empty(auth()->user()->user_settings->favorite_categorys) || !empty(auth()->user()->user_settings->favorite_rhythms)):
@@ -36,7 +32,7 @@ class EventController extends Controller
         endif;
 
         if (count($events) === 0):
-            echo "hoehe";
+            $events = Event::orderBy('views')->get();
         endif;
 
         return response()->json([

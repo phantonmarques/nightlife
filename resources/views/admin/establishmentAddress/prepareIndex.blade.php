@@ -1,10 +1,6 @@
 @extends('adminlte::page')
 @section('title', 'Estabelecimentos · ')
 
-@section('content_header')
-    <h1>Endereços Estabelecimentos</h1>
-@stop
-
 @section('breadcrumbs')
     {{ Breadcrumbs::render(Route::currentRouteName(), $establishments) }}
 @endsection
@@ -14,12 +10,13 @@
         <div class="col-md-6-p">
             <div class="box">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Estabelecimentos Cadastrados</h3>
+                    <h3 class="box-title">Endereços Estabelecimentos</h3>
                 </div>
                 <div class="box-body">
                     @if (!empty($establishments))
                         {{  Form::open( array('route' => 'establishmentAddress.index', 'method' => 'GET') )  }}
 
+                        {{ Form::label('e', 'Estabelecimentos Cadastrados', ['class' => 'form-control-l']) }}
                         {{ Form::select('e', $establishments, 0, ['class' => 'form-control-p']) }}
 
                         <div class="col-lg-3 pull-right form-save-p">
@@ -39,5 +36,5 @@
 @endsection
 
 @section('css')
-    <link rel="stylesheet" type="text/css" href="{{ asset('assets/admin/css/establishmentAddress.css') }}"/>
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/global/css/prepare.css') }}"/>
 @endsection

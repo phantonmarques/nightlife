@@ -19,6 +19,10 @@ Route::group(['middleware' => ['auth'], 'prefix' => '/control/'], function () {
     # Index
     Route::get('/', 'Admin\\AdminController@index')->name('admin.page');
 
+    # Establishment Routes Access
+    Route::get('dashboard', 'Admin\\AdminController@dashboard')->name('admin.dashboard');
+
+
     # Category
     Route::get('category/{category}/destroy', 'Admin\\CategoryController@destroy')->name('category.destroy')->middleware('auth');
     Route::resource('category', 'Admin\\CategoryController')->except(['destroy'])->middleware('auth');

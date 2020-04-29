@@ -27,6 +27,12 @@ class AdminController extends Controller
         return view('admin.home.index');
     }
 
+
+    public function dashboard()
+    {
+        return view('admin.dashboard');
+    }
+
     /**
      * Show the form for creating a new resource.
      *

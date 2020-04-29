@@ -171,6 +171,13 @@ return [
             ],
         ],
         [
+            'text'      => 'Log Acessos',
+            'icon'      => 'fas fa-user',
+            'url'       => 'admin/pages',
+            'active'    => ['control/roles', 'control/roles/*', 'control/roles?*'],
+            //'can'     => 'WorkerPolicy'
+        ],
+        [
             'header'    => 'ATENDIMENTO ESTABELECIMENTO',
             //'can'     => 'WorkerPolicy'
         ],
@@ -189,8 +196,10 @@ return [
         [
             'text'      => 'Dashboard',
             'icon'      => 'fas fa-chart-line',
-            'url'       => 'admin/settings',
-//            'can'       => 'manage-establishment'
+            'route'     => 'admin.dashboard',
+            'active'    => ['control/dashboard', 'control/dashboard/*', 'control/dashboard?*'],
+            'can'       => 'establishment-manager',
+            'can'       => 'manage-establishment'
         ],
         [
             'text'      => 'Eventos',

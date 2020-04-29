@@ -10,7 +10,6 @@
 }
 
 .form-control-p {
-    margin-top:15%;
     margin-left:auto;
     margin-right:auto;
     display: block;
@@ -22,7 +21,6 @@
     color: #555;
     background-color: #fff;
     background-image: none;
-    align-content: center;
     border: 1px solid #ccc;
     border-top-color: rgb(204, 204, 204);
     border-right-color: rgb(204, 204, 204);
@@ -36,9 +34,17 @@
     transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
 }
 
-@media (min-width: 992px) {
+.form-control-l {
+    margin-top: 15vh;
+    margin-left: auto;
+    margin-right: auto;
+    display:block;
+    width: 70%;
+}
+
+@media (min-width: 1229px) {
     .col-md-6-p {
-        width: 50%;
+        width: 150vh;
         margin:auto;
     }
 }
