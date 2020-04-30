@@ -55,7 +55,7 @@ class EventController extends Controller
         # TODO: Localization
         if (!empty(auth()->user()->city_id) && count($events) === 0):
             $events = Event::whereHas('establishment_address', function ($q) {
-                $q->where('city_id', auth()->user()->city_id);})->orderBy('views')->get();
+                $q->where('city_id', auth()->user()->city_id);})->orderBy('views', 'desc')->get();
         endif;
 
         # TODO: Favorite
@@ -82,7 +82,7 @@ class EventController extends Controller
 
         # TODO: Top Views
         if (count($events) === 0):
-            $events = Event::orderBy('views')->get();
+            $events = Event::orderBy('views', 'desc')->get();
         endif;
 
         return response()->json([
