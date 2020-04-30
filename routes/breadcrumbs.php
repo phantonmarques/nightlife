@@ -12,8 +12,8 @@
 
     # TODO: ESTABLSIHMENT ROUTES ACESS
 
-    Breadcrumbs::for('control', function ($trail) {
-        $trail->push('Home', route('admin.page'));
+    Breadcrumbs::for('home', function ($trail) {
+        $trail->push('Home', route('home'));
     });
 
     Breadcrumbs::for('admin.dashboard', function ($trail) {

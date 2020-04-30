@@ -23,4 +23,12 @@ class Rhythm extends Model
         return $this->hasMany(RhythmStatistics::class, 'rhythm_id');
     }
 
+    /**
+     * Get the rhythm record associated with the establishment.
+     */
+    public function rhythm_establishments()
+    {
+        return $this->belongsToMany(Establishment::class,'establishments_rhythm');
+    }
+
 }

@@ -34,7 +34,6 @@ class Establishment extends Model
     public function establishments_category()
     {
         return $this->belongsToMany(Category::class,'establishments_category');
-
     }
 
     /**

@@ -19,4 +19,5 @@ Route::post('register', 'Api\\UserController@store');
 
 Route::middleware('check_token')->group(function() {
     Route::get('/events_recommended', 'Api\\EventController@eventsRecommended');
+    Route::get('/events_filter', 'Api\\EventController@eventsFilter');
 });

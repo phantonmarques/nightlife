@@ -22,4 +22,12 @@ class Category extends Model
     public function category_statistics(){
         return $this->hasMany(CategoryStatistics::class, 'category_id');
     }
+
+    /**
+     * Get the category record associated with the establishment.
+     */
+    public function category_establishments()
+    {
+        return $this->belongsToMany(Establishment::class,'establishments_category');
+    }
 }
