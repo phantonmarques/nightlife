@@ -33,6 +33,31 @@ class AdminController extends Controller
         return view('admin.dashboard');
     }
 
+    public function establishmentConnect(Request $request)
+    {
+        if (! auth()->user()->can('manage-called'))
+            return abort(401);
+
+        $user = auth()->user();
+        $user->establishment_connect = intval($request->establishment_connect);
+
+        if (!$user->save())
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('error', 'Erro ao atualizar o estabelecimento conectado!');
+
+        if (intval($request->establishment_connect) === 0)
+            return redirect()
+                ->route('admin.page')
+                ->withInput()
+                ->with('success', 'Desconectado do estabelecimento com sucesso!');
+
+        return redirect()
+            ->back()
+            ->withInput()
+            ->with('success', 'Conectado ao estabelecimento com sucesso!');
+    }
     /**
      * Show the form for creating a new resource.
      *

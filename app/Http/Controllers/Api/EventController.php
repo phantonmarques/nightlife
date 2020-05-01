@@ -11,6 +11,7 @@ use App\Models\Admin\Rhythm;
 
 class EventController extends Controller
 {
+    protected $paginate = 10;
 
     /**
      * EventController constructor.
@@ -23,13 +24,13 @@ class EventController extends Controller
 
 
     /**
+     * Functions get events recommended (Home page)
      * @return \Illuminate\Http\JsonResponse
      */
     public function eventsRecommended()
     {
         $events = array();
-        # TODO: (Localization + Favorite) or (Localization)
-        # Search events for city and (category or rhythm)
+        # TODO: Localization + Favorite
         if (!empty(auth()->user()->city_id) && (!empty(auth()->user()->user_settings->favorite_categorys) || !empty(auth()->user()->user_settings->favorite_rhythms))):
             $establishmentsFavorite = array();
 
@@ -49,13 +50,13 @@ class EventController extends Controller
             endif;
 
             $events = Event::whereHas('establishment_address', function ($q) {
-                $q->where('city_id', auth()->user()->city_id);})->whereIn('establishment_id', $establishmentsFavorite)->orderBy('views', 'desc')->get();
+                $q->where('city_id', auth()->user()->city_id);})->whereIn('establishment_id', $establishmentsFavorite)->orderBy('views', 'desc')->paginate($this->paginate);
         endif;
 
         # TODO: Localization
         if (!empty(auth()->user()->city_id) && count($events) === 0):
             $events = Event::whereHas('establishment_address', function ($q) {
-                $q->where('city_id', auth()->user()->city_id);})->orderBy('views', 'desc')->get();
+                $q->where('city_id', auth()->user()->city_id);})->orderBy('views', 'desc')->paginate($this->paginate);
         endif;
 
         # TODO: Favorite
@@ -77,12 +78,12 @@ class EventController extends Controller
                 $establishmentsFavorite = array_merge($establishmentsFavorite, $establishmentsRhythm);
             endif;
 
-            $events = Event::whereIn('establishment_id', $establishmentsFavorite)->orderBy('views', 'desc')->get();
+            $events = Event::whereIn('establishment_id', $establishmentsFavorite)->orderBy('views', 'desc')->paginate($this->paginate);
         endif;
 
         # TODO: Top Views
         if (count($events) === 0):
-            $events = Event::orderBy('views', 'desc')->get();
+            $events = Event::orderBy('views', 'desc')->paginate($this->paginate);
         endif;
 
         return response()->json([
@@ -92,7 +93,7 @@ class EventController extends Controller
     }
 
     /**
-     *
+     * Functions get events filters available
      * @return \Illuminate\Http\JsonResponse
      */
     public function eventsFilter(){
@@ -111,10 +112,10 @@ class EventController extends Controller
                 'status' => false,
                 'return' => "Não existe nenhum filtro relacionado a estabelecimentos!"
             ]);
-
     }
 
     /**
+     * Function get category used in establishments
      * @return Category exists in establishment
      */
     private function categorys(){
@@ -122,86 +123,10 @@ class EventController extends Controller
     }
 
     /**
+     * Function get rhythm used in establishments
      * @return Rhythm exists in establishment
      */
     private function rhythms(){
         return Rhythm::whereHas('rhythm_establishments')->select('id', 'name')->get();
-    }
-
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 }

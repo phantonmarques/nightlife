@@ -106,12 +106,9 @@
             </div>
         </div>
     </div>
-
-    @include('vendor/flash-message')
 @endsection
 
 @section('js')
-    <script type="text/javascript" src="{{ asset('assets/global/js/general.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/admin/js/permission.js') }}"></script>
 @endsection
 

@@ -33,22 +33,6 @@ class EstablishmentAddressController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
-     */
-    public function prepareIndex()
-    {
-        if (! auth()->user()->can('manage-establishment'))
-            return abort(401);
-
-        $establishments = Establishment::where('status', 1)->pluck('corporate_name', 'id');
-
-        return view('admin.establishmentAddress.prepareIndex',
-            compact('establishments'));
-    }
-
-    /**
-     * Display a listing of the resource.
-     *
      * @param \App\Models\Admin\EstablishmentAddress
      * @param \Illuminate\Http\Request
      * @return \Illuminate\Http\Response
@@ -58,27 +42,20 @@ class EstablishmentAddressController extends Controller
         if (! auth()->user()->can('manage-establishment'))
             return abort(401);
 
-        $establishmentAddressPrepare = $request->query('e');
-
         $establishmentAddressSearch = $request->query('s');
 
-        if (!empty(trim($establishmentAddressPrepare)))
-            session()->put('establishment', $establishmentAddressPrepare);
-        else
-            $establishmentAddressPrepare = session()->get('establishment');
-
-        if (empty(trim($establishmentAddressPrepare)))
+        if (empty(auth()->user()->establishment_connect))
             return redirect()
-                ->route('establishment.prepareIndex')
+                ->back()
                 ->withInput()
-                ->with('error', 'Selecione o estabelecimento novamente!');
+                ->with('error', 'Conecte em algum estabelecimento para realizar alterações, em seguida tente novamente!');
 
         if (!empty($establishmentAddressSearch))
-            $establishmentsAddress = EstablishmentAddress::where([['establishment_id', $establishmentAddressPrepare],
+            $establishmentsAddress = EstablishmentAddress::where([['establishment_id', auth()->user()->establishment_connect],
                                         ['street_name', 'like', "%{$establishmentAddressSearch}%"]])->paginate($this->paginate);
         else
             $establishmentsAddress =  EstablishmentAddress::with(['establishments_phone' => function($q){
-                $q->where('main', 1);}])->where('establishment_id', $establishmentAddressPrepare)->paginate($this->paginate);
+                $q->where('main', 1);}])->where('establishment_id', auth()->user()->establishment_connect)->paginate($this->paginate);
 
         return view('admin.establishmentAddress.index',
             compact( 'establishmentsAddress',
@@ -125,6 +102,12 @@ class EstablishmentAddressController extends Controller
         if (! auth()->user()->can('manage-establishment'))
             return abort(401);
 
+        if (empty(auth()->user()->establishment_connect))
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('error', 'Conecte em algum estabelecimento para realizar alterações, em seguida tente novamente!');
+
         $data = $request->validated();
 
         DB::beginTransaction();
@@ -139,7 +122,7 @@ class EstablishmentAddressController extends Controller
                     ->with('error', 'Endereço já cadastrado, favor informe outro!');
 
             if (!isset($data["establishment_id"]))
-                $data["establishment_id"] = session()->get('establishment');
+                $data["establishment_id"] = auth()->user()->establishment_connect;
 
             $establishmentAddress = EstablishmentAddress::create($data);
 
@@ -148,7 +131,7 @@ class EstablishmentAddressController extends Controller
 
             foreach ($data["contact"] as $key => $contact):
                 $contact["establishment_address_id"] = $establishmentAddress->id;
-                $contact["establishment_id"] = session()->get('establishment');
+                $contact["establishment_id"] = auth()->user()->establishment_connect;
 
                 if ($key === 0)
                     $contact["main"] = 1;
@@ -231,13 +214,19 @@ class EstablishmentAddressController extends Controller
         if (! auth()->user()->can('manage-establishment'))
             return abort(401);
 
+        if (empty(auth()->user()->establishment_connect))
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('error', 'Conecte em algum estabelecimento para realizar alterações, em seguida tente novamente!');
+
         $data = $request->validated();
 
         DB::beginTransaction();
 
         try {
             if (!isset($data["establishment_id"]))
-                $data["establishment_id"] = session()->get('establishment');
+                $data["establishment_id"] = auth()->user()->establishment_connect;
 
             $establishmentAddress->fill($data);
 
@@ -250,7 +239,7 @@ class EstablishmentAddressController extends Controller
 
                 foreach ($data["contact"] as $key => $contact):
                     $contact["establishment_address_id"] = $establishmentAddress->id;
-                    $contact["establishment_id"] = session()->get('establishment');
+                    $contact["establishment_id"] = auth()->user()->establishment_connect;
 
                     if ($key === 0)
                         $contact["main"] = 1;

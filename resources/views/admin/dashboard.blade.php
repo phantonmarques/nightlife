@@ -18,12 +18,6 @@
             </div>
         </div>
     </div>
-
-    @include('vendor/flash-message')
-@endsection
-
-@section('js')
-    <script type="text/javascript" src="{{ asset('assets/Global/js/general.js') }}"></script>
 @endsection
 
 @section('css')

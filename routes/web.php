@@ -22,6 +22,8 @@ Route::group(['middleware' => ['auth'], 'prefix' => '/control/'], function () {
     # Establishment Routes Access
     Route::get('dashboard', 'Admin\\AdminController@dashboard')->name('admin.dashboard');
 
+    # Admin\Employee Access *SPECIAL*
+    Route::post('establishmentConnect', 'Admin\\AdminController@establishmentConnect')->name('admin.establishment');
 
     # Category
     Route::get('category/{category}/destroy', 'Admin\\CategoryController@destroy')->name('category.destroy')->middleware('auth');
@@ -37,7 +39,6 @@ Route::group(['middleware' => ['auth'], 'prefix' => '/control/'], function () {
 
     # Establishment Address
     Route::get('establishmentAddress/{establishmentAddress}/destroy', 'Admin\\EstablishmentAddressController@destroy')->name('establishmentAddress.destroy')->middleware('auth');
-    Route::get('establishmentAddress/prepareIndex', 'Admin\\EstablishmentAddressController@prepareIndex')->name('establishmentAddress.prepareIndex')->middleware('auth');
     Route::resource('establishmentAddress', 'Admin\\EstablishmentAddressController')->except(['destroy'])->middleware('auth');
 
     # User
@@ -55,7 +56,6 @@ Route::group(['middleware' => ['auth'], 'prefix' => '/control/'], function () {
 
     # Event
     Route::get('event/{event}/destroy', 'Admin\\EventController@destroy')->name('event.destroy')->middleware('auth');
-    Route::get('event/prepareIndex', 'Admin\\EventController@prepareIndex')->name('event.prepareIndex')->middleware('auth');
     Route::resource('event', 'Admin\\EventController')->except(['destroy'])->middleware('auth');
 });
 #######################################################################################################################################

@@ -21,6 +21,7 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->string('cpf_cnpj')->unique()->nullable();
             $table->integer('city_id')->unsigned()->nullable();
+            $table->integer('establishment_connect')->nullable();
             $table->enum('type_user', ['a','f', 'e', 'ef', 'u'])->default('u'); # ADMINISTRADOR (a), funcionario (f), estabelecimento (e), estabelecimento funcionario (ef), usuário (u).
             $table->rememberToken();
             $table->timestamps();

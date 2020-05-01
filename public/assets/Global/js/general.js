@@ -1,4 +1,8 @@
 window.onload = function () {
+    $("[name='establishment_connect']").on('change', function(){
+        document.getElementById('formConnect').submit();
+    });
+
     // Alert error, timeout for display none
     alert = document.getElementById("alert-sync");
 

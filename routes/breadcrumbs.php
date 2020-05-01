@@ -43,11 +43,6 @@
 
     # TODO: ESTABLISHMENT ADDRESS
 
-    Breadcrumbs::for('establishmentAddress.prepareIndex', function ($trail) {
-        $trail->parent('home');
-        $trail->push('Endereços Estabelecimentos', route('establishmentAddress.prepareIndex'));
-    });
-
     Breadcrumbs::for('establishmentAddress.index', function ($trail) {
         $trail->parent('home');
         $trail->push('Endereços Estabelecimentos', route('establishmentAddress.index'));
@@ -179,11 +174,6 @@
     });
 
     # TODO: EVENT ESTABLISHMENT
-
-    Breadcrumbs::for('event.prepareIndex', function ($trail) {
-        $trail->parent('home');
-        $trail->push('Estabelecimentos', route('event.prepareIndex'));
-    });
 
     Breadcrumbs::for('event.index', function ($trail) {
         $trail->parent('home');

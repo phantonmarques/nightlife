@@ -32,43 +32,23 @@
          *
          * @return \Illuminate\Http\Response
          */
-        public function prepareIndex()
-        {
-            if (!auth()->user()->can('manage-establishment') && !auth()->user()->can('establishment-manager'))
-                return abort(401);
-
-            $establishments = Establishment::where('status', 1)->pluck('corporate_name', 'id');
-
-            return view('admin.event.prepareIndex',
-                compact('establishments'));
-        }
-
-        /**
-         * Display a listing of the resource.
-         *
-         * @return \Illuminate\Http\Response
-         */
         public function index(Request $request)
         {
-            if (!auth()->user()->can('manage-establishment') && !auth()->user()->can('establishment-manager'))
+            if (!auth()->user()->can('manage-called') && !auth()->user()->can('establishment-manager'))
                 return abort(401);
-
-            $eventPrepare = $request->query('e');
 
             $eventSearch = $request->query('s');
 
-            if (!empty(trim($eventPrepare)) && auth()->user()->can('manage-establishment'))
-                session()->put('establishment', $eventPrepare);
-            else if (auth()->user()->can('manage-establishment'))
-                $eventPrepare = session()->get('establishment');
-            else
+            if (!empty(auth()->user()->establishment_connect))
+                $eventPrepare = auth()->user()->establishment_connect;
+            elseif (auth()->user()->establishments()->count() > 0)
                 $eventPrepare = auth()->user()->establishments()->id;
 
-            if (empty(trim($eventPrepare)) && auth()->user()->can('manage-establishment'))
+            if (empty($eventPrepare) && auth()->user()->can('manage-called'))
                 return redirect()
-                    ->route('establishment.prepareIndex')
+                    ->back()
                     ->withInput()
-                    ->with('error', 'Selecione o estabelecimento novamente!');
+                    ->with('error', 'Conecte em algum estabelecimento para realizar alterações, em seguida tente novamente!');
 
             if (!empty($eventSearch))
                 $events = Event::where([['name', 'like', "%{$eventSearch}%"], ['status', 1]])->paginate($this->paginate);
@@ -90,7 +70,7 @@
          */
         public function create()
         {
-            if (!auth()->user()->can('manage-establishment') && !auth()->user()->can('establishment-manager'))
+            if (!auth()->user()->can('manage-called') && !auth()->user()->can('establishment-manager'))
                 return abort(401);
 
             /** Create form options */
@@ -104,7 +84,13 @@
             if (auth()->user()->establishments()->count() > 0)
                 $establishment_id = auth()->user()->establishments()->id;
             else
-                $establishment_id = session()->get('establishment');
+                $establishment_id = auth()->user()->establishment_connect;
+
+            if (empty($establishment_id) && auth()->user()->can('manage-called'))
+                return redirect()
+                    ->back()
+                    ->withInput()
+                    ->with('error', 'Conecte em algum estabelecimento para realizar alterações, em seguida tente novamente!');
 
             $addresses = EstablishmentAddress::where('establishment_id', $establishment_id)->get();
 
@@ -124,7 +110,7 @@
          */
         public function store(CreateOrUpdateEvent $request)
         {
-            if (!auth()->user()->can('manage-establishment') && !auth()->user()->can('establishment-manager'))
+            if (!auth()->user()->can('manage-called') && !auth()->user()->can('establishment-manager'))
                 return abort(401);
 
             $data = $request->validated();
@@ -144,7 +130,10 @@
                 if (auth()->user()->establishments()->count() > 0)
                     $data["establishment_id"] = auth()->user()->establishments()->id;
                 else
-                    $data["establishment_id"] = session()->get('establishment');
+                    $data["establishment_id"] = auth()->user()->establishment_connect;
+
+                if (empty($data["establishment_id"]) && auth()->user()->can('manage-called'))
+                    throw new \Exception('Conecte em algum estabelecimento para realizar alterações, em seguida tente novamente!');
 
                 $event = Event::create($data);
 
@@ -174,7 +163,7 @@
          */
         public function show(Event $event)
         {
-            if (!auth()->user()->can('manage-establishment') && !auth()->user()->can('establishment-manager'))
+            if (!auth()->user()->can('manage-called') && !auth()->user()->can('establishment-manager'))
                 return abort(401);
 
             return view('admin.event.show',
@@ -189,7 +178,7 @@
          */
         public function edit(Event $event)
         {
-            if (!auth()->user()->can('manage-establishment') && !auth()->user()->can('establishment-manager'))
+            if (!auth()->user()->can('manage-called') && !auth()->user()->can('establishment-manager'))
                 return abort(401);
 
             /** Create form options */
@@ -204,7 +193,13 @@
             if (auth()->user()->establishments()->count() > 0)
                 $establishment_id = auth()->user()->establishments()->id;
             else
-                $establishment_id = session()->get('establishment');
+                $establishment_id = auth()->user()->establishment_connect;
+
+            if (empty($establishment_id) && auth()->user()->can('manage-called'))
+                return redirect()
+                    ->back()
+                    ->withInput()
+                    ->with('error', 'Conecte em algum estabelecimento para realizar alterações, em seguida tente novamente!');
 
             $addresses = EstablishmentAddress::where('establishment_id', $establishment_id)->get();
 
@@ -223,7 +218,7 @@
          */
         public function update(CreateOrUpdateEvent $request, Event $event)
         {
-            if (!auth()->user()->can('manage-establishment') && !auth()->user()->can('establishment-manager'))
+            if (!auth()->user()->can('manage-called') && !auth()->user()->can('establishment-manager'))
                 return abort(401);
 
             $data = $request->validated();
@@ -246,7 +241,13 @@
                 if (auth()->user()->establishments()->count() > 0)
                     $data["establishment_id"] = auth()->user()->establishments()->id;
                 else
-                    $data["establishment_id"] = session()->get('establishment');
+                    $data["establishment_id"] = auth()->user()->establishment_connect;
+
+                if (empty($data["establishment_id"]) && auth()->user()->can('manage-called'))
+                    return redirect()
+                        ->back()
+                        ->withInput()
+                        ->with('error', 'Conecte em algum estabelecimento para realizar alterações, em seguida tente novamente!');
 
                 $event->fill($data);
 
@@ -276,7 +277,7 @@
          */
         public function destroy(Event $event)
         {
-            if (!auth()->user()->can('manage-establishment') && !auth()->user()->can('establishment-manager'))
+            if (!auth()->user()->can('manage-called') && !auth()->user()->can('establishment-manager'))
                 return abort(401);
 
             DB::beginTransaction();

@@ -57,6 +57,16 @@
                 <div class="navbar-custom-menu">
 
                     <ul class="nav navbar-nav">
+                        @can('manage-called')
+                            <li>
+                                {{ Form::open(['route' => 'admin.establishment','method' => 'POST', 'id' => 'formConnect']) }}
+                                <div style="margin-top: 5%">
+                                    {{ Form::select('establishment_connect', (array_add(\App\Models\Admin\Establishment::where('status', 1)->pluck('corporate_name', 'id'), '', 'Conectar em Estabelecimento')), (!empty(auth()->user()->establishment_connect) ? auth()->user()->establishment_connect : ''), ['class' => 'form-control']) }}
+                                </div>
+                                {{ Form::close() }}
+
+                            </li>
+                        @endcan
                         <li>
                             @if(config('adminlte.logout_method') == 'GET' || !config('adminlte.logout_method') && version_compare(\Illuminate\Foundation\Application::VERSION, '5.3.0', '<'))
                                 <a href="{{ url(config('adminlte.logout_url', 'auth/logout')) }}">
@@ -126,9 +136,9 @@
 
             <!-- Main content -->
             <section class="content">
-
                 @yield('content')
 
+                @include('vendor/flash-message')
             </section>
             <!-- /.content -->
             @if(config('adminlte.layout') == 'top-nav')
@@ -149,6 +159,7 @@
 @stop
 
 @section('adminlte_js')
+    <script type="text/javascript" src="{{ asset('assets/global/js/general.js') }}"></script>
     <script src="{{ asset('vendor/adminlte/dist/js/adminlte.min.js') }}"></script>
     @stack('js')
     @yield('js')

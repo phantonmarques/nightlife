@@ -45,7 +45,7 @@ return [
     |
     */
 
-    'skin' => 'purple',
+    'skin' => 'blue',
 
     /*
     |--------------------------------------------------------------------------
@@ -85,7 +85,7 @@ return [
     |
     */
 
-    'dashboard_url' => '/',
+    'dashboard_url' => '/control',
 
     'logout_url' => 'logout',
 
@@ -123,7 +123,7 @@ return [
                 [
                     'text'      => 'Endereços',
                     'icon'      => 'fas fa-map-marked-alt',
-                    'route'     => 'establishmentAddress.prepareIndex',
+                    'route'     => 'establishmentAddress.index',
                     'active'    => ['control/establishmentAddress', 'control/establishmentAddress/*', 'control/establishmentAddress?*']
                 ],
                 [
@@ -190,8 +190,7 @@ return [
         ],
         [
             'header'    => 'GERENCIAMENTO DE ESTABELECIMENTO',
-            'can'       => 'establishment-manager',
-            'can'       => 'manage-establishment'
+            'can'       => ['manage-called']
         ],
         [
             'text'      => 'Dashboard',
@@ -204,7 +203,7 @@ return [
         [
             'text'      => 'Eventos',
             'icon'      => 'far fa-calendar-alt',
-            'route'     => 'event.prepareIndex',
+            'route'     => 'event.index',
             'active'    => ['control/event', 'control/event/*', 'control/event?*'],
             'can'       => 'manage-establishment'
         ],
