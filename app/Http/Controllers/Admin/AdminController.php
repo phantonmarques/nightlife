@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Site\City;
+use App\Models\Site\State;
 
 class AdminController extends Controller
 {
@@ -58,6 +60,31 @@ class AdminController extends Controller
             ->withInput()
             ->with('success', 'Conectado ao estabelecimento com sucesso!');
     }
+
+    /**
+     * Function Search citys of certain state
+     * @param $stateSelect
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function searchCitys($stateSelect){
+        if (! auth()->user()->can('manage-users') && ! auth()->user()->can('manage-called'))
+            return abort(401);
+
+        return response()->json(City::where('state_id', $stateSelect)->select( 'id', 'name', 'name_visible')->get());
+    }
+
+    /**
+     * Function Search state selected
+     * @param $state
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function searchState($state){
+        if (! auth()->user()->can('manage-users') && ! auth()->user()->can('manage-called'))
+            return abort(401);
+
+        return response()->json(State::where('state_cod', $state)->select('id')->first());
+    }
+
     /**
      * Show the form for creating a new resource.
      *

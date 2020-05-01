@@ -166,20 +166,22 @@ return [
          * Package Service Providers...
          */
 
+        Fx3costa\LaravelChartJs\Providers\ChartjsServiceProvider::class,
+        Unisharp\Ckeditor\ServiceProvider::class,
+        JeroenNoten\LaravelAdminLte\ServiceProvider::class,
+        Collective\Html\HtmlServiceProvider::class,
+        App\Providers\RolesServiceProvider::class,
+        App\Providers\PermissionServiceProvider::class,
+
         /*
          * Application Service Providers...
          */
-        // App\Providers\BroadcastServiceProvider::class,
 
-        Unisharp\Ckeditor\ServiceProvider::class,
+        // App\Providers\BroadcastServiceProvider::class,
         App\Providers\AppServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-        JeroenNoten\LaravelAdminLte\ServiceProvider::class,
-        Collective\Html\HtmlServiceProvider::class,
-        App\Providers\RolesServiceProvider::class,
-        App\Providers\PermissionServiceProvider::class
     ],
 
     /*

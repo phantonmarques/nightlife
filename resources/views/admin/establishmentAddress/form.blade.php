@@ -180,7 +180,7 @@
                                 {{ Form::label('whatsapp', 'Sim', ['class' => 'form-control']) }}
                             </div>
                         </div>
-                        {{ Form::hidden('contContact', isset($establishmentAddress->establishments_phone) ? ($establishmentAddress->establishments_phone->count()) : 1, array('id' => 'contContact')) }}
+                        {{ Form::hidden('contContact', isset($establishmentAddress->establishments_phone) ? ($establishmentAddress->establishments_phone->count()) : 1, ['id' => 'contContact']) }}
                     </div>
                     @if ($errors->has('contact.*'))
                         <div class="row">
@@ -235,6 +235,9 @@
                         @endforeach
                     @endif
                 </div>
+
+                {{ Form::hidden('uc', url('control/citys') . "/", ['id' => 'url_city']) }}
+                {{ Form::hidden('us', url('control/state') . "/", ['id' => 'url_state']) }}
 
                 @if ($message = Session::get('error'))
                     <br>

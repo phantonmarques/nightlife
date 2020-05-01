@@ -130,12 +130,10 @@ function searchCity(index = '') {
 
     if (state.length > 0) {
         $.ajax({
-            url: "/ProjetosLaravel/nightlife/public/citys/" + state,
+            url: document.getElementById('url_city').value + state,
             type: 'GET',
             crossDomain: true,
             success: function (data) {
-                data = JSON.parse(data);
-
                 if (typeof (data[0].id) !== undefined) {
                     var selectCidades = document.getElementById("city_id");
 
@@ -165,12 +163,10 @@ function searchCity(index = '') {
 function searchState(state) {
     if (state.length > 0) {
         $.ajax({
-            url: "/ProjetosLaravel/nightlife/public/state/" + state,
+            url: document.getElementById('url_state').value + state,
             type: 'GET',
             crossDomain: true,
             success: function (data) {
-                data = JSON.parse(data);
-
                 if (data.id !== '' && data.id !== undefined)
                     document.getElementById("state_id").value = data.id
             },

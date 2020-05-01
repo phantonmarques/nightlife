@@ -151,6 +151,8 @@
 
                     {{ Form::hidden('city', (isset($user->id) ? $user->city_id : ''), ['id' => 'city']) }}
                     {{ Form::hidden('email_verified_at', date('Y-m-d H:i:s')) }}
+                    {{ Form::hidden('uc', url('control/citys') . "/", ['id' => 'url_city']) }}
+                    {{ Form::hidden('us', url('control/state') . "/", ['id' => 'url_state']) }}
 
                     @if ($message = Session::get('error'))
                         <br>

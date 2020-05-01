@@ -20,12 +20,4 @@ class SiteInstController extends Controller
     {
         return view('siteinstitucional.auth.login');
     }
-
-    public function searchCitys($stateSelect){
-        return City::where('state_id', $stateSelect)->select( 'id', 'name', 'name_visible')->get()->toJson();
-    }
-
-    public function searchState($state){
-        return State::where('state_cod', $state)->select('id')->first()->toJson();
-    }
 }

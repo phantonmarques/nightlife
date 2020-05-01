@@ -3,8 +3,8 @@
 use Illuminate\Support\Facades\Route;
 
 /**
- *  Página principal para todos
- * TODO: Institucional
+ *  Page main for all
+ * TODO: Institutional
  */
 Route::get('/', 'SiteInstitucional\SiteInstController@index')->name('home');
 
@@ -25,7 +25,7 @@ Route::group(['middleware' => ['auth'], 'prefix' => '/control/'], function () {
     # Admin\Employee Access *SPECIAL*
     Route::post('establishmentConnect', 'Admin\\AdminController@establishmentConnect')->name('admin.establishment');
 
-    # Access Log Users
+    # Access Log Usersp
     Route::resource('logs', 'Admin\\UserAccessController')->except(['destroy'])->middleware('auth');
 
     # Category
@@ -60,6 +60,16 @@ Route::group(['middleware' => ['auth'], 'prefix' => '/control/'], function () {
     # Event
     Route::get('event/{event}/destroy', 'Admin\\EventController@destroy')->name('event.destroy')->middleware('auth');
     Route::resource('event', 'Admin\\EventController')->except(['destroy'])->middleware('auth');
+
+    /**
+     * TODO: Utilities functions
+     */
+
+    # Search citys of certain state
+    Route::get('citys/{state_id}', 'Admin\\AdminController@searchCitys')->name('searchCitys');
+
+    # Search state selected
+    Route::get('state/{state_id}', 'Admin\\AdminController@searchState')->name('searchState');
 });
 #######################################################################################################################################
 
@@ -67,12 +77,6 @@ Route::group(['middleware' => ['auth'], 'prefix' => '/control/'], function () {
 /**
  * TODO: Funções Padrões do Sistema
  */
-
-# Busca Cidades
-Route::get('citys/{state_id}', 'SiteInstitucional\SiteInstController@searchCitys')->name('searchCitys');
-
-# Busca ID Estado
-Route::get('state/{state_id}', 'SiteInstitucional\SiteInstController@searchState')->name('searchState');
 
 # Rotas para registrar usuários comuns
 Route::get('register', ['uses' => 'Auth\RegisterController@showRegistrationForm'])->name('register.page');
