@@ -25,6 +25,9 @@ Route::group(['middleware' => ['auth'], 'prefix' => '/control/'], function () {
     # Admin\Employee Access *SPECIAL*
     Route::post('establishmentConnect', 'Admin\\AdminController@establishmentConnect')->name('admin.establishment');
 
+    # Access Log Users
+    Route::resource('logs', 'Admin\\UserAccessController')->except(['destroy'])->middleware('auth');
+
     # Category
     Route::get('category/{category}/destroy', 'Admin\\CategoryController@destroy')->name('category.destroy')->middleware('auth');
     Route::resource('category', 'Admin\\CategoryController')->except(['destroy'])->middleware('auth');

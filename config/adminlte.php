@@ -106,7 +106,7 @@ return [
 
     'menu' => [
         [
-            'header'    => 'GERERENCIAMENTO PRINCIPAL',
+            'header'    => 'ADMINISTRADOR',
             'can'       => 'manage-establishment'
         ],
         [
@@ -173,20 +173,20 @@ return [
         [
             'text'      => 'Log Acessos',
             'icon'      => 'fas fa-user',
-            'url'       => 'admin/pages',
-            'active'    => ['control/roles', 'control/roles/*', 'control/roles?*'],
-            //'can'     => 'WorkerPolicy'
+            'route'     => 'logs.index',
+            'active'    => ['control/logs', 'control/logs/*', 'control/logs?*'],
+            'can'       => 'access-admin'
         ],
         [
             'header'    => 'ATENDIMENTO ESTABELECIMENTO',
-            //'can'     => 'WorkerPolicy'
+            'can'       => 'manage-called'
         ],
         [
             'text'      => 'Chamados',
             'icon'      => 'fas fa-phone-volume',
             'url'       => 'admin/pages',
             'active'    => ['control/roles', 'control/roles/*', 'control/roles?*'],
-            //'can'     => 'WorkerPolicy'
+            'can'     => 'manage-called'
         ],
         [
             'header'    => 'GERENCIAMENTO DE ESTABELECIMENTO',
@@ -197,22 +197,12 @@ return [
             'icon'      => 'fas fa-chart-line',
             'route'     => 'admin.dashboard',
             'active'    => ['control/dashboard', 'control/dashboard/*', 'control/dashboard?*'],
-            'can'       => 'establishment-manager',
-            'can'       => 'manage-establishment'
         ],
         [
             'text'      => 'Eventos',
             'icon'      => 'far fa-calendar-alt',
             'route'     => 'event.index',
             'active'    => ['control/event', 'control/event/*', 'control/event?*'],
-            'can'       => 'manage-establishment'
-        ],
-        [
-            'text'      => 'Eventos',
-            'icon'      => 'far fa-calendar-alt',
-            'route'     => 'event.index',
-            'active'    => ['control/event', 'control/event/*', 'control/event?*'],
-            'can'       => 'establishment-manager',
         ],
         [
             'text'      => 'Chamados',
@@ -223,7 +213,6 @@ return [
         [
             'text'      => 'Configurações',
             'icon'      => 'fas fa-cog',
-            //'can'     => 'EstablishmentPolicy'
             'submenu'   => [
                 [
                     'text'      => 'Configurações Perfil',
@@ -252,7 +241,6 @@ return [
             'text'      => 'Relatórios',
             'icon'      => 'far fa-file-alt',
             'url'       => '#',
-            //'can'     => 'EstablishmentPolicy'
         ],
     ],
 

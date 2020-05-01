@@ -37,6 +37,9 @@
             if (!auth()->user()->can('manage-called') && !auth()->user()->can('establishment-manager'))
                 return abort(401);
 
+            # Log Access Users
+            $this->access('Index Evento');
+
             $eventSearch = $request->query('s');
 
             if (!empty(auth()->user()->establishment_connect))
@@ -114,6 +117,9 @@
                 return abort(401);
 
             $data = $request->validated();
+
+            # Log Access Users
+            $this->access('Criar Evento', $data);
 
             DB::beginTransaction();
 
@@ -223,6 +229,9 @@
 
             $data = $request->validated();
 
+            # Log Access Users
+            $this->access('Atualizar Evento', $data);
+
             DB::beginTransaction();
 
             try {
@@ -280,6 +289,9 @@
             if (!auth()->user()->can('manage-called') && !auth()->user()->can('establishment-manager'))
                 return abort(401);
 
+            # Log Access Users
+            $this->access('Exclusão Evento', $event);
+
             DB::beginTransaction();
 
             try {
@@ -304,5 +316,19 @@
                     ->withInput()
                     ->with('error', $e->getMessage());
             }
+        }
+
+        /**
+         * Create Access Log User
+         */
+        private function access($description, $content = NULL, $class = __CLASS__)
+        {
+            auth()->user()->user_access()->create([
+                'class' => $class,
+                'establishment_connect' => auth()->user()->establishment_connect,
+                'description' => $description,
+                'content' => $content,
+                'data_access' => date('YmdHis')
+            ]);
         }
     }

@@ -35,6 +35,9 @@ class RoleController extends Controller
         if (! auth()->user()->can('manage-users'))
             return abort(401);
 
+        # Log Access Users
+        $this->access('Index Função');
+
         $roleSearch = $request->query('s');
 
         if (!empty($roleSearch))
@@ -87,6 +90,9 @@ class RoleController extends Controller
             return abort(401);
 
         $data = $request->validated();
+
+        # Log Access Users
+        $this->access('Criar Função', $data);
 
         DB::beginTransaction();
 
@@ -179,6 +185,9 @@ class RoleController extends Controller
 
         $data = $request->validated();
 
+        # Log Access Users
+        $this->access('Atualização Função', $data);
+
         DB::beginTransaction();
 
         try {
@@ -219,6 +228,9 @@ class RoleController extends Controller
         if (! auth()->user()->can('manage-users'))
             return abort(401);
 
+        # Log Access Users
+        $this->access('Exclusão Função', $role);
+
         DB::beginTransaction();
 
         try {
@@ -241,5 +253,19 @@ class RoleController extends Controller
                 ->withInput()
                 ->with('error', $e->getMessage());
         }
+    }
+
+    /**
+     * Create Access Log User
+     */
+    private function access($description, $content = NULL, $class = __CLASS__)
+    {
+        auth()->user()->user_access()->create([
+            'class' => $class,
+            'establishment_connect' => auth()->user()->establishment_connect,
+            'description' => $description,
+            'content' => $content,
+            'data_access' => date('YmdHis')
+        ]);
     }
 }

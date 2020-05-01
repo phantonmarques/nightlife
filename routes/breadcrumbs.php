@@ -8,7 +8,7 @@
     use App\Models\Admin\Role;
     use App\Models\Admin\Rhythm;
     use App\Models\Admin\Event;
-
+    use App\Models\Admin\UserAccess;
 
     # TODO: ESTABLSIHMENT ROUTES ACESS
 
@@ -193,6 +193,18 @@
     Breadcrumbs::for('event.edit', function ($trail, Event $event) {
         $trail->parent('event.index', $event);
         $trail->push('Editar Evento', route('event.edit', $event));
+    });
+
+    # TODO: LOG ACCESS USERS
+
+    Breadcrumbs::for('logs.index', function ($trail) {
+        $trail->parent('home');
+        $trail->push('Eventos Estabelecimento', route('logs.index'));
+    });
+
+    Breadcrumbs::for('logs.show', function ($trail, UserAccess $log) {
+        $trail->parent('logs.index');
+        $trail->push($log->description, route('logs.show', $log));
     });
 
     # TODO: ERROR

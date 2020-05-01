@@ -38,6 +38,9 @@
             if (!auth()->user()->can('manage-users'))
                 return abort(401);
 
+            # Log Access Users
+            $this->access('Index Usuário');
+
             $userSearch = $request->query('s');
 
             if (!empty($userSearch)):
@@ -103,6 +106,9 @@
                 return abort(401);
 
             $data = $request->validated();
+
+            # Log Access Users
+            $this->access('Criar Usuário', $data);
 
             DB::beginTransaction();
 
@@ -201,6 +207,9 @@
 
             $data = $request->validated();
 
+            # Log Access Users
+            $this->access('Atualização Usuário', $data);
+
             DB::beginTransaction();
 
             try {
@@ -249,6 +258,9 @@
             if (! auth()->user()->can('manage-users'))
                 return abort(401);
 
+            # Log Access Users
+            $this->access('Exclusão Usuário', $user);
+
             DB::beginTransaction();
 
             try {
@@ -274,7 +286,6 @@
             }
         }
 
-
         /**
          * Get type users
          *
@@ -287,5 +298,19 @@
                 'f' => 'Funcionário',
                 'ef' => 'Funcionário Estabelecimento',
                 'u' => 'Usuário Comum');
+        }
+
+        /**
+         * Create Access Log User
+         */
+        private function access($description, $content = NULL, $class = __CLASS__)
+        {
+            auth()->user()->user_access()->create([
+                'class' => $class,
+                'establishment_connect' => auth()->user()->establishment_connect,
+                'description' => $description,
+                'content' => $content,
+                'data_access' => date('YmdHis')
+            ]);
         }
     }

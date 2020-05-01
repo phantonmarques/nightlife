@@ -3,6 +3,7 @@
 namespace App\Models\Site;
 
 use App\Models\Admin\Establishment;
+use App\Models\Admin\UserAccess;
 use App\Models\Admin\UserSettings;
 use App\Models\Site\City;
 use App\Models\Admin\Traits\HasRolesAndPermissions;
@@ -65,6 +66,13 @@ class User extends Authenticatable
     public function user_settings()
     {
         return $this->hasOne(UserSettings::class, 'user_id');
+    }
+
+    /**
+     * Get statistics of establishment.
+     */
+    public function user_access(){
+        return $this->hasMany(UserAccess::class, 'user_id');
     }
 
 

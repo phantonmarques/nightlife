@@ -34,6 +34,9 @@ class RhythmController extends Controller
         if (! auth()->user()->can('manage-users'))
             return abort(401);
 
+        # Log Access Users
+        $this->access('Index Ritmos Musicais');
+
         $rhythmSearch = $request->query('s');
 
         if (!empty($rhythmSearch))
@@ -83,6 +86,9 @@ class RhythmController extends Controller
             return abort(401);
 
         $data = $request->validated();
+
+        # Log Access Users
+        $this->access('Criar Ritmos Musicais', $data);
 
         DB::beginTransaction();
 
@@ -173,6 +179,9 @@ class RhythmController extends Controller
 
         $data = $request->validated();
 
+        # Log Access Users
+        $this->access('Atualização Ritmos Musicais', $data);
+
         DB::beginTransaction();
 
         try {
@@ -208,6 +217,9 @@ class RhythmController extends Controller
         if (! auth()->user()->can('manage-users'))
             return abort(401);
 
+        # Log Access Users
+        $this->access('Exclusão Ritmos Musicais', $rhythm);
+
         DB::beginTransaction();
 
         try {
@@ -231,5 +243,19 @@ class RhythmController extends Controller
                 ->withInput()
                 ->with('error', $e->getMessage());
         }
+    }
+
+    /**
+     * Create Access Log User
+     */
+    private function access($description, $content = NULL, $class = __CLASS__)
+    {
+        auth()->user()->user_access()->create([
+            'class' => $class,
+            'establishment_connect' => auth()->user()->establishment_connect,
+            'description' => $description,
+            'content' => $content,
+            'data_access' => date('YmdHis')
+        ]);
     }
 }

@@ -34,6 +34,9 @@ class PermissionController extends Controller
         if (! auth()->user()->can('manage-users'))
             return abort(401);
 
+        # Log Access Users
+        $this->access('Index Permissão');
+
         $permissionSearch = $request->query('s');
 
         if (!empty($permissionSearch))
@@ -83,6 +86,9 @@ class PermissionController extends Controller
             return abort(401);
 
         $data = $request->validated();
+
+        # Log Access Users
+        $this->access('Criar Permissão', $data);
 
         DB::beginTransaction();
 
@@ -168,6 +174,9 @@ class PermissionController extends Controller
 
         $data = $request->validated();
 
+        # Log Access Users
+        $this->access('Atualização Permissão', $data);
+
         DB::beginTransaction();
 
         try {
@@ -202,6 +211,9 @@ class PermissionController extends Controller
     {
         if (! auth()->user()->can('manage-users'))
             return abort(401);
+
+        # Log Access Users
+        $this->access('Exclusão Permissão', $permission);
 
         DB::beginTransaction();
 
@@ -239,5 +251,19 @@ class PermissionController extends Controller
         Permission::whereIn('id', request('ids'))->delete();
 
         return response()->noContent();
+    }
+
+    /**
+     * Create Access Log User
+     */
+    private function access($description, $content = NULL, $class = __CLASS__)
+    {
+        auth()->user()->user_access()->create([
+            'class' => $class,
+            'establishment_connect' => auth()->user()->establishment_connect,
+            'description' => $description,
+            'content' => $content,
+            'data_access' => date('YmdHis')
+        ]);
     }
 }

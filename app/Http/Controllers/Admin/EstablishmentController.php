@@ -36,6 +36,9 @@
             if (! auth()->user()->can('manage-establishment'))
                 return abort(401);
 
+            # Log Access Users
+            $this->access('Index Estabelecimentos');
+
             $establishmentsDisabled = $request->query('d');
 
             $establishmentsSearch = $request->query('s');
@@ -102,6 +105,9 @@
                 return abort(401);
 
             $data = $request->validated();
+
+            # Log Access Users
+            $this->access('Criar Estabelecimento', $data);
 
             DB::beginTransaction();
 
@@ -202,6 +208,9 @@
 
             $data = $request->validated();
 
+            # Log Access Users
+            $this->access('Atualização Estabelecimento', $data);
+
             DB::beginTransaction();
 
             try {
@@ -249,6 +258,9 @@
             if (! auth()->user()->can('manage-establishment'))
                 return abort(401);
 
+            # Log Access Users
+            $this->access('Exclusão Estabelecimento', $establishment);
+
             DB::beginTransaction();
 
             try {
@@ -270,5 +282,19 @@
                     ->withInput()
                     ->with('error', $e->getMessage());
             }
+        }
+
+        /**
+         * Create Access Log User
+         */
+        private function access($description, $content = NULL, $class = __CLASS__)
+        {
+            auth()->user()->user_access()->create([
+                'class' => $class,
+                'establishment_connect' => auth()->user()->establishment_connect,
+                'description' => $description,
+                'content' => $content,
+                'data_access' => date('YmdHis')
+            ]);
         }
     }

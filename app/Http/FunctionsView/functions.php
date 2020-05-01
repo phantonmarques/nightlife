@@ -62,3 +62,14 @@
     {
         return date("d/m/Y", strtotime($value));
     }
+
+    /**
+     * Return format date br and time
+     *
+     * @param $value
+     * @return string
+     */
+    function formatDateHour($value)
+    {
+        return date("d/m/Y H:i:s", strtotime($value));
+    }

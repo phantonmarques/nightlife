@@ -42,6 +42,9 @@ class EstablishmentAddressController extends Controller
         if (! auth()->user()->can('manage-establishment'))
             return abort(401);
 
+        # Log Access Users
+        $this->access('Index Endereços Estabelecimento');
+
         $establishmentAddressSearch = $request->query('s');
 
         if (empty(auth()->user()->establishment_connect))
@@ -109,6 +112,9 @@ class EstablishmentAddressController extends Controller
                 ->with('error', 'Conecte em algum estabelecimento para realizar alterações, em seguida tente novamente!');
 
         $data = $request->validated();
+
+        # Log Access Users
+        $this->access('Criar Endereços Estabelecimento', $data);
 
         DB::beginTransaction();
 
@@ -222,6 +228,9 @@ class EstablishmentAddressController extends Controller
 
         $data = $request->validated();
 
+        # Log Access Users
+        $this->access('Atualização Endereços Estabelecimento', $data);
+
         DB::beginTransaction();
 
         try {
@@ -278,6 +287,9 @@ class EstablishmentAddressController extends Controller
         if (! auth()->user()->can('manage-establishment'))
             return abort(401);
 
+        # Log Access Users
+        $this->access('Exclusão Endereços Estabelecimento', $establishmentAddress);
+
         DB::beginTransaction();
 
         try {
@@ -301,5 +313,19 @@ class EstablishmentAddressController extends Controller
                 ->withInput()
                 ->with('error', $e->getMessage());
         }
+    }
+
+    /**
+     * Create Access Log User
+     */
+    private function access($description, $content = NULL, $class = __CLASS__)
+    {
+        auth()->user()->user_access()->create([
+            'class' => $class,
+            'establishment_connect' => auth()->user()->establishment_connect,
+            'description' => $description,
+            'content' => $content,
+            'data_access' => date('YmdHis')
+        ]);
     }
 }
