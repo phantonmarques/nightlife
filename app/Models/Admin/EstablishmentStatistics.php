@@ -9,9 +9,15 @@ class EstablishmentStatistics extends Model
     /**
      * @var string table
      */
-    protected $fillable = ['establishment_id'];
+    protected $fillable = [
+        'establishment_id'
+    ];
 
-    public function establishment(){
+    /**
+     * Get statistics of establishment
+     */
+    public function establishment()
+    {
         return $this->belongsTo(Establishment::class, 'establishment_id');
     }
 }

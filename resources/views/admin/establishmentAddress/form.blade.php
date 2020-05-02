@@ -1,13 +1,17 @@
 @extends('adminlte::page')
-@section('title', 'Endereço Estabelecimento · ')
+@section('title', (isset($establishmentAddress->id) ? 'Editar ' : 'Criar ') . ' Endereço Estabelecimento · ')
+
 
 @section('content_header')
-    <meta name="csrf-token" content="{{ csrf_token() }}">
     <h1>&nbsp;</h1>
     <ol class="breadcrumb">
-        <li><a href="#">Inicio</a></li>
-        <li><a href="#">Endereços Estabelecimento</a></li>
-        <li><a href="#">Criar Endereço Estabelecimento</a></li>
+        <li><a href="{{ route('admin.page') }}">Inicio</a></li>
+        <li><a href="{{ route('establishmentAddress.index') }}">Endereços Estabelecimento</a></li>
+        <li>
+            <a href="{{ (isset($establishmentAddress->id) ? route('establishmentAddress.edit', $establishmentAddress) : route('establishmentAddress.create')) }}">{{ (isset($establishmentAddress->id) ? 'Editar ' : 'Criar ') }}
+                Endereço Estabelecimento
+            </a>
+        </li>
     </ol>
 @stop
 
@@ -21,6 +25,7 @@
                 </div>
 
                 {{ Form::model($establishmentAddress, $formOptions) }}
+                {!! csrf_field() !!}
 
                 <div class="box-header with-border">
                     <h3 class="box-title">Informações de Endereço</h3>

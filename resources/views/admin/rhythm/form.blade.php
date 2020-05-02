@@ -2,12 +2,15 @@
 @section('title', (isset($rhythm->id) ? 'Editar ' : 'Criar ') . 'Ritmo Musical · ')
 
 @section('content_header')
-    <meta name="csrf-token" content="{{ csrf_token() }}">
     <h1>&nbsp;</h1>
     <ol class="breadcrumb">
-        <li><a href="#">Inicio</a></li>
-        <li><a href="#">Ritmos Musicais</a></li>
-        <li><a href="#">{{ (isset($rhythm->id) ? 'Editar ' : 'Criar ') }} Ritmo Musical</a></li>
+        <li><a href="{{ route('admin.page') }}">Inicio</a></li>
+        <li><a href="{{ route('rhythm.index') }}">Ritmos Musicais</a></li>
+        <li>
+            <a href="{{ (isset($rhythm->id) ? route('rhythm.edit', $rhythm) : route('rhythm.create')) }}">{{ (isset($rhythm->id) ? 'Editar ' : 'Criar ') }}
+                Ritmo Musical
+            </a>
+        </li>
     </ol>
 @stop
 

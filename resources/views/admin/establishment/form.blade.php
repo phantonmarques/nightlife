@@ -1,13 +1,16 @@
 @extends('adminlte::page')
-@section('title', 'Criar Estabelecimento · ')
+@section('title', (isset($establishment->id) ? 'Editar ' : 'Criar ') . ' Estabelecimento · ')
 
 @section('content_header')
-    <meta name="csrf-token" content="{{ csrf_token() }}">
     <h1>&nbsp;</h1>
     <ol class="breadcrumb">
-        <li><a href="#">Inicio</a></li>
-        <li><a href="#">Estabelecimento</a></li>
-        <li><a href="#">Criar Estabelecimento</a></li>
+        <li><a href="{{ route('admin.page') }}">Inicio</a></li>
+        <li><a href="{{ route('establishment.index') }}">Estabelecimentos</a></li>
+        <li>
+            <a href="{{ (isset($establishment->id) ? route('establishment.edit', $establishment) : route('establishment.create')) }}">{{ (isset($establishment->id) ? 'Editar ' : 'Criar ') }}
+                Estabelecimento
+            </a>
+        </li>
     </ol>
 @stop
 
@@ -42,7 +45,8 @@
 
                     <div class="row">
                         <div class="col-md-3">
-                            {{ Form::label('state_registration','Inscrição Estadual ') }} <span class="span-required">*</span>
+                            {{ Form::label('state_registration','Inscrição Estadual ') }} <span
+                                    class="span-required">*</span>
                             {{ Form::text('state_registration' , (isset($establishment->id) ? $establishment->state_registration : ''), ['placeholder' => 'Informe a inscrição estadual', 'class' => 'form-control required', 'onkeypress' => 'return onlyNumbers(event)']) }}
                         </div>
                     </div>
@@ -62,7 +66,8 @@
                             {{ Form::label('type_license','Tipo Conta ') }} <span class="span-required">*</span>
                         </div>
                         <div class="col-md-4">
-                            {{ Form::label('category','Categoria Estabelecimento ') }} <span class="span-required">*</span>
+                            {{ Form::label('category','Categoria Estabelecimento ') }} <span
+                                    class="span-required">*</span>
                         </div>
                     </div>
 
@@ -170,7 +175,8 @@
                                                 onchange="javascript: selectUser(this.value)">
                                             <option value="">---- SELECIONE USUÁRIO ----</option>
                                             @if (isset($establishment->users))
-                                                <option value="{{$establishment->users->id}}" selected>{{$establishment->users->name}}</option>
+                                                <option value="{{$establishment->users->id}}"
+                                                        selected>{{$establishment->users->name}}</option>
                                             @endif
                                             @foreach($users as $user)
                                                 <option value="{{$user->id}}">{{$user->name}}</option>
@@ -193,7 +199,8 @@
                                     <div class="col-md-3">
                                         <select class="form-control" name="userEmail" id="userEmail" disabled>
                                             @if (isset($establishment->users))
-                                                <option value="{{$establishment->users->id}}" selected>{{$establishment->users->email}}</option>
+                                                <option value="{{$establishment->users->id}}"
+                                                        selected>{{$establishment->users->email}}</option>
                                             @endif
                                             @foreach($users as $user)
                                                 <option value="{{$user->id}}">{{$user->email}}</option>

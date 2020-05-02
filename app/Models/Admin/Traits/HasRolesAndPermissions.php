@@ -8,7 +8,7 @@ use App\Models\Admin\Permission;
 trait HasRolesAndPermissions
 {
     /**
-     * @return mixed
+     * Get roles of users
      */
     public function roles()
     {
@@ -16,7 +16,7 @@ trait HasRolesAndPermissions
     }
 
     /**
-     * @return mixed
+     * Get permissions of users
      */
     public function permissions()
     {
@@ -24,8 +24,8 @@ trait HasRolesAndPermissions
     }
 
     /**
-     * @param mixed ...$roles
-     * @return bool
+     * Verify role users
+     * @return boolean
      */
     public function hasRole(... $roles ) {
         foreach ($roles as $role) {
@@ -37,8 +37,8 @@ trait HasRolesAndPermissions
     }
 
     /**
-     * @param $permission
-     * @return bool
+     * Verify permission users
+     * @return boolean
      */
     public function hasPermission($permission)
     {
@@ -50,8 +50,8 @@ trait HasRolesAndPermissions
 
 
     /**
-     * @param $permission
-     * @return bool
+     * Verify permissions users
+     * @return boolean
      */
     public function hasPermissionTo($permission)
     {
@@ -59,8 +59,8 @@ trait HasRolesAndPermissions
     }
 
     /**
-     * @param $permission
-     * @return bool
+     * Verify permissions contain for users
+     * @return boolean
      */
     public function hasPermissionThroughRole($permission)
     {
@@ -73,8 +73,8 @@ trait HasRolesAndPermissions
     }
 
     /**
-     * @param array $permissions
-     * @return mixed
+     * Get all permissions exists
+     * @return array
      */
     public function getAllPermissions(array $permissions)
     {
@@ -82,8 +82,8 @@ trait HasRolesAndPermissions
     }
 
     /**
-     * @param mixed ...$permissions
-     * @return $this
+     * Get permission selected
+     * @return object
      */
     public function givePermissionsTo(... $permissions)
     {
@@ -96,8 +96,8 @@ trait HasRolesAndPermissions
     }
 
     /**
-     * @param mixed ...$permissions
-     * @return $this
+     * Delete permissions all permissions
+     * @return object
      */
     public function deletePermissions(... $permissions )
     {
@@ -107,13 +107,12 @@ trait HasRolesAndPermissions
     }
 
     /**
-     * @param mixed ...$permissions
-     * @return HasRolesAndPermissions
+     * Update all permissions
+     * @return object
      */
     public function refreshPermissions(... $permissions )
     {
         $this->permissions()->detach();
         return $this->givePermissionsTo($permissions);
     }
-
 }

@@ -5,26 +5,37 @@ namespace App\Models\Admin;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Site\User;
 
-
 class Establishment extends Model
 {
+    /**
+     * @var string $table
+     */
     protected $table = 'establishment';
 
-    protected $guarded = [];
-
-    protected $fillable = ['user_id', 'corporate_name', 'state_registration', 'type_license', 'status'];
+    /**
+     * @var array $fillable
+     */
+    protected $fillable = [
+        'user_id',
+        'corporate_name',
+        'state_registration',
+        'type_license',
+        'status'
+    ];
 
     /**
      * Get the users record associated with the establishment.
      */
-    public function users(){
+    public function users()
+    {
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
     /**
      * Get the address record associated with the establishment.
      */
-    public function establishment_address(){
+    public function establishment_address()
+    {
         return $this->belongsTo(EstablishmentAddress::class, 'establishment_id', 'id');
     }
 
@@ -48,7 +59,8 @@ class Establishment extends Model
     /**
      * Get statistics of establishment.
      */
-    public function establishment_statistics(){
+    public function establishment_statistics()
+    {
         return $this->hasMany(EstablishmentStatistics::class, 'establishment_id');
     }
 }

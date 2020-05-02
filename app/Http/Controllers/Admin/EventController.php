@@ -37,9 +37,6 @@
             if (!auth()->user()->can('manage-called') && !auth()->user()->can('establishment-manager'))
                 return abort(401);
 
-            # Log Access Users
-            $this->access('Index Evento');
-
             $eventSearch = $request->query('s');
 
             if (!empty(auth()->user()->establishment_connect))
@@ -52,6 +49,9 @@
                     ->back()
                     ->withInput()
                     ->with('error', 'Conecte em algum estabelecimento para realizar alterações, em seguida tente novamente!');
+
+            # Log Access Users
+            $this->access('Index Evento');
 
             if (!empty($eventSearch))
                 $events = Event::where([['name', 'like', "%{$eventSearch}%"], ['status', 1]])->paginate($this->paginate);
@@ -325,7 +325,7 @@
         {
             auth()->user()->user_access()->create([
                 'class' => $class,
-                'establishment_connect' => auth()->user()->establishment_connect,
+                'establishment_connect' => !empty(auth()->user()->establishment_connect) ? auth()->user()->establishment_connect : NULL,
                 'description' => $description,
                 'content' => $content,
                 'data_access' => date('YmdHis')

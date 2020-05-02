@@ -14,7 +14,16 @@ class Event extends Model
     /**
      * @var string $fillable
      */
-    protected $fillable = ['name', 'date_event', 'price', 'cover_path', 'description', 'status', 'establishment_id', 'establishment_address_id'];
+    protected $fillable = [
+        'name',
+        'date_event',
+        'price',
+        'cover_path',
+        'description',
+        'status',
+        'establishment_id',
+        'establishment_address_id'
+    ];
 
     /**
      * Get the establishment record associated with the event.

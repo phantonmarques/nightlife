@@ -2,12 +2,15 @@
 @section('title', (isset($category->id) ? 'Editar ' : 'Criar ') . 'Categoria · ')
 
 @section('content_header')
-    <meta name="csrf-token" content="{{ csrf_token() }}">
     <h1>&nbsp;</h1>
     <ol class="breadcrumb">
-        <li><a href="#">Inicio</a></li>
-        <li><a href="#">Categorias</a></li>
-        <li><a href="#">{{ (isset($category->id) ? 'Editar ' : 'Criar ') }} Categoria</a></li>
+        <li><a href="{{ route('admin.page') }}">Inicio</a></li>
+        <li><a href="{{ route('category.index') }}">Categorias</a></li>
+        <li>
+            <a href="{{ (isset($category->id) ? route('category.edit', $category) : route('category.create')) }}">{{ (isset($category->id) ? 'Editar ' : 'Criar ') }}
+                Categoria
+            </a>
+        </li>
     </ol>
 @stop
 

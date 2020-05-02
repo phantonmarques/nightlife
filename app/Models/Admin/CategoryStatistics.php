@@ -9,9 +9,15 @@ class CategoryStatistics extends Model
     /**
      * @var string table
      */
-    protected $fillable = ['category_id'];
+    protected $fillable = [
+        'category_id'
+    ];
 
-    public function category(){
+    /**
+     * Get statistics of category
+     */
+    public function category()
+    {
         return $this->belongsTo(Category::class, 'category_id');
     }
 }

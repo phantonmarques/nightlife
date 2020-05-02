@@ -5,7 +5,6 @@ namespace App\Models\Admin;
 use Illuminate\Database\Eloquent\Model;
 
 use App\Models\Site\User;
-use App\Models\Admin\Establishment;
 
 class UserAccess extends Model
 {
@@ -17,7 +16,14 @@ class UserAccess extends Model
     /**
      * @var array $fillable
      */
-    protected $fillable = ['user_id', 'class', 'establishment_connect', 'description', 'content', 'data_access'];
+    protected $fillable = [
+        'user_id',
+        'class',
+        'establishment_connect',
+        'description',
+        'content',
+        'data_access'
+    ];
 
     /**
      * @var array $casts

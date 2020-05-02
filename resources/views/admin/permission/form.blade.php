@@ -2,12 +2,15 @@
 @section('title', (isset($permission->id) ? 'Editar ' : 'Criar ') . 'Permissão · ')
 
 @section('content_header')
-    <meta name="csrf-token" content="{{ csrf_token() }}">
     <h1>&nbsp;</h1>
     <ol class="breadcrumb">
-        <li><a href="#">Inicio</a></li>
-        <li><a href="#">Permissões</a></li>
-        <li><a href="#">{{ (isset($permission->id) ? 'Editar ' : 'Criar ') }} Permissão</a></li>
+        <li><a href="{{ route('admin.page') }}">Inicio</a></li>
+        <li><a href="{{ route('permission.index') }}">Permissões</a></li>
+        <li>
+            <a href="{{ (isset($permission->id) ? route('permission.edit', $permission) : route('permission.create')) }}">{{ (isset($permission->id) ? 'Editar ' : 'Criar ') }}
+                Permissão
+            </a>
+        </li>
     </ol>
 @stop
 

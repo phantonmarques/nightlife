@@ -2,12 +2,15 @@
 @section('title', (isset($role->id) ? 'Editar ' : 'Criar ') . 'Função · ')
 
 @section('content_header')
-    <meta name="csrf-token" content="{{ csrf_token() }}">
     <h1>&nbsp;</h1>
     <ol class="breadcrumb">
-        <li><a href="#">Inicio</a></li>
-        <li><a href="#">Funções</a></li>
-        <li><a href="#">{{ (isset($role->id) ? 'Editar ' : 'Criar ') }} Função</a></li>
+        <li><a href="{{ route('admin.page') }}">Inicio</a></li>
+        <li><a href="{{ route('role.index') }}">Funções</a></li>
+        <li>
+            <a href="{{ (isset($role->id) ? route('role.edit', $role) : route('role.create')) }}">{{ (isset($role->id) ? 'Editar ' : 'Criar ') }}
+                Função
+            </a>
+        </li>
     </ol>
 @stop
 

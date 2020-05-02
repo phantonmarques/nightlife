@@ -7,8 +7,14 @@ use App\Models\Site\City;
 
 class EstablishmentAddress extends Model
 {
+    /**
+     * @var string $table
+     */
     protected $table = 'establishment_address';
 
+    /**
+     * @var array $fillable
+     */
     protected $fillable = [
         'establishment_id',
         'zip_code',
@@ -22,14 +28,16 @@ class EstablishmentAddress extends Model
     /**
      * Get establishments of establishmentaddress.
      */
-    public function establishment(){
+    public function establishment()
+    {
         return $this->belongsTo(Establishment::class, 'establishment_id', 'id');
     }
 
     /**
      * Get phones of establishmentaddress.
      */
-    public function establishments_phone(){
+    public function establishments_phone()
+    {
         return $this->hasMany(EstablishmentPhones::class, 'establishment_address_id');
     }
 

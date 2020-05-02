@@ -291,7 +291,7 @@
         {
             auth()->user()->user_access()->create([
                 'class' => $class,
-                'establishment_connect' => auth()->user()->establishment_connect,
+                'establishment_connect' => !empty(auth()->user()->establishment_connect) ? auth()->user()->establishment_connect : NULL,
                 'description' => $description,
                 'content' => $content,
                 'data_access' => date('YmdHis')

@@ -14,12 +14,15 @@ class Rhythm extends Model
     /**
      * @var array $fillable
      */
-    protected $fillable = ['name'];
+    protected $fillable = [
+        'name'
+    ];
 
     /**
      * Get statistics of establishment.
      */
-    public function rhythm_statistics(){
+    public function rhythm_statistics()
+    {
         return $this->hasMany(RhythmStatistics::class, 'rhythm_id');
     }
 
@@ -30,5 +33,4 @@ class Rhythm extends Model
     {
         return $this->belongsToMany(Establishment::class,'establishments_rhythm');
     }
-
 }

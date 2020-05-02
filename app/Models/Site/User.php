@@ -5,41 +5,44 @@ namespace App\Models\Site;
 use App\Models\Admin\Establishment;
 use App\Models\Admin\UserAccess;
 use App\Models\Admin\UserSettings;
-use App\Models\Site\City;
 use App\Models\Admin\Traits\HasRolesAndPermissions;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+
+//use Illuminate\Contracts\Auth\MustVerifyEmail;
+//use Illuminate\Support\Facades\DB;
 
 class User extends Authenticatable
 {
     use Notifiable, HasRolesAndPermissions;
 
+    /**
+     * @var string $table
+     */
     protected $table = 'user';
 
     /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
+     * @var array $fillable
      */
     protected $fillable = [
-        'name', 'email', 'email_verified_at', 'password', 'cpf_cnpj','city_id', 'type_user'
+        'name',
+        'email',
+        'email_verified_at',
+        'password',
+        'cpf_cnpj',
+        'city_id',
+        'type_user'
     ];
 
     /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
+     * @var array $hidden
      */
     protected $hidden = [
         'password',
     ];
 
     /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
+     * @var array $casts
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
@@ -71,10 +74,8 @@ class User extends Authenticatable
     /**
      * Get statistics of establishment.
      */
-    public function user_access(){
+    public function user_access()
+    {
         return $this->hasMany(UserAccess::class, 'user_id');
     }
-
-
-
 }

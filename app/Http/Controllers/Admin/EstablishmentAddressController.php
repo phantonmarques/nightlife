@@ -42,9 +42,6 @@ class EstablishmentAddressController extends Controller
         if (! auth()->user()->can('manage-establishment'))
             return abort(401);
 
-        # Log Access Users
-        $this->access('Index Endereços Estabelecimento');
-
         $establishmentAddressSearch = $request->query('s');
 
         if (empty(auth()->user()->establishment_connect))
@@ -52,6 +49,9 @@ class EstablishmentAddressController extends Controller
                 ->back()
                 ->withInput()
                 ->with('error', 'Conecte em algum estabelecimento para realizar alterações, em seguida tente novamente!');
+
+        # Log Access Users
+        $this->access('Index Endereços Estabelecimento');
 
         if (!empty($establishmentAddressSearch))
             $establishmentsAddress = EstablishmentAddress::where([['establishment_id', auth()->user()->establishment_connect],
@@ -322,7 +322,7 @@ class EstablishmentAddressController extends Controller
     {
         auth()->user()->user_access()->create([
             'class' => $class,
-            'establishment_connect' => auth()->user()->establishment_connect,
+            'establishment_connect' => !empty(auth()->user()->establishment_connect) ? auth()->user()->establishment_connect : NULL,
             'description' => $description,
             'content' => $content,
             'data_access' => date('YmdHis')

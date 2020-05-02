@@ -4,12 +4,22 @@ namespace App\Models\Site;
 
 use Illuminate\Database\Eloquent\Model;
 
-use App\Models\Site\State;
-
-
 class City extends Model
 {
+    /**
+     * @var string $table
+     */
     protected $table = 'city';
+
+    /**
+     * @var array $fillable
+     */
+    protected $fillable = [
+        'name',
+        'name_visible',
+        'ddd_city',
+        'state_id'
+    ];
 
     /**
      * Get citys of user.

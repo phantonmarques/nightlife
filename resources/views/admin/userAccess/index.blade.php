@@ -25,11 +25,11 @@
                         <!-- FIM SEARCH PESQUISA -->
 
                             <div class="input-group-btn">
-                                <button type="submit" class="btn btn-default btn-flat">
+                                <button type="submit" class="btn btn-default btn-flat" title="Buscar log acesso">
                                     <i class="fas fa-search"></i>
                                 </button>
                                 @if (!empty($logsSearch))
-                                    <a title="Limpar" class="btn btn-default"
+                                    <a title="Limpar busca" class="btn btn-default"
                                        href="{{ route('logs.index') }}">
                                         <i class="fas fa-backspace"></i>
                                     </a>
@@ -43,14 +43,14 @@
                 <div class="box-body table-responsive no-padding">
                     <table class="table table-bordered table-hover dataTable table-striped">
                         <thead>
-                            <tr>
-                                <td>Usuário</td>
-                                <th>Classe</th>
-                                <th>Estabelecimento Conectado</th>
-                                <th>Área Acessada</th>
-                                <th>Data Acesso</th>
-                                <th class="col-actions"></th>
-                            </tr>
+                        <tr>
+                            <th>Usuário</th>
+                            <th>Classe</th>
+                            <th>Estabelecimento Conectado</th>
+                            <th>Área Acessada</th>
+                            <th>Data Acesso</th>
+                            <th class="col-actions"></th>
+                        </tr>
                         </thead>
                         <tbody>
                         @if (isset($logs) && sizeof($logs) > 0)
@@ -72,7 +72,8 @@
                                         {{ formatDateHour($log->data_access) }}
                                     </td>
                                     <td class="col-actions">
-                                        <a href="{{ route('logs.show', $log) }}" class="action-show"><span
+                                        <a href="{{ route('logs.show', $log) }}" class="action-show"
+                                           title="Visualizar log {{ $log->users->name }}"><span
                                                     class="glyphicon glyphicon-info-sign"></span></a>
                                     </td>
                                 </tr>
@@ -80,7 +81,7 @@
                         @else
                             <tr>
                                 <td colspan="100%" class="text-center">
-                                    Nenhuma permissão {{ (!empty($logsSearch)) ? 'encontrada' : 'cadastrada' }}
+                                    Nenhum log de usuário {{ (!empty($logsSearch)) ? 'encontrado.' : 'cadastrado.' }}
                                 </td>
                             </tr>
                         @endif

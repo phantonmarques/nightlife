@@ -15,7 +15,8 @@
             <div class="box box-warning">
                 <div class="box-header with-border">
                     <div class="box-title col-xs-6 no-padding">
-                        <a class="btn btn-success btn-flat" href="{{ route('establishment.create')  }}">
+                        <a class="btn btn-success btn-flat" href="{{ route('establishment.create')  }}"
+                           title="Cadastrar novo estabelecimento">
                             <i class="fas fa-sm fa-plus"></i>&nbsp;&nbsp;Novo Estabelecimento
                         </a>
                     </div>
@@ -24,13 +25,15 @@
                         <div class="input-group pull-right">
                             @if (!isset($_GET['d']))
                                 {{ Form::open(['method' => 'GET']) }}
-                                <button type="submit" class="btn btn-danger btn-flat">
+                                <button type="submit" class="btn btn-danger btn-flat"
+                                        title="Visualizar Estabelecimentos Desativados">
                                     Desativados
                                 </button>
                                 {{ Form::hidden('d', 1, array('id' => 'd')) }}
                                 {{ Form::close() }}
                             @else
-                                <a href="{{ route("establishment.index") }}" class="btn btn-success btn-flat">
+                                <a href="{{ route("establishment.index") }}" class="btn btn-success btn-flat"
+                                   title="Visualizar Estabelecimentos Ativos">
                                     Ativos
                                 </a>
                             @endif
@@ -53,11 +56,11 @@
                         @endif
                         <!-- FIM -->
                             <div class="input-group-btn">
-                                <button type="submit" class="btn btn-default btn-flat">
+                                <button type="submit" class="btn btn-default btn-flat" title="Buscar Estabelecimento">
                                     <i class="fas fa-search"></i>
                                 </button>
                                 @if (!empty($establishmentsSearch))
-                                    <a title="Limpar" class="btn btn-default"
+                                    <a title="Limpar busca" class="btn btn-default"
                                        href="{{ route('establishment.index') }}">
                                         <i class="fas fa-backspace"></i>
                                     </a>
@@ -73,7 +76,7 @@
                         <thead>
                         <tr>
                             <th class="text-center">
-                                <input class="icheck check-all" type="checkbox" />
+                                <input class="icheck check-all" type="checkbox"/>
                             </th>
                             <th>Razão Social</th>
                             <th>Inscrição Estadual</th>
@@ -97,7 +100,8 @@
                             @foreach($establishments as $establishment)
                                 <tr>
                                     <td class="text-center">
-                                        <input class="icheck" type="checkbox" name="establishment[id][]" value="{{ $establishment->id }}" />
+                                        <input class="icheck" type="checkbox" name="establishment[id][]"
+                                               value="{{ $establishment->id }}"/>
                                     </td>
                                     <td>
                                         {{ $establishment->corporate_name }}
@@ -134,13 +138,18 @@
                                         {{ $establishment->updated_at->format('d/m/Y - H:i') }}
                                     </td>
                                     <td class="col-actions">
-                                        <a href="{{ route('establishment.edit', $establishment) }}" class="action-edit"><span
+                                        <a href="{{ route('establishment.edit', $establishment) }}" class="action-edit"
+                                           title="Editar {{ $establishment->corporate_name }}"><span
                                                     class="glyphicon glyphicon-pencil"></span></a>
                                         @if (!isset($_GET['d']))
                                             <a href="{{ route('establishment.destroy', $establishment) }}"
-                                               class="action-delete" data-title="establishment"><span class="glyphicon glyphicon-trash"></span></a>
+                                               title="Desativar {{ $establishment->corporate_name }}"
+                                               class="action-delete" data-title="establishment"><span
+                                                        class="glyphicon glyphicon-trash"></span></a>
                                         @endif
-                                        <a href="{{ route('establishment.show', $establishment) }}" class="action-show"><span
+                                        <a href="{{ route('establishment.show', $establishment) }}"
+                                           title="Visualizar {{ $establishment->corporate_name }}"
+                                           class="action-show"><span
                                                     class="glyphicon glyphicon-info-sign"></span></a>
                                     </td>
 
@@ -150,11 +159,12 @@
                             <tr>
                                 <td colspan="100%" class="text-center">
                                     @if (isset($_GET['d']))
-                                        Nenhum estabelecimento desativado
+                                        Nenhum estabelecimento
+                                        desativado{{ (!empty($establishmentsSearch)) ? ' encontrado.' : '.' }}
                                     @else
-                                        Nenhum estabelecimento cadastrado
+                                        Nenhum
+                                        estabelecimento {{ (!empty($establishmentsSearch)) ? 'encontrado.' : 'cadastrado.' }}
                                     @endif
-
                                 </td>
                             </tr>
                         @endif

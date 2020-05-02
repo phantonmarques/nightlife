@@ -15,7 +15,8 @@
             <div class="box box-warning">
                 <div class="box-header with-border">
                     <div class="box-title col-xs-6 no-padding">
-                        <a class="btn btn-success btn-flat" href="{{ route('rhythm.create')  }}">
+                        <a class="btn btn-success btn-flat" href="{{ route('rhythm.create')  }}"
+                           title="Cadastrar novo ritmo musical">
                             <i class="fas fa-sm fa-plus"></i>&nbsp;&nbsp;Novo Ritmo Musical
                         </a>
                     </div>
@@ -31,11 +32,11 @@
                         <!-- FIM SEARCH PESQUISA -->
 
                             <div class="input-group-btn">
-                                <button type="submit" class="btn btn-default btn-flat">
+                                <button type="submit" class="btn btn-default btn-flat" title="Buscar ritmos musicais">
                                     <i class="fas fa-search"></i>
                                 </button>
                                 @if (!empty($rhythmSearch))
-                                    <a title="Limpar" class="btn btn-default"
+                                    <a title="Limpar busca" class="btn btn-default"
                                        href="{{ route('rhythm.index') }}">
                                         <i class="fas fa-backspace"></i>
                                     </a>
@@ -51,7 +52,7 @@
                         <thead>
                         <tr>
                             <th class="text-center">
-                                <input class="icheck check-all" type="checkbox" />
+                                <input class="icheck check-all" type="checkbox"/>
                             </th>
                             <th>ID</th>
                             <th>Nome</th>
@@ -65,7 +66,8 @@
                             @foreach($rhythms as $rhythm)
                                 <tr data-entry-id="{{ $rhythm->id }}">
                                     <td class="text-center">
-                                        <input class="icheck" type="checkbox" name="rhythm[id][]" value="{{ $rhythm->id }}" />
+                                        <input class="icheck" type="checkbox" name="rhythm[id][]"
+                                               value="{{ $rhythm->id }}"/>
                                     </td>
                                     <td>
                                         {{ $rhythm->id }}
@@ -80,13 +82,16 @@
                                         {{ $rhythm->updated_at->format('d/m/Y - H:i') }}
                                     </td>
                                     <td class="col-actions">
-                                        <a href="{{ route('rhythm.edit', $rhythm) }}" class="action-edit"><span
+                                        <a href="{{ route('rhythm.edit', $rhythm) }}" class="action-edit"
+                                           title="Editar {{ $rhythm->name }}"><span
                                                     class="glyphicon glyphicon-pencil"></span></a>
 
-                                        <a href="{{ route('rhythm.destroy', $rhythm) }}"
-                                           class="action-delete"><span class="glyphicon glyphicon-trash"></span></a>
+                                        <a href="{{ route('rhythm.destroy', $rhythm) }}" class="action-delete"
+                                           title="Apagar {{ $rhythm->name }}"><span
+                                                    class="glyphicon glyphicon-trash"></span></a>
 
-                                        <a href="{{ route('rhythm.show', $rhythm) }}" class="action-show"><span
+                                        <a href="{{ route('rhythm.show', $rhythm) }}" class="action-show"
+                                           title="Visualizar {{ $rhythm->name }}"><span
                                                     class="glyphicon glyphicon-info-sign"></span></a>
                                     </td>
                                 </tr>
@@ -94,7 +99,7 @@
                         @else
                             <tr>
                                 <td colspan="100%" class="text-center">
-                                    Nenhuma categoria {{ (!empty($rhythmSearch)) ? 'encontrada' : 'cadastrada' }}
+                                    Nenhum ritmo musical {{ (!empty($rhythmSearch)) ? 'encontrado.' : 'cadastrado.' }}
                                 </td>
                             </tr>
                         @endif

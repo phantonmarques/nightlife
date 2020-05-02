@@ -2,12 +2,15 @@
 @section('title', (isset($user->id) ? 'Editar ' : 'Criar ') . 'Usuário · ')
 
 @section('content_header')
-    <meta name="csrf-token" content="{{ csrf_token() }}">
     <h1>&nbsp;</h1>
     <ol class="breadcrumb">
-        <li><a href="#">Inicio</a></li>
-        <li><a href="#">Usuários</a></li>
-        <li><a href="#">{{ (isset($user->id) ? 'Editar ' : 'Criar ') }} Usuário</a></li>
+        <li><a href="{{ route('admin.page') }}">Inicio</a></li>
+        <li><a href="{{ route('user.index') }}">Usuários</a></li>
+        <li>
+            <a href="{{ (isset($user->id) ? route('user.edit', $user) : route('user.create')) }}">{{ (isset($user->id) ? 'Editar ' : 'Criar ') }}
+                Usuário
+            </a>
+        </li>
     </ol>
 @stop
 

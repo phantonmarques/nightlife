@@ -4,9 +4,13 @@
 @section('content_header')
     <h1>&nbsp;</h1>
     <ol class="breadcrumb">
-        <li><a href="#">Inicio</a></li>
-        <li><a href="#">Eventos</a></li>
-        <li><a href="#">{{ (isset($event->id) ? 'Editar ' : 'Criar ') }} Evento</a></li>
+        <li><a href="{{ route('admin.page') }}">Inicio</a></li>
+        <li><a href="{{ route('event.index') }}">Eventos</a></li>
+        <li>
+            <a href="{{ (isset($event->id) ? route('event.edit', $event) : route('event.create')) }}">{{ (isset($event->id) ? 'Editar ' : 'Criar ') }}
+                Evento
+            </a>
+        </li>
     </ol>
 @stop
 

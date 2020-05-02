@@ -9,9 +9,15 @@ class RhythmStatistics extends Model
     /**
      * @var string table
      */
-    protected $fillable = ['rhythm_id'];
+    protected $fillable = [
+        'rhythm_id'
+    ];
 
-    public function rhythm(){
+    /**
+     * Get statistics of rhythm
+     */
+    public function rhythm()
+    {
         return $this->belongsTo(Rhythm::class, 'rhythm_id');
     }
 }

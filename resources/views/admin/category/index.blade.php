@@ -15,7 +15,8 @@
             <div class="box box-warning">
                 <div class="box-header with-border">
                     <div class="box-title col-xs-6 no-padding">
-                        <a class="btn btn-success btn-flat" href="{{ route('category.create')  }}">
+                        <a class="btn btn-success btn-flat" href="{{ route('category.create')  }}"
+                           title="Cadastro de nova categoria">
                             <i class="fas fa-sm fa-plus"></i>&nbsp;&nbsp;Novo Categoria
                         </a>
                     </div>
@@ -31,11 +32,11 @@
                         <!-- FIM SEARCH PESQUISA -->
 
                             <div class="input-group-btn">
-                                <button type="submit" class="btn btn-default btn-flat">
+                                <button type="submit" class="btn btn-default btn-flat" title="Buscar Categorias">
                                     <i class="fas fa-search"></i>
                                 </button>
                                 @if (!empty($categorySearch))
-                                    <a title="Limpar" class="btn btn-default"
+                                    <a title="Limpar busca" class="btn btn-default"
                                        href="{{ route('category.index') }}">
                                         <i class="fas fa-backspace"></i>
                                     </a>
@@ -49,24 +50,25 @@
                 <div class="box-body table-responsive no-padding">
                     <table class="table table-bordered table-hover dataTable table-striped">
                         <thead>
-                            <tr>
-                                <th class="text-center">
-                                    <input class="icheck check-all" type="checkbox" />
-                                </th>
-                                <th>ID</th>
-                                <th>Nome</th>
-                                <th>Data de Criação</th>
-                                <th>Data de Atualização</th>
-                                <th class="col-actions">
-                                </th>
-                            </tr>
+                        <tr>
+                            <th class="text-center">
+                                <input class="icheck check-all" type="checkbox"/>
+                            </th>
+                            <th>ID</th>
+                            <th>Nome</th>
+                            <th>Data de Criação</th>
+                            <th>Data de Atualização</th>
+                            <th class="col-actions">
+                            </th>
+                        </tr>
                         </thead>
                         <tbody>
                         @if (isset($categorys) && sizeof($categorys) > 0)
                             @foreach($categorys as $category)
                                 <tr data-entry-id="{{ $category->id }}">
                                     <td class="text-center">
-                                        <input class="icheck" type="checkbox" name="category[id][]" value="{{ $category->id }}" />
+                                        <input class="icheck" type="checkbox" name="category[id][]"
+                                               value="{{ $category->id }}"/>
                                     </td>
                                     <td>
                                         {{ $category->id }}
@@ -81,11 +83,14 @@
                                         {{ $category->updated_at->format('d/m/Y - H:i') }}
                                     </td>
                                     <td class="col-actions">
-                                        <a href="{{ route('category.edit', $category) }}" class="action-edit"><span
+                                        <a href="{{ route('category.edit', $category) }}" class="action-edit"
+                                           title="Editar {{ $category->name }}"><span
                                                     class="glyphicon glyphicon-pencil"></span></a>
                                         <a href="{{ route('category.destroy', $category) }}"
-                                           class="action-delete"><span class="glyphicon glyphicon-trash"></span></a>
-                                        <a href="{{ route('category.show', $category) }}" class="action-show"><span
+                                           class="action-delete"><span class="glyphicon glyphicon-trash"
+                                                                       title="Apagar {{ $category->name }}"></span></a>
+                                        <a href="{{ route('category.show', $category) }}" class="action-show"
+                                           title="Visualizar {{ $category->name }}"><span
                                                     class="glyphicon glyphicon-info-sign"></span></a>
                                     </td>
                                 </tr>
@@ -93,7 +98,7 @@
                         @else
                             <tr>
                                 <td colspan="100%" class="text-center">
-                                    Nenhuma categoria {{ (!empty($categorySearch)) ? 'encontrada' : 'cadastrada' }}
+                                    Nenhuma categoria {{ (!empty($categorySearch)) ? 'encontrada.' : 'cadastrada.' }}
                                 </td>
                             </tr>
                         @endif

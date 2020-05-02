@@ -14,12 +14,15 @@ class Category extends Model
     /**
      * @var array $fillable
      */
-    protected $fillable = ['name'];
+    protected $fillable = [
+        'name'
+    ];
 
     /**
      * Get statistics of category.
      */
-    public function category_statistics(){
+    public function category_statistics()
+    {
         return $this->hasMany(CategoryStatistics::class, 'category_id');
     }
 

@@ -15,7 +15,8 @@
             <div class="box box-warning">
                 <div class="box-header with-border">
                     <div class="box-title col-xs-6 no-padding">
-                        <a class="btn btn-success btn-flat" href="{{ route('user.create')  }}">
+                        <a class="btn btn-success btn-flat" href="{{ route('user.create')  }}"
+                           title="Cadastrar novo usuário">
                             <i class="fas fa-sm fa-plus"></i>&nbsp;&nbsp;Novo Usuário
                         </a>
                     </div>
@@ -31,11 +32,11 @@
                         <!-- FIM SEARCH PESQUISA -->
 
                             <div class="input-group-btn">
-                                <button type="submit" class="btn btn-default btn-flat">
+                                <button type="submit" class="btn btn-default btn-flat" title="Buscar usuários">
                                     <i class="fas fa-search"></i>
                                 </button>
                                 @if (!empty($userSearch))
-                                    <a title="Limpar" class="btn btn-default"
+                                    <a title="Limpar busca" class="btn btn-default"
                                        href="{{ route('user.index') }}">
                                         <i class="fas fa-backspace"></i>
                                     </a>
@@ -49,39 +50,39 @@
                 <div class="box-body table-responsive no-padding">
                     <table class="table table-bordered table-hover dataTable table-striped">
                         <thead>
-                            <tr>
-                                <th class="text-center">
-                                    <input class="icheck check-all" type="checkbox" />
-                                </th>
-                                <th>
-                                    ID
-                                </th>
-                                <th>
-                                    Nome
-                                </th>
-                                <th>
-                                    E-mail
-                                </th>
-                                <th>
-                                    CPF/CNPJ
-                                </th>
-                                <th>
-                                    Tipo Usuário
-                                </th>
-                                <th>
-                                    Funções
-                                </th>
-                                <th>
-                                    Cidade
-                                </th>
-                                <th>
-                                    Estado
-                                </th>
-                                <th>
-                                    Data de Criação
-                                </th>
-                                <th class="col-actions"></th>
-                            </tr>
+                        <tr>
+                            <th class="text-center">
+                                <input class="icheck check-all" type="checkbox"/>
+                            </th>
+                            <th>
+                                ID
+                            </th>
+                            <th>
+                                Nome
+                            </th>
+                            <th>
+                                E-mail
+                            </th>
+                            <th>
+                                CPF/CNPJ
+                            </th>
+                            <th>
+                                Tipo Usuário
+                            </th>
+                            <th>
+                                Funções
+                            </th>
+                            <th>
+                                Cidade
+                            </th>
+                            <th>
+                                Estado
+                            </th>
+                            <th>
+                                Data de Criação
+                            </th>
+                            <th class="col-actions"></th>
+                        </tr>
                         </thead>
 
                         <tbody>
@@ -89,7 +90,8 @@
                             @foreach($users as $user)
                                 <tr data-entry-id="{{ $user->id }}">
                                     <td class="text-center">
-                                        <input class="icheck" type="checkbox" name="user[id][]" value="{{ $user->id }}" />
+                                        <input class="icheck" type="checkbox" name="user[id][]"
+                                               value="{{ $user->id }}"/>
                                     </td>
                                     <td>
                                         {{ $user->id }}
@@ -121,13 +123,16 @@
                                         {{ $user->created_at->format('d/m/Y - H:i') }}
                                     </td>
                                     <td class="col-actions">
-                                        <a href="{{ route('user.edit', $user) }}" class="action-edit"><span
+                                        <a href="{{ route('user.edit', $user) }}" class="action-edit"
+                                           title="Editar {{ $user->name }}"><span
                                                     class="glyphicon glyphicon-pencil"></span></a>
 
-                                        <a href="{{ route('user.destroy', $user) }}"
-                                           class="action-delete"><span class="glyphicon glyphicon-trash"></span></a>
+                                        <a href="{{ route('user.destroy', $user) }}" class="action-delete"
+                                           title="Apagar {{ $user->name }}"><span
+                                                    class="glyphicon glyphicon-trash"></span></a>
 
-                                        <a href="{{ route('user.show', $user) }}" class="action-show"><span
+                                        <a href="{{ route('user.show', $user) }}" class="action-show"
+                                           title="Visualizar {{ $user->name }}"><span
                                                     class="glyphicon glyphicon-info-sign"></span></a>
                                     </td>
                                 </tr>
@@ -135,7 +140,7 @@
                         @else
                             <tr>
                                 <td colspan="100%" class="text-center">
-                                    Nenhum usuário {{ (!empty($userSearch)) ? 'encontrada' : 'cadastrada' }}
+                                    Nenhum usuário {{ (!empty($userSearch)) ? 'encontrado.' : 'cadastrado.' }}
                                 </td>
                             </tr>
                         @endif

@@ -15,7 +15,8 @@
             <div class="box box-warning">
                 <div class="box-header with-border">
                     <div class="box-title col-xs-6 no-padding">
-                        <a class="btn btn-success btn-flat" href="{{ route('role.create')  }}">
+                        <a class="btn btn-success btn-flat" href="{{ route('role.create')  }}"
+                           title="Cadastrar nova função">
                             <i class="fas fa-sm fa-plus"></i>&nbsp;&nbsp;Nova Função
                         </a>
                     </div>
@@ -31,11 +32,11 @@
                         <!-- FIM SEARCH PESQUISA -->
 
                             <div class="input-group-btn">
-                                <button type="submit" class="btn btn-default btn-flat">
+                                <button type="submit" class="btn btn-default btn-flat" title="Buscar funções">
                                     <i class="fas fa-search"></i>
                                 </button>
                                 @if (!empty($roleSearch))
-                                    <a title="Limpar" class="btn btn-default"
+                                    <a title="Limpar busca" class="btn btn-default"
                                        href="{{ route('role.index') }}">
                                         <i class="fas fa-backspace"></i>
                                     </a>
@@ -49,23 +50,24 @@
                 <div class="box-body table-responsive no-padding">
                     <table class="table table-bordered table-hover dataTable table-striped">
                         <thead>
-                            <tr>
-                                <th class="text-center">
-                                    <input class="icheck check-all" type="checkbox" />
-                                </th>
-                                <th>ID</th>
-                                <th>Título</th>
-                                <th>Função</th>
-                                <th>Permissões da Função</th>
-                                <th class="col-actions"></th>
-                            </tr>
+                        <tr>
+                            <th class="text-center">
+                                <input class="icheck check-all" type="checkbox"/>
+                            </th>
+                            <th>ID</th>
+                            <th>Título</th>
+                            <th>Função</th>
+                            <th>Permissões da Função</th>
+                            <th class="col-actions"></th>
+                        </tr>
                         </thead>
                         <tbody>
                         @if (isset($roles) && sizeof($roles) > 0)
                             @foreach($roles as $role)
                                 <tr data-entry-id="{{ $role->id }}">
                                     <td class="text-center">
-                                        <input class="icheck" type="checkbox" name="role[id][]" value="{{ $role->id }}" />
+                                        <input class="icheck" type="checkbox" name="role[id][]"
+                                               value="{{ $role->id }}"/>
                                     </td>
                                     <td>
                                         {{ $role->id }}
@@ -78,17 +80,20 @@
                                     </td>
                                     <td>
                                         @foreach($role->permissions()->pluck('slug') as $permission)
-                                                <span class="label label-primary">{{ $permission }}</span>
+                                            <span class="label label-primary">{{ $permission }}</span>
                                         @endforeach
                                     </td>
                                     <td class="col-actions">
-                                        <a href="{{ route('role.edit', $role) }}" class="action-edit"><span
+                                        <a href="{{ route('role.edit', $role) }}" class="action-edit"
+                                           title="Editar {{ $role->name }}"><span
                                                     class="glyphicon glyphicon-pencil"></span></a>
 
-                                        <a href="{{ route('role.destroy', $role) }}"
-                                           class="action-delete"><span class="glyphicon glyphicon-trash"></span></a>
+                                        <a href="{{ route('role.destroy', $role) }}" class="action-delete"
+                                           title="Apagar {{ $role->name }}"><span
+                                                    class="glyphicon glyphicon-trash"></span></a>
 
-                                        <a href="{{ route('role.show', $role) }}" class="action-show"><span
+                                        <a href="{{ route('role.show', $role) }}" class="action-show"
+                                           title="Visualizar {{ $role->name }}"><span
                                                     class="glyphicon glyphicon-info-sign"></span></a>
                                     </td>
                                 </tr>
@@ -96,7 +101,7 @@
                         @else
                             <tr>
                                 <td colspan="100%" class="text-center">
-                                    Nenhuma função {{ (!empty($roleSearch)) ? 'encontrada' : 'cadastrada' }}
+                                    Nenhuma função {{ (!empty($roleSearch)) ? 'encontrada.' : 'cadastrada.' }}
                                 </td>
                             </tr>
                         @endif

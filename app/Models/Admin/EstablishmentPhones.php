@@ -7,8 +7,14 @@ use App\Models\Admin\EstablishmentAddress;
 
 class EstablishmentPhones extends Model
 {
+    /**
+     * @var string $table
+     */
     protected $table = 'establishments_phone';
 
+    /**
+     * @var array $fillable
+     */
     protected $fillable = [
         'establishment_address_id',
         'establishment_id',
@@ -18,7 +24,11 @@ class EstablishmentPhones extends Model
         'whatsapp'
     ];
 
-    public function establishment_address(){
+    /**
+     * Get establishment address of phones establishment available
+     */
+    public function establishment_address()
+    {
         return $this->belongsTo(EstablishmentAddress::class, 'establishment_address_id');
     }
 }
