@@ -70,7 +70,7 @@
                 'email.unique' => 'Já existe esse e-mail cadastrado, favor informe outro!',
                 'email_verified_at.required' => 'Erro, recarregue a pagina e tente novamente!',
                 'user_role.min' => 'Erro, recarregue a pagina e tente novamente!',
-                'password.min' => 'O campo [Nova Senha] deve conter no mínimo 3 caracteres',
+                'password.min' => 'O campo [Nova Senha] deve conter no mínimo 6 caracteres',
                 'cpf_cnpj.required' => 'O campo [CPF/CNPJ] é obrigatório, favor preencha!',
                 'cpf_cnpj.string' => 'O campo [CPF/CNPJ] é obrigatório, favor preencha!',
                 'cpf_cnpj.min' => 'O campo [CPF/CNPJ] deve conter no mínimo 11 números!',

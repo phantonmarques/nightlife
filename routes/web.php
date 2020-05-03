@@ -25,7 +25,7 @@ Route::group(['middleware' => ['auth'], 'prefix' => '/control/'], function () {
     # Admin\Employee Access *SPECIAL*
     Route::post('establishmentConnect', 'Admin\\AdminController@establishmentConnect')->name('admin.establishment');
 
-    # Access Log Usersp
+    # Access Log User
     Route::resource('logs', 'Admin\\UserAccessController')->except(['destroy'])->middleware('auth');
 
     # Category
@@ -60,6 +60,25 @@ Route::group(['middleware' => ['auth'], 'prefix' => '/control/'], function () {
     # Event
     Route::get('event/{event}/destroy', 'Admin\\EventController@destroy')->name('event.destroy')->middleware('auth');
     Route::resource('event', 'Admin\\EventController')->except(['destroy'])->middleware('auth');
+
+    /**
+     * TODO: Settings all users that belongs
+     */
+
+    # View change new password
+    Route::get('changePassword', 'Admin\\AdminController@editPassword')->name('settings.changePassword');
+
+    # Reset new password
+    Route::post('reset', 'Admin\\AdminController@resetPassword')->name('settings.reset');
+
+    # Route valid password recent
+    Route::get('valid/{password}', 'Admin\\AdminController@validPasswordRecent')->name('settings.valid');
+
+    # View change new picture
+    Route::get('changePicture', 'Admin\\AdminController@changeProfilePicture')->name('settings.changePicture');
+
+    # New/Alter profile picture
+    Route::post('picture', 'Admin\\AdminController@updateProfilePicture')->name('settings.picture');
 
     /**
      * TODO: Utilities functions

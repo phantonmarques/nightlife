@@ -211,17 +211,13 @@ return [
             //'can'     => 'EstablishmentPolicy'
         ],
         [
-            'text'      => 'Configurações',
+            'text'      => 'Config. Estabelecimento',
             'icon'      => 'fas fa-cog',
+            'can'       => 'manage-users',
             'submenu'   => [
                 [
                     'text'      => 'Configurações Perfil',
                     'icon'      => 'far fa-list-alt',
-                    'url'       => '#',
-                ],
-                [
-                    'text'      => 'Fotos Perfil',
-                    'icon'      => 'fas fa-images',
                     'url'       => '#',
                 ],
                 [
@@ -231,8 +227,8 @@ return [
                     'url'           => '#',
                 ],
                 [
-                    'text'      => 'Mudar Senha',
-                    'icon'      => 'fas fa-key',
+                    'text'      => 'Fotos Perfil',
+                    'icon'      => 'fas fa-images',
                     'url'       => '#',
                 ],
             ],
@@ -241,6 +237,20 @@ return [
             'text'      => 'Relatórios',
             'icon'      => 'far fa-file-alt',
             'url'       => '#',
+        ],
+        [
+            'header'    => 'CONFIGURAÇÕES USUÁRIO',
+        ],
+        [
+            'text'      => 'Foto Perfil',
+            'icon'      => 'fas fa-image',
+            'route'     => 'settings.changePicture',
+            'active'    => ['control/changePicture', 'control/changePicture/*', 'control/changePicture?*'],        ],
+        [
+            'text'      => 'Redefinir Senha',
+            'icon'      => 'fas fa-key',
+            'route'     => 'settings.changePassword',
+            'active'    => ['control/changePassword', 'control/changePassword/*', 'control/changePassword?*'],
         ],
     ],
 

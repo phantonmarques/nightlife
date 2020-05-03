@@ -6,6 +6,12 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Site\City;
 use App\Models\Site\State;
+use App\Http\Requests\UpdatePassword;
+use App\Http\Requests\UpdateProfilePicture;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 
 class AdminController extends Controller
 {
@@ -29,12 +35,39 @@ class AdminController extends Controller
         return view('admin.home.index');
     }
 
-
+    /**
+     * Display view dashboard establishment
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View|string
+     */
     public function dashboard()
     {
-        return view('admin.dashboard');
+        return view('admin.establishmentSettings.dashboard');
     }
 
+    /**
+     * Display reset password user
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View|string
+     */
+    public function changeProfilePicture()
+    {
+        return view('admin.settings.picture');
+    }
+
+    /**
+     * Display reset password user
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View|string
+     */
+    public function editPassword()
+    {
+        return view('admin.settings.password-reset');
+    }
+
+    /**
+     * Function connect user in establishment
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse|void
+     */
     public function establishmentConnect(Request $request)
     {
         if (! auth()->user()->can('manage-called'))
@@ -62,11 +95,44 @@ class AdminController extends Controller
     }
 
     /**
+     * Function reset password user
+     * @param UpdatePassword $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function resetPassword(UpdatePassword $request)
+    {
+        $data = $request->validated();
+
+        DB::beginTransaction();
+
+        try {
+            $user = auth()->user();
+            $user->password = bcrypt($data["password"]);
+
+            if (!$user->update())
+                throw new \Exception('Ocorreu um erro ao alterar a senha!');
+
+            DB::commit();
+
+            return redirect()
+                ->back()
+                ->with('success', 'Senha atualizada com sucesso!');
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return redirect()
+                ->back()
+                ->with('errors', $e->getMessage());
+        }
+    }
+
+    /**
      * Function Search citys of certain state
      * @param $stateSelect
      * @return \Illuminate\Http\JsonResponse
      */
-    public function searchCitys($stateSelect){
+    public function searchCitys($stateSelect)
+    {
         if (! auth()->user()->can('manage-users') && ! auth()->user()->can('manage-called'))
             return abort(401);
 
@@ -78,11 +144,62 @@ class AdminController extends Controller
      * @param $state
      * @return \Illuminate\Http\JsonResponse
      */
-    public function searchState($state){
+    public function searchState($state)
+    {
         if (! auth()->user()->can('manage-users') && ! auth()->user()->can('manage-called'))
             return abort(401);
 
         return response()->json(State::where('state_cod', $state)->select('id')->first());
+    }
+
+
+    public function updateProfilePicture(UpdateProfilePicture $request){
+        $data = $request->validated();
+
+        DB::beginTransaction();
+
+        try {
+            if (!empty(auth()->user()->profile_picture_path))
+                if (!Storage::delete(auth()->user()->profile_picture_path))
+                    throw new \Exception('Não foi possível atualizar a foto do perfil!');
+
+            if ($data['profile_picture_path'] instanceof UploadedFile):
+                if (!($path = $data['profile_picture_path']->storePublicly('settings')))
+                    throw new \Exception('Não foi possível armazenar a foto do perfil!');
+
+                $data["profile_picture_path"] = $path;
+            endif;
+
+            $user = auth()->user();
+            $user->profile_picture_path = $data["profile_picture_path"];
+
+            if (!$user->update())
+                throw new \Exception('Ocorreu um erro ao atualizar a foto do perfil!');
+
+            DB::commit();
+
+            return redirect()
+                ->back()
+                ->with('success', 'Foto do perfil atualizada com sucesso!');
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return redirect()
+                ->back()
+                ->with('errors', $e->getMessage());
+        }
+    }
+
+    /**
+     * Function valid password recent
+     * @param $password
+     * @return json
+     */
+    public function validPasswordRecent($password){
+        if (Hash::check($password, auth()->user()->password))
+            return response()->json(['status' => true]);
+        else
+            return response()->json(['status' => false]);
     }
 
     /**

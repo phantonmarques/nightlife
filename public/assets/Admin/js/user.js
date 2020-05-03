@@ -48,7 +48,7 @@ $(document).ready(function () {
     });
 
     // Click event of the viewPassword button
-    $('#viewPasswordConfirm').on('change', function () {
+    $('#viewPasswordConfirm').on('click', function () {
 
         // Get the password field
         var passwordField = $('#confirm_password');
