@@ -28,7 +28,7 @@
                         <div class="col-sm-5">
                             {{ Form::label('Capa do Evento') }}
                             <img class="img-responsive" style="width: 50vh"
-                                 src="{{ "../.." . Storage::url('app/'.$event->cover_path) }}" alt="{{ $event->name }}">
+                                 src="{{ asset("storage/" . $event->cover_path) }}" alt="{{ $event->name }}">
                         </div>
                     </div>
 

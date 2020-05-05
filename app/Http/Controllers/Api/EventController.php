@@ -106,7 +106,7 @@ class EventController extends Controller
             'rhythm' => $this->rhythms()
         );
 
-        if (!$filters)
+        if (!empty($filters))
             return response()->json([
                 'status' => true,
                 'return' => $filters
@@ -132,5 +132,31 @@ class EventController extends Controller
      */
     private function rhythms(){
         return Rhythm::whereHas('rhythm_establishments')->select('id', 'name')->get();
+    }
+
+    public function eventsSearch(Request $request)
+    {
+        //SOMAR CONTADORES CATEGORIA, RITMOS
+        # TODO: Search type establishment
+        if ($request->type === 'establishment'):
+            # Category Selected and Rhythm Selected
+            if (!empty($request->category) && !empty($request->rhythm)):
+                $establishments = Establishment::whereHas('establishments_rhythm', function ($q) {
+                    $q->whereIn('rhythm_id', auth()->user()->user_settings->favorite_rhythms);})->get();
+            elseif (!empty($request->category)):
+
+            elseif (!empty($request->rhythm)):
+
+            endif;
+
+        # TODO: Search type events
+        elseif ($request->type === 'events'):
+
+        endif;
+
+        return response()->json([
+            'status' => false,
+            'return' => "Pesquisa não encontrada!"
+        ]);
     }
 }

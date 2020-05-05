@@ -36,7 +36,7 @@ class Establishment extends Model
      */
     public function establishment_address()
     {
-        return $this->belongsTo(EstablishmentAddress::class, 'establishment_id', 'id');
+        return $this->hasMany(EstablishmentAddress::class, 'establishment_id', 'id');
     }
 
     /**
@@ -62,5 +62,13 @@ class Establishment extends Model
     public function establishment_statistics()
     {
         return $this->hasMany(EstablishmentStatistics::class, 'establishment_id');
+    }
+
+    /**
+     * Get the event record associated with the establishment.
+     */
+    public function events()
+    {
+        return $this->hasMany(Event::class,'establishment_id')->orderBy('date_event');
     }
 }

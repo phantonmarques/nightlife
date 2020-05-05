@@ -21,4 +21,5 @@ Route::middleware('check_token')->group(function() {
     # Routes Event
     Route::get('/events_recommended', 'Api\\EventController@eventsRecommended');
     Route::get('/events_filter', 'Api\\EventController@eventsFilter');
+    Route::get('/events_search/{search}', 'Api\\EventController@eventsSearch');
 });

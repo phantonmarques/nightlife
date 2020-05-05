@@ -26,7 +26,7 @@
                         <div class="col-md-2">
                             <div class="custom-file">
                                 @if (!empty(auth()->user()->profile_picture_path))
-                                    <img src="{{ Storage::url(auth()->user()->profile_picture_path) }}" alt="{{ auth()->user()->name }}"
+                                    <img src="{{ asset("storage/" .auth()->user()->profile_picture_path) }}" alt="{{ auth()->user()->name }}"
                                          style="max-width: 30vh;">
                                 @endif
                                 <br><br>

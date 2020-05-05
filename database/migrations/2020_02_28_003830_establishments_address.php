@@ -23,7 +23,6 @@ class EstablishmentsAddress extends Migration
             $table->string('neighborhood');
             $table->unsignedInteger('city_id')->nullable();
             $table->timestamps();
-            $table->softDeletes();
 
             $table->foreign('establishment_id')
                 ->references('id')

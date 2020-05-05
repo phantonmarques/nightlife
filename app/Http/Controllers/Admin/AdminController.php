@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Admin\Establishment;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Site\City;
@@ -10,7 +11,6 @@ use App\Http\Requests\UpdatePassword;
 use App\Http\Requests\UpdateProfilePicture;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 
 class AdminController extends Controller
@@ -42,6 +42,28 @@ class AdminController extends Controller
     public function dashboard()
     {
         return view('admin.establishmentSettings.dashboard');
+    }
+
+    /**
+     * Display view details account establishment
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View|string
+     */
+    public function details()
+    {
+        if (!empty(auth()->user()->establishment_connect))
+            $id = auth()->user()->establishment_connect;
+        elseif (auth()->user()->establishments()->count() > 0)
+            $id = auth()->user()->establishments()->id;
+
+        if (empty($id) && auth()->user()->can('manage-called'))
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('error', 'Conecte em algum estabelecimento para realizar alterações, em seguida tente novamente!');
+
+        $establishment = Establishment::find($id);
+
+        return view('admin.establishmentSettings.details', compact('establishment'));
     }
 
     /**
@@ -103,6 +125,9 @@ class AdminController extends Controller
     {
         $data = $request->validated();
 
+        # Log Access Users
+        $this->access('Atualização senha Usuário', $data);
+
         DB::beginTransaction();
 
         try {
@@ -156,6 +181,9 @@ class AdminController extends Controller
     public function updateProfilePicture(UpdateProfilePicture $request){
         $data = $request->validated();
 
+        # Log Access Users
+        $this->access('Atualização Foto Perfil', $data);
+
         DB::beginTransaction();
 
         try {
@@ -181,7 +209,7 @@ class AdminController extends Controller
                 ->with('success', 'Foto do perfil atualizada com sucesso!');
         } catch (\Exception $e) {
             DB::rollBack();
-            
+
             return redirect()
                 ->route('settings.changePicture')
                 ->withInput()
@@ -199,6 +227,20 @@ class AdminController extends Controller
             return response()->json(['status' => true]);
         else
             return response()->json(['status' => false]);
+    }
+
+    /**
+     * Create Access Log User
+     */
+    private function access($description, $content = NULL, $class = __CLASS__)
+    {
+        auth()->user()->user_access()->create([
+            'class' => $class,
+            'establishment_connect' => !empty(auth()->user()->establishment_connect) ? auth()->user()->establishment_connect : NULL,
+            'description' => $description,
+            'content' => $content,
+            'data_access' => date('YmdHis')
+        ]);
     }
 
     /**

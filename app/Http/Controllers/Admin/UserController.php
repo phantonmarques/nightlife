@@ -48,7 +48,7 @@
                     ->with('city.state')
                     ->where('email', 'like', "%{$userSearch}%")
                     ->orWhere('cpf_cnpj', 'like', "%{$userSearch}%")
-                    ->orWhere('login', 'like', "%{$userSearch}%")
+                    ->orWhere('name', 'like', "%{$userSearch}%")
                     ->paginate($this->paginate);
 
             else:

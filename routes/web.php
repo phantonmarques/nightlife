@@ -21,6 +21,7 @@ Route::group(['middleware' => ['auth'], 'prefix' => '/control/'], function () {
 
     # Establishment Routes Access
     Route::get('dashboard', 'Admin\\AdminController@dashboard')->name('admin.dashboard');
+    Route::get('details', 'Admin\\AdminController@details')->name('admin.details');
 
     # Admin\Employee Access *SPECIAL*
     Route::post('establishmentConnect', 'Admin\\AdminController@establishmentConnect')->name('admin.establishment');

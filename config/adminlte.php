@@ -224,7 +224,8 @@ return [
                     'text'          => 'Detalhes Conta',
                     'icon'          => 'fas fa-info-circle',
                     'icon_color'    => 'red',
-                    'url'           => '#',
+                    'route'         => 'admin.details',
+                    'active'        => ['control/details', 'control/details/*', 'control/details?*'],
                 ],
                 [
                     'text'      => 'Fotos Perfil',
@@ -245,7 +246,8 @@ return [
             'text'      => 'Foto Perfil',
             'icon'      => 'fas fa-image',
             'route'     => 'settings.changePicture',
-            'active'    => ['control/changePicture', 'control/changePicture/*', 'control/changePicture?*'],        ],
+            'active'    => ['control/changePicture', 'control/changePicture/*', 'control/changePicture?*'],
+        ],
         [
             'text'      => 'Redefinir Senha',
             'icon'      => 'fas fa-key',

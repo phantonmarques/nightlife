@@ -20,6 +20,10 @@
         $trail->push('Dashboard', route('admin.dashboard'));
     });
 
+    Breadcrumbs::for('admin.details', function ($trail) {
+        $trail->push('Detalhes Conta Estabelecimento', route('admin.details'));
+    });
+
     # TODO: ESTABLISHMENT
     Breadcrumbs::for('establishment.index', function ($trail) {
         $trail->parent('home');
