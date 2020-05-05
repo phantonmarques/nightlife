@@ -160,15 +160,13 @@ class AdminController extends Controller
 
         try {
             if (!empty(auth()->user()->profile_picture_path))
-                if (!Storage::delete(auth()->user()->profile_picture_path))
+                if (!Storage::delete("public/" . auth()->user()->profile_picture_path))
                     throw new \Exception('Não foi possível atualizar a foto do perfil!');
 
-            if ($data['profile_picture_path'] instanceof UploadedFile):
-                if (!($path = $data['profile_picture_path']->storePublicly('settings')))
-                    throw new \Exception('Não foi possível armazenar a foto do perfil!');
+            if (!($path = $data['profile_picture_path']->store('settings', 'public')))
+                throw new \Exception('Não foi possível armazenar a foto do perfil!');
 
-                $data["profile_picture_path"] = $path;
-            endif;
+            $data["profile_picture_path"] = $path;
 
             $user = auth()->user();
             $user->profile_picture_path = $data["profile_picture_path"];
@@ -179,14 +177,15 @@ class AdminController extends Controller
             DB::commit();
 
             return redirect()
-                ->back()
+                ->route('settings.changePicture')
                 ->with('success', 'Foto do perfil atualizada com sucesso!');
         } catch (\Exception $e) {
             DB::rollBack();
-
+            
             return redirect()
-                ->back()
-                ->with('errors', $e->getMessage());
+                ->route('settings.changePicture')
+                ->withInput()
+                ->with('error', $e->getMessage());
         }
     }
 

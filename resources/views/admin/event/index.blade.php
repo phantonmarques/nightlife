@@ -54,7 +54,7 @@
                             <div class="card">
                                 <figure class="card__figure">
                                     <img class="card__image"
-                                         src="{{ "../../" . Storage::url('app/'.$event->cover_path) }}"
+                                         src="{{ Storage::url($event->cover_path) }}"
                                          alt="{{ $event->name }}">
                                 </figure>
                                 <div class="card__title">{{ $event->name }}</div>

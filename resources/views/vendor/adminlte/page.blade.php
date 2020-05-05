@@ -107,8 +107,8 @@
                     <div class="user-panel">
                         <div class="pull-left image">
                             @if (!empty(auth()->user()->profile_picture_path))
-                                <img src="{{ url('../') . Storage::url('app/' . auth()->user()->profile_picture_path) }}"
-                                     class="img-circle" alt="{{ auth()->user()->name }}">
+                                <img src="{{ Storage::url(auth()->user()->profile_picture_path) }}"
+                                     class="img-circle" alt="{{ auth()->user()->name }}" style="max-height: 3vw;">
                             @else
                                 <img src="{{ url('assets\admin\imgs\unknown.jpg') }}" class="img-circle"
                                      alt="User Image">

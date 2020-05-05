@@ -21,7 +21,6 @@ class EventTableSeeder extends Seeder
         $event->name = 'Festeja';
         $event->date_event = '2020-04-30';
         $event->price = 50.10;
-        $event->cover_path = 'event/t7KUqzooGq26CeAvc0ZBdHvEU869zDeulUoJdnh1.jpeg';
         $event->description = '<b>Evento de qualidade com vários artistas top</b>';
         $event->status = true;
         $event->establishment_id = $address->establishment_id;
@@ -33,7 +32,6 @@ class EventTableSeeder extends Seeder
         $event->name = 'MarombaFest';
         $event->date_event = '2020-04-30';
         $event->price = 5521.10;
-        $event->cover_path = 'event/kVrhmPE4LYmhozSF68gGoxq0xvI0qGGEtzR0Dlwa.png';
         $event->description = '<b>Evento de qualidade com vários artistas marombas, vamo ficar grande caraiooooo</b>';
         $event->status = true;
         $event->establishment_id = $address->establishment_id;

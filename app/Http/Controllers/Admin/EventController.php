@@ -125,12 +125,10 @@
 
             try {
                 if (array_key_exists('cover_path', $data)):
-                    if ($data['cover_path'] instanceof UploadedFile):
-                        if (!($path = $data['cover_path']->storePublicly('event')))
-                            throw new \Exception('Não foi possível armazenar a foto do evento!');
+                    if (!($path = $data['cover_path']->store('event', 'public')))
+                        throw new \Exception('Não foi possível armazenar a foto do evento!');
 
-                        $data["cover_path"] = $path;
-                    endif;
+                    $data["cover_path"] = $path;
                 endif;
 
                 if (auth()->user()->establishments()->count() > 0)
@@ -236,15 +234,13 @@
 
             try {
                 if (array_key_exists('cover_path', $data)):
-                    if (!Storage::delete($event->cover_path))
+                    if (!Storage::delete("public/" . $event->cover_path))
                         throw new \Exception('Não foi possível atualizar a foto do evento!');
 
-                    if ($data['cover_path'] instanceof UploadedFile):
-                        if (!($path = $data['cover_path']->storePublicly('event')))
-                            throw new \Exception('Não foi possível armazenar a foto do evento!');
+                    if (!($path = $data['cover_path']->store('event', 'public')))
+                        throw new \Exception('Não foi possível armazenar a foto do evento!');
 
-                        $data["cover_path"] = $path;
-                    endif;
+                    $data["cover_path"] = $path;
                 endif;
 
                 if (auth()->user()->establishments()->count() > 0)
@@ -253,10 +249,7 @@
                     $data["establishment_id"] = auth()->user()->establishment_connect;
 
                 if (empty($data["establishment_id"]) && auth()->user()->can('manage-called'))
-                    return redirect()
-                        ->back()
-                        ->withInput()
-                        ->with('error', 'Conecte em algum estabelecimento para realizar alterações, em seguida tente novamente!');
+                    throw new \Exception('Conecte em algum estabelecimento para realizar alterações, em seguida tente novamente!');
 
                 $event->fill($data);
 
@@ -297,7 +290,7 @@
             try {
                 $event->status = 0;
 
-                if (!Storage::delete($event->cover_path))
+                if (!Storage::delete("public/" . $event->cover_path))
                     throw new \Exception('Não foi possível excluir a foto do evento!');
 
                 if (!$event->save())

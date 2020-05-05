@@ -47,7 +47,7 @@
                         <div class="col-md-2">
                             <div class="custom-file">
                                 @if (!empty($event->cover_path))
-                                    <img src="{{ "../../../.." . Storage::url('app/' . $event->cover_path) }}" alt="{{ $event->name }}"
+                                    <img src="{{ Storage::url($event->cover_path) }}" alt="{{ $event->name }}"
                                          style="max-width: 30vh;">
                                 @endif
                                 <br><br>

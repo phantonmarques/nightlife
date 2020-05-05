@@ -26,7 +26,7 @@
                         <div class="col-md-2">
                             <div class="custom-file">
                                 @if (!empty(auth()->user()->profile_picture_path))
-                                    <img src="{{ "../.." . Storage::url('app/' . auth()->user()->profile_picture_path) }}" alt="{{ auth()->user()->name }}"
+                                    <img src="{{ Storage::url(auth()->user()->profile_picture_path) }}" alt="{{ auth()->user()->name }}"
                                          style="max-width: 30vh;">
                                 @endif
                                 <br><br>
@@ -45,15 +45,6 @@
                         <div class="row">
                             <div class="col-md-10">
                                 <div class="text-red">{{ $errors->first('profile_picture_path') }}</div>
-                            </div>
-                        </div>
-                    @endif
-
-                    @if ($message = Session::get('error'))
-                        <br>
-                        <div class="row">
-                            <div class="col-md-10">
-                                <div class="text-red">{{ $message }}</div>
                             </div>
                         </div>
                     @endif
