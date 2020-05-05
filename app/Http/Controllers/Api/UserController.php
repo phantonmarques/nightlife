@@ -29,7 +29,7 @@ class UserController extends Controller
                 return response()->json([
                     'message' => 'Login efetuado com sucesso',
                     'status' => true,
-                    'user' => $user,
+                    'token' => $token,
                 ]);
             } else if (empty($user->email_verified_at)) {
                 // enviar novo link de confirmação
@@ -90,7 +90,7 @@ class UserController extends Controller
             return response()->json([
                 'message' => 'Conta criada com sucesso',
                 'status' => true,
-                'user' => $user
+                'token' => $token
             ]);
         } catch (\Exception $e) {
             DB::rollBack();

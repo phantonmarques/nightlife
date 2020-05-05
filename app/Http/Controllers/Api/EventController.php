@@ -50,13 +50,13 @@ class EventController extends Controller
             endif;
 
             $events = Event::whereHas('establishment_address', function ($q) {
-                $q->where('city_id', auth()->user()->city_id);})->whereIn('establishment_id', $establishmentsFavorite)->orderBy('views', 'desc')->paginate($this->paginate);
+                $q->where('city_id', auth()->user()->city_id);})->whereIn('establishment_id', $establishmentsFavorite)->orderBy('views', 'desc')->offset(0)->limit($this->paginate)->get();
         endif;
 
         # TODO: Localization
         if (!empty(auth()->user()->city_id) && count($events) === 0):
             $events = Event::whereHas('establishment_address', function ($q) {
-                $q->where('city_id', auth()->user()->city_id);})->orderBy('views', 'desc')->paginate($this->paginate);
+                $q->where('city_id', auth()->user()->city_id);})->orderBy('views', 'desc')->offset(0)->limit($this->paginate)->get();
         endif;
 
         # TODO: Favorite
@@ -78,17 +78,21 @@ class EventController extends Controller
                 $establishmentsFavorite = array_merge($establishmentsFavorite, $establishmentsRhythm);
             endif;
 
-            $events = Event::whereIn('establishment_id', $establishmentsFavorite)->orderBy('views', 'desc')->paginate($this->paginate);
+            $events = Event::whereIn('establishment_id', $establishmentsFavorite)->orderBy('views', 'desc')->offset(0)->limit($this->paginate)->get();
         endif;
 
         # TODO: Top Views
         if (count($events) === 0):
-            $events = Event::orderBy('views', 'desc')->paginate($this->paginate);
+            $events = Event::orderBy('views', 'desc')->offset(0)->limit($this->paginate)->get();
         endif;
+
+        foreach ($events as $key => $event) {
+            $events[$key]->description = strip_tags($events[$key]->description);
+        }
 
         return response()->json([
             'status' => true,
-            'return' => $events
+            'data' => $events
         ]);
     }
 
