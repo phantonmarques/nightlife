@@ -102,19 +102,19 @@ class EventController extends Controller
      */
     public function eventsFilter(){
         $filters = array(
-            'category' => $this->categorys(),
-            'rhythm' => $this->rhythms()
+            'categories' => $this->categorys(),
+            'rhythms' => $this->rhythms()
         );
 
         if (!empty($filters))
             return response()->json([
                 'status' => true,
-                'return' => $filters
+                'data' => $filters
             ]);
         else
             return response()->json([
                 'status' => false,
-                'return' => "Não existe nenhum filtro relacionado a estabelecimentos!"
+                'message' => "Não existe nenhum filtro relacionado a estabelecimentos!"
             ]);
     }
 
