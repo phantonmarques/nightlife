@@ -46,7 +46,6 @@ class EventController extends Controller
 
         endif;
 
-
         return response()->json([
             'status' => false,
             'data' => "Evento não encontrado!"
