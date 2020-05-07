@@ -36,12 +36,14 @@
                 $coverPath = '';
             }
 
-            $dateLimit =  date("Y-m-d", time()-(3600*27));
+            $dateLimit =  date("Y-m-d", strtotime('-1 day'));
 
             $rules = [
                 'name'                      => ['required', 'min:5', 'unique:event' . $eventName],
                 'cover_path'                => [$coverPath , 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
                 'date_event'                => ['required', 'date_format:Y-m-d', 'date', 'after:' . $dateLimit],
+                'start_time'                => ['date_format:H:i'],
+                'end_time'                  => ['date_format:H:i'],
                 'establishment_address_id'  => ['required'],
                 'price'                     => ['required', 'regex:/^\d+(\.\d{1,2})?$/'],
                 'description'               => ['required', 'min:10'],
@@ -70,10 +72,13 @@
                 'date_event.required' => 'Informe data do evento!',
                 'date_event.date_format' => 'Informe uma data do evento valida!',
                 'date_event.date' => 'Informe uma data do evento valida!',
+                'date_event.after.*' => 'Informe uma data do evento valida!',
                 'date_event.after' => 'Informe uma data do evento valida!',
                 'establishment_address_id.required' => 'Selecione o endereço do evento!',
                 'price.required' => 'Informe a partir de qual preço do ingresso do evento!',
                 'price.regex' => 'Informe um valor válido para o ingresso do evento!',
+                'start_time.date_format' => 'Informe um horário de inicio do evento válido!',
+                'end_time.date_format' => 'Informe um horário de fim do evento válido!',
                 'description.required' => 'Campo [Descrição do Evento] é obrigatório, favor informe!',
                 'description.min' => 'Campo [Descrição do Evento] deve conter no mínimo 10 caracteres, favor corrija e tente novamente!',
             ];

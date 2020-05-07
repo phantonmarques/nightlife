@@ -65,6 +65,14 @@ class Establishment extends Model
     }
 
     /**
+     * Get phones of establishmentaddress.
+     */
+    public function establishments_photos()
+    {
+        return $this->hasMany(EstablishmentPhotos::class, 'establishment_id');
+    }
+
+    /**
      * Get the event record associated with the establishment.
      */
     public function events()

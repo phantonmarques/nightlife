@@ -20,6 +20,8 @@ class Event extends Model
         'price',
         'cover_path',
         'description',
+        'start_time',
+        'end_time',
         'status',
         'establishment_id',
         'establishment_address_id'

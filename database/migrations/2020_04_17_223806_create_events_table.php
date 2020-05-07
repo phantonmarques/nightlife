@@ -18,6 +18,8 @@
                 $table->string('name');
                 $table->date('date_event');
                 $table->double('price', 10, 2);
+                $table->time('start_time');
+                $table->time('end_time');
                 $table->string('cover_path')->unique();
                 $table->longText('description');
                 $table->boolean('status');

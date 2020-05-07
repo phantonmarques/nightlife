@@ -31,6 +31,24 @@
       0 => 'Fx3costa\\LaravelChartJs\\Providers\\ChartjsServiceProvider',
     ),
   ),
+  'grimzy/laravel-mysql-spatial' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Grimzy\\LaravelMysqlSpatial\\SpatialServiceProvider',
+    ),
+  ),
+  'ixudra/curl' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Ixudra\\Curl\\CurlServiceProvider',
+    ),
+    'aliases' => 
+    array (
+      'Curl' => 'Ixudra\\Curl\\Facades\\Curl',
+    ),
+  ),
   'jeroennoten/laravel-adminlte' => 
   array (
     'providers' => 

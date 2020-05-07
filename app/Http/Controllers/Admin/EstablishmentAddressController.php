@@ -2,22 +2,19 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests\CreateOrUpdatePermission;
 use App\Models\Admin\EstablishmentAddress;
-use App\Models\Admin\Establishment;
 use App\Http\Requests\CreateOrUpdateEstablishmentAddress;
 use App\Models\Admin\EstablishmentPhones;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Models\Site\User;
 use App\Models\Site\State;
-use App\Models\Site\City;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class EstablishmentAddressController extends Controller
 {
     protected $paginate = 10;
+    protected $keyMaps = '5r2Oz1paGAA_xfzWLlIcjpQq4DZPwMD4iPV5_mTP9m8';
+    protected $urlMaps = 'https://geocode.search.hereapi.com/v1/geocode';
 
     /**
      * EstablishmentAddressController constructor.
@@ -112,6 +109,9 @@ class EstablishmentAddressController extends Controller
                 ->with('error', 'Conecte em algum estabelecimento para realizar alterações, em seguida tente novamente!');
 
         $data = $request->validated();
+
+        $this->getLatLong($data["street_name"], $data["building_number"]);
+        dd($data);
 
         # Log Access Users
         $this->access('Criar Endereços Estabelecimento', $data);
@@ -313,6 +313,25 @@ class EstablishmentAddressController extends Controller
                 ->withInput()
                 ->with('error', $e->getMessage());
         }
+    }
+
+    /**
+     * Get long and lat geolocation address
+     */
+    private function getLatLong($street_name, $building_number)
+    {
+        $endpoint = $this->urlMaps . "?apiKey=" . $this->keyMaps .  "&q=" . urlencode($street_name . "," . $building_number);
+
+        $response = $client->get($endpoint);
+        dd($response);
+        var_dump($response->getStatusCode());
+        dd($response->getBody());
+
+
+        die();
+
+        $statusCode = $response->getStatusCode();
+        $content = $response->getBody();
     }
 
     /**

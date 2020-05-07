@@ -10,7 +10,7 @@ class EstablishmentPhones extends Model
     /**
      * @var string $table
      */
-    protected $table = 'establishments_phone';
+    protected $table = 'establishments_phones';
 
     /**
      * @var array $fillable

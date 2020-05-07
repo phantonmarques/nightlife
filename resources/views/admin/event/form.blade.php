@@ -88,20 +88,21 @@
 
                     {!! Form::hidden('date_event', (isset($event->id) ? formatDate($event->date_event) : ''), ['id' => 'date_event']) !!}
 
-                    <br>
-
                     @if ($errors->has('date_event'))
                         <br>
                         <div class="row">
                             <div class="col-md-10">
-                                <div class="text-red">{{ $errors->first('cover_path') }}</div>
+                                <div class="text-red">{{ $errors->first('date_event') }}</div>
                             </div>
                         </div>
                     @endif
 
+                    <br>
+
                     <div class="row">
                         <div class="col-md-5">
-                            {{ Form::label('establishment_address_id','Endereço do Evento') }} <span class="span-required">*</span>
+                            {{ Form::label('establishment_address_id','Endereço do Evento') }} <span
+                                    class="span-required">*</span>
 
                             <select name="establishment_address_id" class="form-control">
                                 <option value="">---- Selecione ----</option>
@@ -128,16 +129,64 @@
                             {{ Form::text('price', (isset($event->id) ? number_format($event->price, 2, ',', '.') : ''), ['placeholder' => 'Informe preço do evento', 'class' => 'form-control money', 'onkeypress' => 'return onlyNumbers(event)']) }}
                         </div>
                     </div>
+
                     <br>
 
                     @if ($errors->has('price'))
                         <br>
                         <div class="row">
                             <div class="col-md-10">
-                                <div class="text-red">{{ $errors->first('cover_path') }}</div>
+                                <div class="text-red">{{ $errors->first('price') }}</div>
                             </div>
                         </div>
                     @endif
+
+                    <div class="row">
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                {{ Form::label('start_time','Hora início evento') }} <span
+                                        class="span-required">*</span>
+
+                                <div class="input-group">
+                                    {{ Form::time('start_time', (isset($event->id) ? formatHour($event->start_time) : ''), ['class'=>'form-control timepicker']) }}
+                                    <div class="input-group-addon">
+                                        <i class="far fa-clock"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                {{ Form::label('end_time','Hora início evento') }} <span
+                                        class="span-required">*</span>
+
+                                <div class="input-group">
+                                    {{ Form::time('end_time', (isset($event->id) ? formatHour($event->end_time) : ''), ['class'=>'form-control timepicker']) }}
+                                    <div class="input-group-addon">
+                                        <i class="far fa-clock"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    @if ($errors->has('start_time'))
+                        <br>
+                        <div class="row">
+                            <div class="col-md-10">
+                                <div class="text-red">{{ $errors->first('start_time') }}</div>
+                            </div>
+                        </div>
+                    @endif
+
+                    @if ($errors->has('end_time'))
+                        <br>
+                        <div class="row">
+                            <div class="col-md-10">
+                                <div class="text-red">{{ $errors->first('start_time') }}</div>
+                            </div>
+                        </div>
+                    @endif
+
+                    <br>
 
                     <div class="row">
                         <div class="col-md-10">

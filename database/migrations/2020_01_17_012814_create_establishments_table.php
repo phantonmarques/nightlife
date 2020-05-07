@@ -19,6 +19,7 @@ class CreateEstablishmentsTable extends Migration
             $table->string('corporate_name');
             $table->string('state_registration');
             $table->enum('type_license', ['b','f']);
+            $table->longText('details')->nullable();
             $table->boolean('status');
             $table->timestamps();
             $table->softDeletes();
