@@ -22,6 +22,37 @@ class EventController extends Controller
 //        $this->middleware('auth');
     }
 
+    public function event($id){
+        $event = Event::find($id);
+
+        if (isset($event->name)):
+            $establishment = $event->establishment->select('corporate_name', 'id')->first();
+
+            $address = $event->establishment_address->select('zip_code', 'street_name', 'building_number', 'neighborhood')->first();
+
+            $phone = $event->establishment_address->establishments_phone()->where('main', 1)->select('phone', 'whatsapp')->first();
+
+            $event->increment('views');
+
+            return response()->json([
+                'status' => false,
+                'data' => array(
+                    "address" => $address,
+                    "establishment" => $establishment,
+                    "event" => $event->get(),
+                    "phone" => $phone,
+                )
+            ]);
+
+        endif;
+
+
+        return response()->json([
+            'status' => false,
+            'data' => "Evento não encontrado!"
+        ]);
+    }
+
 
     /**
      * Functions get events recommended (Home page)
@@ -109,12 +140,12 @@ class EventController extends Controller
         if (!empty($filters))
             return response()->json([
                 'status' => true,
-                'return' => $filters
+                'data' => $filters
             ]);
         else
             return response()->json([
                 'status' => false,
-                'return' => "Não existe nenhum filtro relacionado a estabelecimentos!"
+                'data' => "Não existe nenhum filtro relacionado a estabelecimentos!"
             ]);
     }
 
@@ -134,6 +165,12 @@ class EventController extends Controller
         return Rhythm::whereHas('rhythm_establishments')->select('id', 'name')->get();
     }
 
+
+    /**
+     * Function get events search
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function eventsSearch(Request $request)
     {
         //SOMAR CONTADORES CATEGORIA, RITMOS

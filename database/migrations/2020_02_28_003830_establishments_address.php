@@ -21,6 +21,7 @@ class EstablishmentsAddress extends Migration
             $table->string('building_number')->nullable();
             $table->string('complement')->nullable();
             $table->string('neighborhood');
+            $table->point('location')->nullable();
             $table->unsignedInteger('city_id')->nullable();
             $table->timestamps();
 

@@ -49,12 +49,31 @@
                         </div>
                     </div>
 
+                    <br><br>
+
+                    <div class="row">
+                        <div class="col-md-5">
+                            @include('adminlte::form.input.static', [
+                                'label' => 'Hora inicio do Evento',
+                                'value' => formatHour($event->start_time)
+                            ])
+                        </div>
+                        <div class="col-md-5">
+                            @include('adminlte::form.input.static', [
+                                'label' => 'Hora fim do Evento',
+                                'value' => formatHour($event->end_time)
+                            ])
+                        </div>
+                    </div>
+
                     <br>
 
                     <div class="row">
                         <div class="col-md-10">
-                            {{ Form::label('Descrição do Evento') }}
-                            {!! $event->description !!}
+                            @include('adminlte::form.input.static', [
+                                'label' => 'Descrição do Evento',
+                                'value' => $event->description
+                            ])
                         </div>
                     </div>
 

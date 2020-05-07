@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateEstablishmentsPhonesTable extends Migration
+class CreateEstablishmentsPhotosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,19 +13,12 @@ class CreateEstablishmentsPhonesTable extends Migration
      */
     public function up()
     {
-        Schema::create('establishments_phones', function (Blueprint $table) {
+        Schema::create('establishments_photos', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('establishment_address_id');
             $table->unsignedInteger('establishment_id');
-            $table->string('name');
-            $table->string('phone');
+            $table->string('img_path')->unique();
             $table->boolean('main')->default(0);
-            $table->boolean('whatsapp')->default(0);
             $table->timestamps();
-
-            $table->foreign('establishment_address_id')
-                ->references('id')
-                ->on('establishment_address');
 
             $table->foreign('establishment_id')
                 ->references('id')
@@ -40,6 +33,6 @@ class CreateEstablishmentsPhonesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('establishments_phones');
+        Schema::dropIfExists('establishments_photos');
     }
 }
