@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Site\State;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Ixudra\Curl\Facades\Curl;
+use Grimzy\LaravelMysqlSpatial\Types\Point;
 
 class EstablishmentAddressController extends Controller
 {
@@ -110,9 +112,6 @@ class EstablishmentAddressController extends Controller
 
         $data = $request->validated();
 
-        $this->getLatLong($data["street_name"], $data["building_number"]);
-        dd($data);
-
         # Log Access Users
         $this->access('Criar Endereços Estabelecimento', $data);
 
@@ -129,6 +128,11 @@ class EstablishmentAddressController extends Controller
 
             if (!isset($data["establishment_id"]))
                 $data["establishment_id"] = auth()->user()->establishment_connect;
+
+            $latLong = $this->getLatLong($data["street_name"], $data["building_number"]);
+
+            if (!empty($latLong))
+                $data["location"] = new Point($latLong->lat, $latLong->lng);
 
             $establishmentAddress = EstablishmentAddress::create($data);
 
@@ -237,6 +241,11 @@ class EstablishmentAddressController extends Controller
             if (!isset($data["establishment_id"]))
                 $data["establishment_id"] = auth()->user()->establishment_connect;
 
+            $latLong = $this->getLatLong($data["street_name"], $data["building_number"]);
+
+            if (!empty($latLong))
+                $data["location"] = new Point($latLong->lat, $latLong->lng);
+
             $establishmentAddress->fill($data);
 
             if ($establishmentAddress->isDirty())
@@ -320,18 +329,19 @@ class EstablishmentAddressController extends Controller
      */
     private function getLatLong($street_name, $building_number)
     {
-        $endpoint = $this->urlMaps . "?apiKey=" . $this->keyMaps .  "&q=" . urlencode($street_name . "," . $building_number);
+        $response = Curl::to($this->urlMaps)
+            ->withData(array(
+                'apiKey' => $this->keyMaps,
+                'q' => urlencode($street_name . " " . $building_number)))
+            ->returnResponseObject()
+            ->get();
 
-        $response = $client->get($endpoint);
-        dd($response);
-        var_dump($response->getStatusCode());
-        dd($response->getBody());
+        $response = json_decode($response->content);
 
+        if (!empty($response->items[0]->position))
+            return $response->items[0]->position;
 
-        die();
-
-        $statusCode = $response->getStatusCode();
-        $content = $response->getBody();
+        return false;
     }
 
     /**

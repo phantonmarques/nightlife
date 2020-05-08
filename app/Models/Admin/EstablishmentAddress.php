@@ -4,9 +4,12 @@ namespace App\Models\Admin;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Site\City;
+use Grimzy\LaravelMysqlSpatial\Eloquent\SpatialTrait;
 
 class EstablishmentAddress extends Model
 {
+    use SpatialTrait;
+
     /**
      * @var string $table
      */
@@ -21,10 +24,17 @@ class EstablishmentAddress extends Model
         'street_name',
         'building_number',
         'complement',
+        'location',
         'neighborhood',
         'city_id'
     ];
 
+    /**
+     * @var array $spatialFields
+     */
+    protected $spatialFields = [
+        'location',
+    ];
     /**
      * Get establishments of establishmentaddress.
      */

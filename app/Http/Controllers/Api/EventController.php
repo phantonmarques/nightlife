@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\Admin\EstablishmentAddress;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Admin\Category;
 use App\Models\Admin\Event;
 use App\Models\Admin\Establishment;
 use App\Models\Admin\Rhythm;
+use Grimzy\LaravelMysqlSpatial\Types\Point;
 
 class EventController extends Controller
 {
@@ -26,9 +28,9 @@ class EventController extends Controller
         $event = Event::find($id);
 
         if (isset($event->name)):
-            $establishment = $event->establishment->select('corporate_name', 'id')->first();
+            $event->establishment_info;
 
-            $address = $event->establishment_address->select('zip_code', 'street_name', 'building_number', 'neighborhood')->first();
+            $event->establishment_address;
 
             $phone = $event->establishment_address->establishments_phone()->where('main', 1)->select('phone', 'whatsapp')->first();
 
@@ -37,9 +39,7 @@ class EventController extends Controller
             return response()->json([
                 'status' => false,
                 'data' => array(
-                    "address" => $address,
-                    "establishment" => $establishment,
-                    "event" => $event->get(),
+                    "event" => $event,
                     "phone" => $phone,
                 )
             ]);
@@ -172,27 +172,95 @@ class EventController extends Controller
      */
     public function eventsSearch(Request $request)
     {
+        # TODO: Search type location current or registred city in user.
+        $addressFilter = EstablishmentAddress::distanceSphere( 'location', new Point(floatval($request->lat), floatval($request->long)), ($request->distance * 1000))
+            ->orWhere('city_id', (!empty(auth()->user()->city_id) ? auth()->user()->city_id : 0))
+            ->get();
+
         //SOMAR CONTADORES CATEGORIA, RITMOS
         # TODO: Search type establishment
         if ($request->type === 'establishment'):
-            # Category Selected and Rhythm Selected
-            if (!empty($request->category) && !empty($request->rhythm)):
-                $establishments = Establishment::whereHas('establishments_rhythm', function ($q) {
-                    $q->whereIn('rhythm_id', auth()->user()->user_settings->favorite_rhythms);})->get();
-            elseif (!empty($request->category)):
+            $category = isset( $request->categorys ) ?  $request->categorys : null;
+            $rhythm = isset( $request->rhythms ) ?  $request->rhythms : null;
 
-            elseif (!empty($request->rhythm)):
+            if ($request->category && $request->rhythm): # Category and Rhythm Selected
+                $object = Establishment::where('status', 1)->select('id', 'corporate_name')->with('establishment_address')
+                    ->whereHas('establishments_rhythm', function ($q) use ($rhythm) {
+                        $q->whereIn('rhythm_id', (!empty($rhythm) ? $rhythm : array())); })
+                    ->whereHas('establishments_category', function ($q) use ($category) {
+                        $q->whereIn('category_id', (!empty($category) ? $category : array())); })
+                    ->whereHas('establishment_address', function ($q) use ($addressFilter) {
+                        $q->whereIn('id', $addressFilter); })->get();
+
+            elseif ($request->category): # Category Selected
+                $object = Establishment::where('status', 1)->select('id', 'corporate_name')->with('establishment_address')
+                    ->whereHas('establishments_category', function ($q) use ($category) {
+                        $q->whereIn('category_id', (!empty($category) ? $category : array())); })
+                    ->whereHas('establishment_address', function ($q) use ($addressFilter) {
+                        $q->whereIn('id', $addressFilter); })->get();
+
+            elseif ($request->rhythm): # Rhythm Selected
+                $object = Establishment::where('status', 1)->select('id', 'corporate_name')->with('establishment_address')
+                    ->whereHas('establishments_rhythm', function ($q) use ($rhythm) {
+                        $q->whereIn('rhythm_id', (!empty($rhythm) ? $rhythm : array())); })
+                    ->whereHas('establishment_address', function ($q) use ($addressFilter) {
+                        $q->whereIn('id', $addressFilter); })->get();
+
+            else: # Distance
+                $object = Establishment::where('status', 1)->select('id', 'corporate_name')->with('establishment_address')
+                    ->whereHas('establishment_address', function ($q) use ($addressFilter) {
+                        $q->whereIn('id', $addressFilter); })->get();
 
             endif;
 
         # TODO: Search type events
         elseif ($request->type === 'events'):
+            $category = isset( $request->categorys ) ?  $request->categorys : null;
+            $rhythm = isset( $request->rhythms ) ?  $request->rhythms : null;
 
+            if ($request->category && $request->rhythm): # Category and Rhythm Selected
+                $establishment = Establishment::where('status', 1)
+                    ->whereHas('establishments_rhythm', function ($q) use ($rhythm) {
+                        $q->whereIn('rhythm_id', (!empty($rhythm) ? $rhythm : array())); })
+                    ->whereHas('establishments_category', function ($q) use ($category) {
+                        $q->whereIn('category_id', (!empty($category) ? $category : array())); })->select('id')->get();
+
+                $object = Event::where('status', 1)->with('establishment_address')->whereIn('establishment_id', $establishment)
+                    ->whereHas('establishment_address', function ($q) use ($addressFilter) {
+                        $q->whereIn('id', $addressFilter); })->get();
+
+            elseif ($request->category): # Category Selected
+                $establishment = Establishment::where('status', 1)->whereHas('establishments_category', function ($q) use ($category) {
+                    $q->whereIn('category_id', (!empty($category) ? $category : array())); })->select('id')->get();
+
+                $object = Event::where('status', 1)->with('establishment_address')->whereIn('establishment_id', $establishment)
+                    ->whereHas('establishment_address', function ($q) use ($addressFilter) {
+                        $q->whereIn('id', $addressFilter); })->get();
+
+            elseif ($request->rhythm): # Rhythm Selected
+                $establishment = Establishment::where('status', 1)->whereHas('establishments_rhythm', function ($q) use ($rhythm) {
+                    $q->whereIn('rhythm_id', (!empty($rhythm) ? $rhythm : array())); })->select('id')->get();
+
+                $object = Event::where('status', 1)->with('establishment_address')->whereIn('establishment_id', $establishment)
+                    ->whereHas('establishment_address', function ($q) use ($addressFilter) {
+                        $q->whereIn('id', $addressFilter); })->get();
+
+            else: # Distance
+                $object = Event::where('status', 1)->with('establishment_address')
+                    ->whereHas('establishment_address', function ($q) use ($addressFilter) {
+                        $q->whereIn('id', $addressFilter); })->get();
+            endif;
         endif;
+
+        if (count($object) > 0)
+            return response()->json([
+                'status' => false,
+                'data' => $object
+            ]);
 
         return response()->json([
             'status' => false,
-            'return' => "Pesquisa não encontrada!"
+            'data' => "Pesquisa não encontrada!"
         ]);
     }
 }

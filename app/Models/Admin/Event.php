@@ -36,6 +36,14 @@ class Event extends Model
     }
 
     /**
+     * Get the establishment record associated with the event.
+     */
+    public function establishment_info()
+    {
+        return $this->belongsTo(Establishment::class,'establishment_id')->select('id', 'corporate_name', 'details');
+    }
+
+    /**
      * Get the establishment address record associated with the event.
      */
     public function establishment_address()
