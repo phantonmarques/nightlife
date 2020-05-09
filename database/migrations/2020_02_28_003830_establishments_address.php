@@ -25,13 +25,8 @@ class EstablishmentsAddress extends Migration
             $table->unsignedInteger('city_id')->nullable();
             $table->timestamps();
 
-            $table->foreign('establishment_id')
-                ->references('id')
-                ->on('establishment');
-
-            $table->foreign('city_id')
-                ->references('id')
-                ->on('city');
+            $table->foreign('establishment_id')->references('id')->on('establishment')->onDelete('cascade');
+            $table->foreign('city_id')->references('id')->on('city')->onDelete('cascade');
         });
     }
 

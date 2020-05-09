@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Models\Admin;
+namespace App\Models\Site;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Site\User;
 
 class UserSettings extends Model
 {

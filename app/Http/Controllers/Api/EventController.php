@@ -24,20 +24,22 @@ class EventController extends Controller
 //        $this->middleware('auth');
     }
 
+    /**
+     * Function get event info
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function event($id){
-        $event = Event::find($id);
+        $event = Event::with('establishment:id,corporate_name,details')
+                    ->with('establishment_address')->find($id);
 
         if (isset($event->name)):
-            $event->establishment_info;
-
-            $event->establishment_address;
-
             $phone = $event->establishment_address->establishments_phone()->where('main', 1)->select('phone', 'whatsapp')->first();
 
             $event->increment('views');
 
             return response()->json([
-                'status' => false,
+                'status' => true,
                 'data' => array(
                     "event" => $event,
                     "phone" => $phone,
@@ -57,9 +59,16 @@ class EventController extends Controller
      * Functions get events recommended (Home page)
      * @return \Illuminate\Http\JsonResponse
      */
-    public function eventsRecommended()
+    public function eventsRecommended($lat, $long)
     {
+        # TODO: Search type location current or registred city in user.
+        $addressFilter = EstablishmentAddress::distanceSphere( 'location', new Point(floatval($lat), floatval($long)), 50000)
+            ->orWhere('city_id', (!empty(auth()->user()->city_id) ? auth()->user()->city_id : 0))
+            ->select('city_id')->get();
+
+        # init event
         $events = array();
+
         # TODO: Localization + Favorite
         if (!empty(auth()->user()->city_id) && (!empty(auth()->user()->user_settings->favorite_categorys) || !empty(auth()->user()->user_settings->favorite_rhythms))):
             $establishmentsFavorite = array();
@@ -79,14 +88,16 @@ class EventController extends Controller
                     $establishmentsFavorite = array_merge($establishmentsFavorite, $establishmentsRhythm);
             endif;
 
-            $events = Event::whereHas('establishment_address', function ($q) {
-                $q->where('city_id', auth()->user()->city_id);})->whereIn('establishment_id', $establishmentsFavorite)->orderBy('views', 'desc')->offset(0)->limit($this->paginate)->get();
+            $events = Event::whereHas('establishment_address', function ($q) use ($addressFilter) {
+                $q->whereIn('city_id', $addressFilter);})->whereIn('establishment_id', $establishmentsFavorite)->orderBy('views', 'desc')->offset(0)->limit($this->paginate)->get();
+
         endif;
 
         # TODO: Localization
-        if (!empty(auth()->user()->city_id) && count($events) === 0):
-            $events = Event::whereHas('establishment_address', function ($q) {
-                $q->where('city_id', auth()->user()->city_id);})->orderBy('views', 'desc')->offset(0)->limit($this->paginate)->get();
+        if (count($addressFilter) > 0 && count($events) === 0):
+            $events = Event::whereHas('establishment_address', function ($q) use ($addressFilter) {
+                $q->whereIn('city_id', $addressFilter);})->orderBy('views', 'desc')->offset(0)->limit($this->paginate)->get();
+
         endif;
 
         # TODO: Favorite
@@ -109,6 +120,7 @@ class EventController extends Controller
             endif;
 
             $events = Event::whereIn('establishment_id', $establishmentsFavorite)->orderBy('views', 'desc')->offset(0)->limit($this->paginate)->get();
+
         endif;
 
         # TODO: Top Views
@@ -228,7 +240,6 @@ class EventController extends Controller
                 $object = Event::where('status', 1)->with('establishment_address')->whereIn('establishment_id', $establishment)
                     ->whereHas('establishment_address', function ($q) use ($addressFilter) {
                         $q->whereIn('id', $addressFilter); })->get();
-
             elseif ($request->category): # Category Selected
                 $establishment = Establishment::where('status', 1)->whereHas('establishments_category', function ($q) use ($category) {
                     $q->whereIn('category_id', (!empty($category) ? $category : array())); })->select('id')->get();
@@ -250,6 +261,10 @@ class EventController extends Controller
                     ->whereHas('establishment_address', function ($q) use ($addressFilter) {
                         $q->whereIn('id', $addressFilter); })->get();
             endif;
+
+            foreach ($object as &$obj)
+                $obj->increment('views');
+
         endif;
 
         if (count($object) > 0)

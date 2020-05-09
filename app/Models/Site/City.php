@@ -12,6 +12,11 @@ class City extends Model
     protected $table = 'city';
 
     /**
+     * @var array $hidden
+     */
+    protected $hidden = ['created_at', 'updated_at'];
+
+    /**
      * @var array $fillable
      */
     protected $fillable = [

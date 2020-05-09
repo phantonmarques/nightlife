@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateEstablishmentsPhotosTable extends Migration
+class CreateUserCommentTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,15 @@ class CreateEstablishmentsPhotosTable extends Migration
      */
     public function up()
     {
-        Schema::create('establishments_photos', function (Blueprint $table) {
-            $table->increments('id');
+        Schema::create('user_comment', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->string('comment');
+            $table->unsignedInteger('user_id');
             $table->unsignedInteger('establishment_id');
-            $table->string('img_path')->unique();
-            $table->boolean('main')->default(0);
             $table->timestamps();
 
             $table->foreign('establishment_id')->references('id')->on('establishment')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('user')->onDelete('cascade');
         });
     }
 
@@ -31,6 +32,6 @@ class CreateEstablishmentsPhotosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('establishments_photos');
+        Schema::dropIfExists('user_comment');
     }
 }

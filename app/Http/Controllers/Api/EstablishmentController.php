@@ -5,8 +5,6 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Admin\Establishment;
-use App\Models\Admin\EstablishmentPhones;
-use App\Models\Site\City;
 
 class EstablishmentController extends Controller
 {
@@ -18,26 +16,17 @@ class EstablishmentController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function establishmentDetails($id){
-        $establishment = Establishment::find($id);
+        $establishment = Establishment::with('establishment_address.city.state')
+                            ->with(['establishment_phones' => function ($q) {
+                                $q->where('main',1);
+                            }])->with('establishments_photos')
+                            ->find($id);
 
         if (isset($establishment->corporate_name)):
-            $addresses = $establishment->establishment_address()->select('id', 'zip_code', 'street_name', 'building_number', 'neighborhood', 'city_id')->get();
-
-            foreach ($addresses as &$address):
-                $city = City::find($address["city_id"]);
-                $phone = EstablishmentPhones::where([['establishment_address_id', $address["id"]], ['main', 1]])->select('phone', 'whatsapp')->first();
-
-                $address["city"] = $city->name_visible;
-                $address["state"] = $city->state->name_visible;
-                $address["phone"] = $phone;
-            endforeach;
-
             return response()->json([
-                'status' => false,
+                'status' => true,
                 'data' => array(
-                    "establishment" => $establishment->select('id', 'corporate_name', 'details')->get(),
-                    "addressses" => $addresses,
-                    'photos' => $establishment->establishments_photos()->get(),
+                    "establishment" => $establishment,
                 )
             ]);
         endif;

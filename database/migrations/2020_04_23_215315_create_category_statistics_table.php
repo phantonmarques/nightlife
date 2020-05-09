@@ -24,9 +24,7 @@ class CreateCategoryStatisticsTable extends Migration
             $table->unsignedInteger('category_id');
             $table->timestamps();
 
-            $table->foreign('category_id')
-                ->references('id')
-                ->on('category');
+            $table->foreign('category_id')->references('id')->on('category')->onDelete('cascade');
         });
     }
 

@@ -24,9 +24,7 @@ class CreateRhythmStatisticsTable extends Migration
             $table->unsignedInteger('rhythm_id');
             $table->timestamps();
 
-            $table->foreign('rhythm_id')
-                ->references('id')
-                ->on('rhythm');
+            $table->foreign('rhythm_id')->references('id')->on('rhythm')->onDelete('cascade');
         });
     }
 

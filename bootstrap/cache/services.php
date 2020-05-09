@@ -41,10 +41,12 @@
     37 => 'Collective\\Html\\HtmlServiceProvider',
     38 => 'App\\Providers\\RolesServiceProvider',
     39 => 'App\\Providers\\PermissionServiceProvider',
-    40 => 'App\\Providers\\AppServiceProvider',
-    41 => 'App\\Providers\\AuthServiceProvider',
-    42 => 'App\\Providers\\EventServiceProvider',
-    43 => 'App\\Providers\\RouteServiceProvider',
+    40 => 'Grimzy\\LaravelMysqlSpatial\\SpatialServiceProvider',
+    41 => 'Ixudra\\Curl\\CurlServiceProvider',
+    42 => 'App\\Providers\\AppServiceProvider',
+    43 => 'App\\Providers\\AuthServiceProvider',
+    44 => 'App\\Providers\\EventServiceProvider',
+    45 => 'App\\Providers\\RouteServiceProvider',
   ),
   'eager' => 
   array (
@@ -71,10 +73,12 @@
     20 => 'JeroenNoten\\LaravelAdminLte\\ServiceProvider',
     21 => 'App\\Providers\\RolesServiceProvider',
     22 => 'App\\Providers\\PermissionServiceProvider',
-    23 => 'App\\Providers\\AppServiceProvider',
-    24 => 'App\\Providers\\AuthServiceProvider',
-    25 => 'App\\Providers\\EventServiceProvider',
-    26 => 'App\\Providers\\RouteServiceProvider',
+    23 => 'Grimzy\\LaravelMysqlSpatial\\SpatialServiceProvider',
+    24 => 'Ixudra\\Curl\\CurlServiceProvider',
+    25 => 'App\\Providers\\AppServiceProvider',
+    26 => 'App\\Providers\\AuthServiceProvider',
+    27 => 'App\\Providers\\EventServiceProvider',
+    28 => 'App\\Providers\\RouteServiceProvider',
   ),
   'deferred' => 
   array (

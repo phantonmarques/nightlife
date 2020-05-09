@@ -23,13 +23,8 @@ class CreateEstablishmentsPhonesTable extends Migration
             $table->boolean('whatsapp')->default(0);
             $table->timestamps();
 
-            $table->foreign('establishment_address_id')
-                ->references('id')
-                ->on('establishment_address');
-
-            $table->foreign('establishment_id')
-                ->references('id')
-                ->on('establishment');
+            $table->foreign('establishment_address_id')->references('id')->on('establishment_address')->onDelete('cascade');
+            $table->foreign('establishment_id')->references('id')->on('establishment');
         });
     }
 

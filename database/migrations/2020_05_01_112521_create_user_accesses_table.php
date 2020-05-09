@@ -22,8 +22,8 @@ class CreateUserAccessesTable extends Migration
             $table->json('content')->nullable();
             $table->dateTime('data_access');
 
-            $table->foreign('user_id')->references('id')->on('user');
-            $table->foreign('establishment_connect')->references('id')->on('establishment');
+            $table->foreign('user_id')->references('id')->on('user')->onDelete('cascade');
+            $table->foreign('establishment_connect')->references('id')->on('establishment')->onDelete('cascade');
         });
     }
 

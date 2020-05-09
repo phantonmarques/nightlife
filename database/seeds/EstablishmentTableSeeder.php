@@ -31,7 +31,7 @@ class EstablishmentTableSeeder extends Seeder
         $establishment->establishments_rhythm()->attach($rhythm1);
         $establishment->establishments_rhythm()->attach($rhythm2);
         $establishment->establishments_rhythm()->attach($rhythm3);
-        $establishment->establishment_statistics()->create(['establishment_id' => $establishment->id]);
+        $establishment->establishment_statistics()->create();
         $establishment->establishments_photos()->create(['img_path' => 'event/ASOdhasuidh1e90d12jdj21890ehj921xiopasjd8901.png', 'main' => 1]);
     }
 }

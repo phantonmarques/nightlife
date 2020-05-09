@@ -28,19 +28,22 @@ class Event extends Model
     ];
 
     /**
+     * @var array $hidden
+     */
+    protected $hidden = [
+        'establishment_address_id',
+        'establishment_id',
+        'views',
+        'status',
+        'created_at',
+        'updated_at'];
+
+    /**
      * Get the establishment record associated with the event.
      */
     public function establishment()
     {
         return $this->belongsTo(Establishment::class,'establishment_id');
-    }
-
-    /**
-     * Get the establishment record associated with the event.
-     */
-    public function establishment_info()
-    {
-        return $this->belongsTo(Establishment::class,'establishment_id')->select('id', 'corporate_name', 'details');
     }
 
     /**

@@ -13,6 +13,14 @@ class EstablishmentPhones extends Model
     protected $table = 'establishments_phones';
 
     /**
+     * @var array $visible
+     */
+    protected $visible = [
+        'phone',
+        'whatsapp'
+    ];
+
+    /**
      * @var array $fillable
      */
     protected $fillable = [

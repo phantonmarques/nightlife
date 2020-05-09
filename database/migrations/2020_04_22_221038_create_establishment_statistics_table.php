@@ -24,9 +24,7 @@ class CreateEstablishmentStatisticsTable extends Migration
             $table->unsignedInteger('establishment_id');
             $table->timestamps();
 
-            $table->foreign('establishment_id')
-                ->references('id')
-                ->on('establishment');
+            $table->foreign('establishment_id')->references('id')->on('establishment')->onDelete('cascade');
         });
     }
 

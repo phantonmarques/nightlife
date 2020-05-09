@@ -24,6 +24,19 @@ class Establishment extends Model
     ];
 
     /**
+     * @var array $hidden
+     */
+    protected $hidden = [
+        'state_registration',
+        'user_id',
+        'type_license',
+        'status',
+        'created_at',
+        'updated_at',
+        'deleted_at'
+    ];
+
+    /**
      * Get the users record associated with the establishment.
      */
     public function users()
@@ -37,6 +50,14 @@ class Establishment extends Model
     public function establishment_address()
     {
         return $this->hasMany(EstablishmentAddress::class, 'establishment_id', 'id');
+    }
+
+    /**
+     * Get the phones record associated with the establishment.
+     */
+    public function establishment_phones()
+    {
+        return $this->hasMany(EstablishmentPhones::class, 'establishment_id', 'id');
     }
 
     /**

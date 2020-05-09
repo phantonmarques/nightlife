@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Requests\Api\CreateOrUpdateUser;
+use App\Http\Requests\Api\CreateUserComment;
+use App\Http\Requests\Api\CreateUserRating;
+use App\Models\Site\UserRating;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Site\User;
@@ -78,7 +81,7 @@ class UserController extends Controller
             $user->remember_token = $token;
             $user->update();
 
-            $created = $user->user_settings()->create(['user_id' => $user->id]);
+            $created = $user->user_settings()->create();
 
             if (!$created)
                 throw new \Exception('Ocorreu um erro desconhecido ao criar a conta, tente novamente!');
@@ -102,6 +105,78 @@ class UserController extends Controller
             ]);
         }
     }
+
+    /**
+     * Register rating common user
+     * @param CreateOrUpdateUser $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function storeComment(CreateUserComment $request)
+    {
+        $data = $request->validated();
+
+        dd($created = auth()->user()->user_comment()->create($data));
+
+        DB::beginTransaction();
+
+        try {
+            $created = auth()->user()->user_comment()->create($data);
+
+            if (!$created)
+                throw new \Exception('Erro ao criar o comentário, por favor tente novamente!');
+
+            DB::commit();
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Comentário enviada com sucesso!',
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return response()->json([
+                'status' => false,
+                'message' => 'Não foi possível criar o comentário!',
+                'errors' => $e->getMessage()
+            ]);
+        }
+    }
+
+
+    /**
+     * Register rating common user
+     * @param CreateOrUpdateUser $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function storeRating(CreateUserRating $request)
+    {
+        $data = $request->validated();
+
+        DB::beginTransaction();
+
+        try {
+            $created = auth()->user()->user_rating()->create($data);
+
+            if (!$created)
+                throw new \Exception('Erro ao criar a avaliação, por favor tente novamente!');
+
+            DB::commit();
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Avaliação enviada com sucesso!',
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return response()->json([
+                'status' => false,
+                'message' => 'Não foi possível criar a avaliação!',
+                'errors' => $e->getMessage()
+            ]);
+        }
+    }
+
 
     /**
      * Update user common

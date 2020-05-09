@@ -30,6 +30,15 @@ class EstablishmentAddress extends Model
     ];
 
     /**
+     * @var array $hidden
+     */
+    protected $hidden = [
+        'city_id',
+        'establishment_id',
+        'created_at',
+        'updated_at'];
+
+    /**
      * @var array $spatialFields
      */
     protected $spatialFields = [

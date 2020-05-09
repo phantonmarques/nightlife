@@ -4,13 +4,11 @@ namespace App\Models\Site;
 
 use App\Models\Admin\Establishment;
 use App\Models\Admin\UserAccess;
-use App\Models\Admin\UserSettings;
 use App\Models\Admin\Traits\HasRolesAndPermissions;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 //use Illuminate\Contracts\Auth\MustVerifyEmail;
-//use Illuminate\Support\Facades\DB;
 
 class User extends Authenticatable
 {
@@ -77,5 +75,21 @@ class User extends Authenticatable
     public function user_access()
     {
         return $this->hasMany(UserAccess::class, 'user_id');
+    }
+
+    /**
+     * Get rating of establishment.
+     */
+    public function user_rating()
+    {
+        return $this->hasMany(UserRating::class, 'user_id');
+    }
+
+    /**
+     * Get rating of establishment.
+     */
+    public function user_comment()
+    {
+        return $this->hasMany(UserComment::class, 'user_id');
     }
 }

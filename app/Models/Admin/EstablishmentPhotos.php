@@ -20,6 +20,13 @@ class EstablishmentPhotos extends Model
         'main',
     ];
 
+
+    protected $hidden = [
+        'establishment_id',
+        'created_at',
+        'updated_at',
+    ];
+
     /**
      * Get establishment address of phones establishment available
      */

@@ -16,27 +16,27 @@ class CategoryTableSeeder extends Seeder
         $category = new Category();
         $category->name = 'Tabacaria';
         $category->save();
-        $category->category_statistics()->create(['category_id' => $category->id]);
+        $category->category_statistics()->create();
 
         #
 
         $category1 = new Category();
         $category1->name = 'Show';
         $category1->save();
-        $category1->category_statistics()->create(['category_id' => $category1->id]);
+        $category1->category_statistics()->create();
 
         #
 
         $category2 = new Category();
         $category2->name = 'Balada';
         $category2->save();
-        $category2->category_statistics()->create(['category_id' => $category2->id]);
+        $category2->category_statistics()->create();
 
         #
 
         $category3 = new Category();
         $category3->name = 'Bares';
         $category3->save();
-        $category3->category_statistics()->create(['category_id' => $category3->id]);
+        $category3->category_statistics()->create();
     }
 }
