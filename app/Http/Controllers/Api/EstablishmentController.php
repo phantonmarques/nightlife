@@ -25,9 +25,7 @@ class EstablishmentController extends Controller
         if (isset($establishment->corporate_name)):
             return response()->json([
                 'status' => true,
-                'data' => array(
-                    "establishment" => $establishment,
-                )
+                'data' => $establishment
             ]);
         endif;
 

@@ -185,18 +185,35 @@ class EventController extends Controller
      */
     public function eventsSearch(Request $request)
     {
-        # TODO: Search type location current or registred city in user.
-        $addressFilter = EstablishmentAddress::distanceSphere( 'location', new Point(floatval($request->lat), floatval($request->long)), ($request->distance * 1000))
+        $category = $rhythm = [];
+        $type = $request->input('type', 'events'); //Busca o valor do type, caso não exista, seta como 'events'
+        $distance = $request->input('distance', 999999);
+
+        //FORMATAÇÃO DOS DADOS RECEBIDOS
+        foreach ($request->all() as $key => $requestField) {
+            if (strpos($key, 'category') !== false) {
+                $category[] = preg_split("/(\[|\])/", $key)[1];
+            } else if (strpos($key, 'rhythm') !== false) {
+                $rhythm[] = preg_split("/(\[|\])/", $key)[1];
+            }
+        }
+        if (sizeof($category) === 0) {
+            $category = null;
+        }
+        if (sizeof($rhythm) === 0) {
+            $rhythm = null;
+        }
+        //FIM FORMATAÇÃO
+
+        $addressFilter = EstablishmentAddress::distanceSphere( 'location', new Point(floatval($request->lat), floatval($request->long)), ($distance * 1000))
             ->orWhere('city_id', (!empty(auth()->user()->city_id) ? auth()->user()->city_id : 0))
             ->get();
 
         //SOMAR CONTADORES CATEGORIA, RITMOS
         # TODO: Search type establishment
-        if ($request->type === 'establishment'):
-            $category = isset( $request->categorys ) ?  $request->categorys : null;
-            $rhythm = isset( $request->rhythms ) ?  $request->rhythms : null;
+        if ($type === 'establishment'):
 
-            if ($request->category && $request->rhythm): # Category and Rhythm Selected
+            if ($category && $rhythm): # Category and Rhythm Selected
                 $object = Establishment::where('status', 1)->select('id', 'corporate_name')->with('establishment_address')
                     ->whereHas('establishments_rhythm', function ($q) use ($rhythm) {
                         $q->whereIn('rhythm_id', (!empty($rhythm) ? $rhythm : array())); })
@@ -205,14 +222,14 @@ class EventController extends Controller
                     ->whereHas('establishment_address', function ($q) use ($addressFilter) {
                         $q->whereIn('id', $addressFilter); })->get();
 
-            elseif ($request->category): # Category Selected
+            elseif ($category): # Category Selected
                 $object = Establishment::where('status', 1)->select('id', 'corporate_name')->with('establishment_address')
                     ->whereHas('establishments_category', function ($q) use ($category) {
                         $q->whereIn('category_id', (!empty($category) ? $category : array())); })
                     ->whereHas('establishment_address', function ($q) use ($addressFilter) {
                         $q->whereIn('id', $addressFilter); })->get();
 
-            elseif ($request->rhythm): # Rhythm Selected
+            elseif ($rhythm): # Rhythm Selected
                 $object = Establishment::where('status', 1)->select('id', 'corporate_name')->with('establishment_address')
                     ->whereHas('establishments_rhythm', function ($q) use ($rhythm) {
                         $q->whereIn('rhythm_id', (!empty($rhythm) ? $rhythm : array())); })
@@ -232,11 +249,8 @@ class EventController extends Controller
             endforeach;
 
         # TODO: Search type events
-        elseif ($request->type === 'events'):
-            $category = isset( $request->categorys ) ?  $request->categorys : null;
-            $rhythm = isset( $request->rhythms ) ?  $request->rhythms : null;
-
-            if ($request->category && $request->rhythm): # Category and Rhythm Selected
+        elseif ($type === 'events'):
+            if ($category && $rhythm): # Category and Rhythm Selected
                 $establishment = Establishment::where('status', 1)
                     ->whereHas('establishments_rhythm', function ($q) use ($rhythm) {
                         $q->whereIn('rhythm_id', (!empty($rhythm) ? $rhythm : array())); })
@@ -246,7 +260,7 @@ class EventController extends Controller
                 $object = Event::where('status', 1)->with('establishment_address')->whereIn('establishment_id', $establishment)
                     ->whereHas('establishment_address', function ($q) use ($addressFilter) {
                         $q->whereIn('id', $addressFilter); })->get();
-            elseif ($request->category): # Category Selected
+            elseif ($category): # Category Selected
                 $establishment = Establishment::where('status', 1)->whereHas('establishments_category', function ($q) use ($category) {
                     $q->whereIn('category_id', (!empty($category) ? $category : array())); })->select('id')->get();
 
@@ -254,7 +268,7 @@ class EventController extends Controller
                     ->whereHas('establishment_address', function ($q) use ($addressFilter) {
                         $q->whereIn('id', $addressFilter); })->get();
 
-            elseif ($request->rhythm): # Rhythm Selected
+            elseif ($rhythm): # Rhythm Selected
                 $establishment = Establishment::where('status', 1)->whereHas('establishments_rhythm', function ($q) use ($rhythm) {
                     $q->whereIn('rhythm_id', (!empty($rhythm) ? $rhythm : array())); })->select('id')->get();
 
@@ -275,13 +289,13 @@ class EventController extends Controller
 
         if (count($object) > 0)
             return response()->json([
-                'status' => false,
+                'status' => true,
                 'data' => $object
             ]);
 
         return response()->json([
             'status' => false,
-            'data' => "Pesquisa não encontrada!"
+            'data' => []
         ]);
     }
 }
