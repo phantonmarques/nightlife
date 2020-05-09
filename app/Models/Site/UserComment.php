@@ -7,11 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 class UserComment extends Model
 {
     /**
-     * @var array $table
+     * @var string $table
      */
-    protected $table = [
-        'user_comment'
-    ];
+    protected $table = 'user_comment';
 
     /**
      * @var array $fillable

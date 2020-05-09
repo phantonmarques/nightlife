@@ -115,8 +115,6 @@ class UserController extends Controller
     {
         $data = $request->validated();
 
-        dd($created = auth()->user()->user_comment()->create($data));
-
         DB::beginTransaction();
 
         try {

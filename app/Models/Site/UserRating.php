@@ -7,11 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 class UserRating extends Model
 {
     /**
-     * @var array $table
+     * @var string $table
      */
-    protected $table = [
-        'user_rating'
-    ];
+    protected $table = 'user_rating';
 
     /**
      * @var array $fillable

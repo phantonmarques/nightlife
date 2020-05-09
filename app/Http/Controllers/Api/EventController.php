@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\Admin\EstablishmentAddress;
+use App\Models\Site\UserRating;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Admin\Category;
@@ -224,6 +225,11 @@ class EventController extends Controller
                         $q->whereIn('id', $addressFilter); })->get();
 
             endif;
+
+            foreach ($object as &$obj):
+                $obj["rating_establishment"] = UserRating::where('establishment_id', $obj->id)->avg('rating');
+                # DEPOIS FAZER PARA ELE CONTAR AS CATEGORIAS, RITMOS E TAMBEM CONTADORES DO ESTABELECIMENTO
+            endforeach;
 
         # TODO: Search type events
         elseif ($request->type === 'events'):
