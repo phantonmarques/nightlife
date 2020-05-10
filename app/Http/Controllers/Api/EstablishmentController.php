@@ -11,6 +11,31 @@ class EstablishmentController extends Controller
     protected $paginate = 10;
 
     /**
+     * Function establishment get info
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function establishment($id){
+        $establishment = Establishment::with('establishment_address.city.state')
+            ->with(['establishment_phones' => function ($q) {
+                $q->where('main',1);
+            }])->with(['establishments_photos', 'ratings', 'comments', 'events'])
+            ->find($id);
+
+        if (isset($establishment->corporate_name)):
+            return response()->json([
+                'status' => true,
+                'data' => $establishment
+            ]);
+        endif;
+
+        return response()->json([
+            'status' => false,
+            'data' => "Estabelecimento não encontrado!"
+        ]);
+    }
+
+    /**
      * Function establishment get details and info
      * @param $id
      * @return \Illuminate\Http\JsonResponse
@@ -35,4 +60,45 @@ class EstablishmentController extends Controller
         ]);
     }
 
+    /**
+     * Function establishment get ratings
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function establishmentRatings($id){
+        $establishment = Establishment::with('ratings')->find($id);
+
+        if (isset($establishment->corporate_name)):
+            return response()->json([
+                'status' => true,
+                'data' => $establishment
+            ]);
+        endif;
+
+        return response()->json([
+            'status' => false,
+            'data' => "Estabelecimento não encontrado!"
+        ]);
+    }
+
+    /**
+     * Function establishment get comments
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function establishmentComments($id){
+        $establishment = Establishment::with('comments')->find($id);
+
+        if (isset($establishment->corporate_name)):
+            return response()->json([
+                'status' => true,
+                'data' => $establishment
+            ]);
+        endif;
+
+        return response()->json([
+            'status' => false,
+            'data' => "Estabelecimento não encontrado!"
+        ]);
+    }
 }

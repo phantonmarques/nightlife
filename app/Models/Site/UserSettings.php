@@ -10,7 +10,6 @@ class UserSettings extends Model
      * @var array $fillable
      */
     protected $fillable = [
-        'profile_path',
         'favorite_categorys',
         'favorite_rhythms',
         'user_id'

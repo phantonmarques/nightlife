@@ -25,9 +25,13 @@ Route::middleware('check_token')->group(function() {
     Route::post('/events_search', 'Api\\EventController@eventsSearch');
 
     # Routes: Establishment
+    Route::get('/establishment/{id}', 'Api\\EstablishmentController@establishment');
     Route::get('/establishment_details/{id}', 'Api\\EstablishmentController@establishmentDetails');
+    Route::get('/establishment_ratings/{id}', 'Api\\EstablishmentController@establishmentRatings');
+    Route::get('/establishment_comments/{id}', 'Api\\EstablishmentController@establishmentComments');
 
     # Routes: User
+    Route::get('/user', 'Api\\UserController@info');
     Route::post('/user_rating', 'Api\\UserController@storeRating');
     Route::post('/user_comment', 'Api\\UserController@storeComment');
 });

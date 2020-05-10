@@ -15,7 +15,6 @@ class CreateUserSettingsTable extends Migration
     {
         Schema::create('user_settings', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('profile_path')->unique()->nullable();
             $table->json('favorite_categorys')->nullable();
             $table->json('favorite_rhythms')->nullable();
             $table->unsignedInteger('user_id');

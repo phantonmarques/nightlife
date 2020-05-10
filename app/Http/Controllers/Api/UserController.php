@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Requests\Api\CreateOrUpdateUser;
 use App\Http\Requests\Api\CreateUserComment;
 use App\Http\Requests\Api\CreateUserRating;
+use App\Models\Site\UserComment;
 use App\Models\Site\UserRating;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -53,6 +54,33 @@ class UserController extends Controller
                 'status' => false
             ]);
         }
+    }
+
+    /**
+     * Info common user
+     * @param CreateOrUpdateUser $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function info()
+    {
+        $user = auth()->user();
+
+        $user->rating_establishments = UserRating::with('establishment')->whereHas('establishment', function ($q) {
+            $q->whereStatus(1); })->where('user_id', $user->id)->orderBy('created_at', 'DESC')->get();;
+
+        $user->comments_establishments = UserComment::with('establishment')->whereHas('establishment', function ($q) {
+            $q->whereStatus(1); })->where('user_id', $user->id)->where('user_id', $user->id)->orderBy('created_at', 'DESC')->get();;
+
+        if (!empty($user->name))
+            return response()->json([
+                'status' => true,
+                'data' => $user
+            ]);
+
+        return response()->json([
+            'status' => false,
+            'data' => 'Ocorreu erro ao buscar suas informações, por favor verifique a conexão e tente novamente'
+        ]);
     }
 
     /**

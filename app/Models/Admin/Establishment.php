@@ -2,6 +2,8 @@
 
 namespace App\Models\Admin;
 
+use App\Models\Site\UserComment;
+use App\Models\Site\UserRating;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Site\User;
 
@@ -98,6 +100,22 @@ class Establishment extends Model
      */
     public function events()
     {
-        return $this->hasMany(Event::class,'establishment_id')->orderBy('date_event');
+        return $this->hasMany(Event::class,'establishment_id')->whereStatus(1)->orderBy('date_event');
+    }
+
+    /**
+     * Get the event record associated with the establishment.
+     */
+    public function ratings()
+    {
+        return $this->hasMany(UserRating::class,'establishment_id')->orderBy('created_at');
+    }
+
+    /**
+     * Get the event record associated with the establishment.
+     */
+    public function comments()
+    {
+        return $this->hasMany(UserComment::class,'establishment_id')->orderBy('created_at');
     }
 }
