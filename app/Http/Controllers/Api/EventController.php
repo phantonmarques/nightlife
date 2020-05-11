@@ -60,10 +60,10 @@ class EventController extends Controller
      * Functions get events recommended (Home page)
      * @return \Illuminate\Http\JsonResponse
      */
-    public function eventsRecommended($lat, $long)
+    public function eventsRecommended(Request $request)
     {
         # TODO: Search type location current or registred city in user.
-        $addressFilter = EstablishmentAddress::distanceSphere( 'location', new Point(floatval($lat), floatval($long)), 50000)
+        $addressFilter = EstablishmentAddress::distanceSphere( 'location', new Point(floatval($request->lat), floatval($request->long)), 50000)
             ->orWhere('city_id', (!empty(auth()->user()->city_id) ? auth()->user()->city_id : 0))
             ->select('city_id')->get();
 

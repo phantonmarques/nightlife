@@ -16,7 +16,11 @@
          */
         public function handle($request, Closure $next)
         {
-            $token = $request->header('Authorization');
+						$token = $request->header('Authorization');
+						$request->request->add([
+							'lat' => $request->header('Latitude') ? ($request->header('Latitude')) : 0,
+							'long' => $request->header('Longitude') ? ($request->header('Longitude')) : 0,
+						]);
 
             if ($token) {
                 $token = str_replace('Bearer ', '', $token);

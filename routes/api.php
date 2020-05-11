@@ -20,7 +20,7 @@ Route::post('register', 'Api\\UserController@store');
 Route::middleware('check_token')->group(function() {
     # Routes: Event
     Route::get('/event/{id}', 'Api\\EventController@event');
-    Route::get('/events_recommended/{lat}/{long}', 'Api\\EventController@eventsRecommended');
+    Route::get('/events_recommended', 'Api\\EventController@eventsRecommended');
     Route::get('/events_filter', 'Api\\EventController@eventsFilter');
     Route::post('/events_search', 'Api\\EventController@eventsSearch');
 
