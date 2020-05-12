@@ -230,7 +230,8 @@ return [
                 [
                     'text'      => 'Fotos Perfil',
                     'icon'      => 'fas fa-images',
-                    'url'       => '#',
+                    'route'     => 'admin.changePictures',
+                    'active'    => ['control/changePictures', 'control/changePictures/*', 'control/changePictures?*'],
                 ],
             ],
         ],

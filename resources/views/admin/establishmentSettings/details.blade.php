@@ -90,6 +90,15 @@
                         </div>
                         <div class="col-md-4">
                             @include('adminlte::form.input.static', [
+                                'label' => 'Tipo do Contrato',
+                                'value' => ($establishment->type_license === 'f') ? 'Sem quantidade ilimitada para criação de eventos.' : 'Limitado para até 3 eventos agendados.'
+                            ])
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            @include('adminlte::form.input.static', [
                                 'label' => 'Cidade',
                                 'value' => $establishment->users->city->name_visible
                             ])
@@ -107,32 +116,24 @@
                             <h3 class="lead">Endereços Cadastrados</h3>
                         </div>
 
-                        @foreach($establishment->establishment_address as $key => $rhythm)
+                        @foreach($establishment->establishment_address as $address)
                             <div class="row">
                                 <div class="col-md-4">
                                     @include('adminlte::form.input.static', [
-                                        'label' => 'Nome do Evento',
-                                        'value' => $rhythm->name
+                                        'label' => 'Endereço',
+                                        'value' => $address->street_name . " " . $address->building_number . ", " . $address->neighborhood . " - " . $address->city->name_visible
                                     ])
                                 </div>
                                 <div class="col-md-4">
                                     @include('adminlte::form.input.static', [
-                                        'label' => 'Data da Evento',
-                                        'value' => formatDate($rhythm->date_event),
+                                        'label' => 'CEP',
+                                        'value' => formatZipCode($address->zip_code),
                                     ])
                                 </div>
                             </div>
                         @endforeach
                     @endif
 
-
-{{--                    $table->unsignedInteger('establishment_id');--}}
-{{--                    $table->integer('zip_code');--}}
-{{--                    $table->string('street_name');--}}
-{{--                    $table->string('building_number')->nullable();--}}
-{{--                    $table->string('complement')->nullable();--}}
-{{--                    $table->string('neighborhood');--}}
-{{--                    $table->unsignedInteger('city_id')->nullable();--}}
                     @if(sizeof($establishment->events)>0)
                         <div class="col-md-12">
                             <h3 class="lead">Eventos Agendados</h3>

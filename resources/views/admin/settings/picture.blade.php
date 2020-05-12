@@ -15,7 +15,6 @@
             <div class="box box-warning">
                 <div class="box-header with-border">
                     <h3 class="box-title">Alterar foto de perfil usuário [{{ auth()->user()->name }}]</h3>
-                    <h6 align="right" style="color:red">* Campos obrigatórios</h6>
                 </div>
 
                 {{ Form::open(array('route' => 'settings.picture', 'method' => 'POST', 'files' => true)) }}

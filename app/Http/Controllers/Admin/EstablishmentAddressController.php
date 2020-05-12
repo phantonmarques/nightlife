@@ -129,7 +129,7 @@ class EstablishmentAddressController extends Controller
             if (!isset($data["establishment_id"]))
                 $data["establishment_id"] = auth()->user()->establishment_connect;
 
-            $latLong = $this->getLatLong($data["street_name"], $data["building_number"]);
+            $latLong = $this->getLatLong($data["street_name"], $data["building_number"], $data["neighborhood"], $data["zip_code"]);
 
             if (!empty($latLong))
                 $data["location"] = new Point($latLong->lat, $latLong->lng);
@@ -241,7 +241,7 @@ class EstablishmentAddressController extends Controller
             if (!isset($data["establishment_id"]))
                 $data["establishment_id"] = auth()->user()->establishment_connect;
 
-            $latLong = $this->getLatLong($data["street_name"], $data["building_number"]);
+            $latLong = $this->getLatLong($data["street_name"], $data["building_number"], $data["neighborhood"], $data["zip_code"]);
 
             if (!empty($latLong))
                 $data["location"] = new Point($latLong->lat, $latLong->lng);
@@ -327,12 +327,12 @@ class EstablishmentAddressController extends Controller
     /**
      * Get long and lat geolocation address
      */
-    private function getLatLong($street_name, $building_number)
+    private function getLatLong($street_name, $building_number, $neighborhood, $zip_code)
     {
         $response = Curl::to($this->urlMaps)
             ->withData(array(
                 'apiKey' => $this->keyMaps,
-                'q' => urlencode($street_name . " " . $building_number)))
+                'q' => urlencode("{$street_name} {$building_number} {$neighborhood} {$zip_code}")))
             ->returnResponseObject()
             ->get();
 

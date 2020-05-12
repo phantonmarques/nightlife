@@ -67,7 +67,29 @@ class AdminController extends Controller
     }
 
     /**
-     * Display reset password user
+     * Display pictures establishment
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View|string
+     */
+    public function changePictures()
+    {
+        if (!empty(auth()->user()->establishment_connect))
+            $id = auth()->user()->establishment_connect;
+        elseif (auth()->user()->establishments()->count() > 0)
+            $id = auth()->user()->establishments()->id;
+
+        if (empty($id) && auth()->user()->can('manage-called'))
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('error', 'Conecte em algum estabelecimento para realizar alterações, em seguida tente novamente!');
+
+        $establishment = Establishment::find($id);
+
+        return view('admin.establishmentSettings.pictures', compact('establishment'));
+    }
+
+    /**
+     * Display pictures profile
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View|string
      */
     public function changeProfilePicture()
@@ -175,6 +197,10 @@ class AdminController extends Controller
             return abort(401);
 
         return response()->json(State::where('state_cod', $state)->select('id')->first());
+    }
+
+    public function updatePictures(){
+
     }
 
 

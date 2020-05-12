@@ -43,3 +43,18 @@
     font-style: normal;
     font-weight: normal;
 }
+
+.img_glide {
+    width: 40%;
+    height: auto;
+    margin: auto;
+}
+
+.slider {
+    position: relative;
+    width: 40%;
+    height: auto;
+    overflow: hidden;
+    margin: auto;
+    padding: auto;
+}

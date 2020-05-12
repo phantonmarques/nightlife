@@ -16,11 +16,14 @@ class EstablishmentController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function establishment($id){
-        $establishment = Establishment::with('establishment_address.city.state')
+        $establishment = Establishment::whereStatus(1)->with('establishment_address.city.state')
             ->with(['establishment_phones' => function ($q) {
                 $q->where('main',1);
-            }])->with(['establishments_photos', 'ratings', 'comments', 'events'])
-            ->find($id);
+            }])->with(['establishments_photos', 'events'])->with(['ratings' => function ($q) {
+                $q->limit(5);
+            }])->with(['comments' => function ($q) {
+                $q->limit(5);
+            }])->find($id);
 
         if (isset($establishment->corporate_name)):
             return response()->json([
@@ -41,7 +44,7 @@ class EstablishmentController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function establishmentDetails($id){
-        $establishment = Establishment::with('establishment_address.city.state')
+        $establishment = Establishment::whereStatus(1)->with('establishment_address.city.state')
                             ->with(['establishment_phones' => function ($q) {
                                 $q->where('main',1);
                             }])->with('establishments_photos')
@@ -66,7 +69,7 @@ class EstablishmentController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function establishmentRatings($id){
-        $establishment = Establishment::with('ratings')->find($id);
+        $establishment = Establishment::whereStatus(1)->with('ratings')->find($id);
 
         if (isset($establishment->corporate_name)):
             return response()->json([
@@ -87,7 +90,7 @@ class EstablishmentController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function establishmentComments($id){
-        $establishment = Establishment::with('comments')->find($id);
+        $establishment = Establishment::whereStatus(1)->with('comments')->find($id);
 
         if (isset($establishment->corporate_name)):
             return response()->json([
