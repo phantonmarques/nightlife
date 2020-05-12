@@ -36,7 +36,7 @@ class EventController extends Controller
 
         if (isset($event->name)):
             $phone = $event->establishment_address->establishments_phone()->where('main', 1)->select('phone', 'whatsapp')->first();
-
+            $event->description = strip_tags($event->description);
             $event->increment('views');
 
             return response()->json([
@@ -355,6 +355,10 @@ class EventController extends Controller
                 $obj["rating_establishment"] = UserRating::where('establishment_id', $obj->establishment_id)->avg('rating');
 
         endif;
+
+        foreach ($object as $key => $obj) {
+            $object[$key]->description = strip_tags($object[$key]->description);
+        }
 
         if (count($object) > 0)
             return response()->json([
