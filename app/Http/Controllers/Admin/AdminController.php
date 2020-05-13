@@ -41,7 +41,261 @@ class AdminController extends Controller
      */
     public function dashboard()
     {
-        return view('admin.establishmentSettings.dashboard');
+        #Total de visualização dos ritmos musicais
+        $rhythmtotal = app()->chartjs
+        ->name('pieChartTest')
+        ->type('pie')
+        ->size(['width' => 300, 'height' => 200])
+        ->labels([' Rock', ' Pop', ' Sertanejo', ' Funk', ' Pagode', 'Rap'])
+        ->datasets([
+            [
+                'backgroundColor' => ['#FF6384', '#36A2EB', '	#4682B4', '#008B8B', '#A52A2A', '#DAA520'],
+                'hoverBackgroundColor' => ['#FF6384', '#36A2EB', '	#4682B4', '#008B8B', '#A52A2A', '#DAA520'],
+                'data' => ['1','2','3', '4', '5', '6'],
+            ]
+        ])
+        ->options([]);
+        
+        #Visualização anual dos ritmos musicais
+        $rhythmyearly = app()->chartjs
+        ->name('rhythmyearly')
+        ->type('bar')
+        ->size(['width' => 400, 'height' => 200])
+        ->labels(['Rock', ' Pop', ' Sertanejo', ' Funk', ' Pagode', 'Rap'])
+        ->datasets([
+                [
+                    "label" => "Até o momento",
+                    'backgroundColor' => "rgba(131,111,255, 0.8)",
+                    'borderColor' => "rgba(131,111,255, 0.9)",
+                    "pointBorderColor" => "rgba(131,111,255, 0.9)",
+                    "pointBackgroundColor" => "rgba(131,111,255, 0.9)",
+                    "pointHoverBackgroundColor" => "#fff",
+                    "pointHoverBorderColor" => "rgba(220,220,220,1)",
+                    'data' => [65, 59, 80, 81, 56, 55],
+                ],
+            ])
+        ->options([]);
+
+        #Visualização do mês dos ritmos musicais
+        $rhythmmonth = app()->chartjs
+        ->name('rhythmmonth')
+        ->type('bar')
+        ->size(['width' => 400, 'height' => 200])
+        ->labels([' Rock', ' Pop', ' Sertanejo', ' Funk', ' Pagode', 'Rap'])
+        ->datasets([
+            [   
+                "label" => "Maio",
+                'backgroundColor' => ['#6495ED', '#A52A2A', '#2E8B57', '#A0522D', '#FF6347', '#BC8F8F'],
+                'hoverBackgroundColor' => ['#6495ED', '#A52A2A', '#2E8B57', '#A0522D', '#FF6347', '#BC8F8F'],
+                'data' => [65, 59, 80, 81, 56, 55],
+            ],
+            
+        ])
+        ->options([]);
+
+        #Visualização da semana dos ritmos musicais
+        $rhythmweek = app()->chartjs
+        ->name('rhythmweek')
+        ->type('doughnut')
+        ->size(['width' => 300, 'height' => 200])
+        ->labels([' Rock', ' Pop', ' Sertanejo', ' Funk', ' Pagode', 'Rap'])
+        ->datasets([
+            [   
+                "label" => "Maio",
+                'backgroundColor' => ['#6495ED', '#A52A2A', '#2E8B57', '#A0522D', '#FF6347', '#BC8F8F'],
+                'hoverBackgroundColor' => ['#6495ED', '#A52A2A', '#2E8B57', '#A0522D', '#FF6347', '#BC8F8F'],
+                'data' => [65, 59, 80, 81, 56, 55],
+            ],
+            
+        ])
+        ->options([]);
+
+        #Visualizações total do estabelecimento
+        $establishmenttotal = app()->chartjs
+        ->name('EstabTotal')
+        ->type('pie')
+        ->size(['width' => 200, 'height' => 150])
+        ->labels(['Semana', 'Mês', 'Ano', 'Total'])
+        ->datasets([
+            [
+                'backgroundColor' => ['#FF6384', '#36A2EB', '#4682B4', '#2E8B57'],
+                'hoverBackgroundColor' => ['#FF6384', '#36A2EB', '	#4682B4', '#2E8B57'],
+                'data' => ['40', '100', '200', '500'],
+            ]
+        ])
+        ->options([]);
+        
+
+        #Visualizações total do estabelecimento
+        $establishmentstotal = app()->chartjs
+            ->name('establishmentstotal')
+            ->type('doughnut')
+            ->size(['width' => 200, 'height' => 150])
+            ->labels(['Semana', 'Mês', 'Ano', 'Total'])
+            ->datasets([
+                [
+                    'backgroundColor' => ['#FF6384', '#36A2EB', '#4682B4', '#2E8B57'],
+                    'hoverBackgroundColor' => ['#FF6384', '#36A2EB', '	#4682B4', '#2E8B57'],
+                    'data' => ['40', '100', '200', '500'],
+                ]
+            ])
+            ->options([]);
+                
+        #Total de visualização das categorias
+        $categorytotal = app()->chartjs
+        ->name('categorytotal')
+        ->type('pie')
+        ->size(['width' => 300, 'height' => 200])
+        ->labels(['Bar', 'Balada', ' Tabacaria', ' Pub', 'Karaokê'])
+        ->datasets([
+            [
+                'backgroundColor' => ['#FF6384', '#36A2EB', '	#4682B4', '#008B8B', '#A52A2A'],
+                'hoverBackgroundColor' => ['#FF6384', '#36A2EB', '	#4682B4', '#008B8B', '#A52A2A'],
+                'data' => ['1','2','3', '4', '5'],
+            ]
+        ])
+        ->options([]);
+        
+        #Visualização anual das categorias
+        $categoryyearly = app()->chartjs
+        ->name('categoryyearly')
+        ->type('bar')
+        ->size(['width' => 400, 'height' => 200])
+        ->labels(['Bar', 'Balada', ' Tabacaria', ' Pub', 'Karaokê'])
+        ->datasets([
+                [
+                    "label" => "Até o momento",
+                    'backgroundColor' => "rgba(131,111,255, 0.8)",
+                    'borderColor' => "rgba(131,111,255, 0.9)",
+                    "pointBorderColor" => "rgba(131,111,255, 0.9)",
+                    "pointBackgroundColor" => "rgba(131,111,255, 0.9)",
+                    "pointHoverBackgroundColor" => "#fff",
+                    "pointHoverBorderColor" => "rgba(220,220,220,1)",
+                    'data' => [65, 59, 80, 81, 56],
+                ],
+            ])
+        ->options([]);
+
+        #Visualização do mês das categorias
+        $categorymonth = app()->chartjs
+        ->name('categorymonth')
+        ->type('bar')
+        ->size(['width' => 400, 'height' => 200])
+        ->labels(['Bar', 'Balada', ' Tabacaria', ' Pub', 'Karaokê'])
+        ->datasets([
+            [   
+                "label" => "Maio",
+                'backgroundColor' => ['#6495ED', '#A52A2A', '#2E8B57', '#A0522D', '#FF6347'],
+                'hoverBackgroundColor' => ['#6495ED', '#A52A2A', '#2E8B57', '#A0522D', '#FF6347'],
+                'data' => [65, 59, 80, 81, 56],
+            ],
+            
+        ])
+        ->options([]);
+
+        #Visualização da semana das categorias
+        $categoryweek = app()->chartjs
+        ->name('categoryweek')
+        ->type('doughnut')
+        ->size(['width' => 300, 'height' => 200])
+        ->labels(['Bar', 'Balada', ' Tabacaria', ' Pub', 'Karaokê'])
+        ->datasets([
+            [   
+                "label" => "Maio",
+                'backgroundColor' => ['#6495ED', '#A52A2A', '#2E8B57', '#A0522D', '#FF6347'],
+                'hoverBackgroundColor' => ['#6495ED', '#A52A2A', '#2E8B57', '#A0522D', '#FF6347'],
+                'data' => [65, 59, 80, 81, 56],
+            ],
+            
+        ])
+        ->options([]);
+
+        #Total de visualização dos ritmos musicais de determinada cidade
+        $rhythmtotalcustom = app()->chartjs
+        ->name('rhythmtotalcustom')
+        ->type('pie')
+        ->size(['width' => 300, 'height' => 200])
+        ->labels([' Rock', ' Pop', ' Sertanejo', ' Funk', ' Pagode', 'Rap'])
+        ->datasets([
+            [
+                'backgroundColor' => ['#FF6384', '#36A2EB', '	#4682B4', '#008B8B', '#A52A2A', '#DAA520'],
+                'hoverBackgroundColor' => ['#FF6384', '#36A2EB', '	#4682B4', '#008B8B', '#A52A2A', '#DAA520'],
+                'data' => ['1','2','3', '4', '5', '6'],
+            ]
+        ])
+        ->options([]);
+        
+        #Visualização anual dos ritmos musicais de determinada cidade
+        $rhythmyearlycustom = app()->chartjs
+        ->name('rhythmyearlycustom')
+        ->type('bar')
+        ->size(['width' => 400, 'height' => 200])
+        ->labels(['Rock', ' Pop', ' Sertanejo', ' Funk', ' Pagode', 'Rap'])
+        ->datasets([
+                [
+                    "label" => "Até o momento",
+                    'backgroundColor' => "rgba(131,111,255, 0.8)",
+                    'borderColor' => "rgba(131,111,255, 0.9)",
+                    "pointBorderColor" => "rgba(131,111,255, 0.9)",
+                    "pointBackgroundColor" => "rgba(131,111,255, 0.9)",
+                    "pointHoverBackgroundColor" => "#fff",
+                    "pointHoverBorderColor" => "rgba(220,220,220,1)",
+                    'data' => [65, 59, 80, 81, 56, 55],
+                ],
+            ])
+        ->options([]);
+
+        #Visualização do mês dos ritmos musicais de determinada cidade
+        $rhythmmonthcustom = app()->chartjs
+        ->name('rhythmmonthcustom')
+        ->type('bar')
+        ->size(['width' => 400, 'height' => 200])
+        ->labels([' Rock', ' Pop', ' Sertanejo', ' Funk', ' Pagode', 'Rap'])
+        ->datasets([
+            [   
+                "label" => "Maio",
+                'backgroundColor' => ['#6495ED', '#A52A2A', '#2E8B57', '#A0522D', '#FF6347', '#BC8F8F'],
+                'hoverBackgroundColor' => ['#6495ED', '#A52A2A', '#2E8B57', '#A0522D', '#FF6347', '#BC8F8F'],
+                'data' => [65, 59, 80, 81, 56, 55],
+            ],
+            
+        ])
+        ->options([]);
+
+        #Visualização da semana dos ritmos musicais de determinada cidade
+        $rhythmweekcustom = app()->chartjs
+        ->name('rhythmweekcustom')
+        ->type('doughnut')
+        ->size(['width' => 300, 'height' => 200])
+        ->labels([' Rock', ' Pop', ' Sertanejo', ' Funk', ' Pagode', 'Rap'])
+        ->datasets([
+            [   
+                "label" => "Maio",
+                'backgroundColor' => ['#6495ED', '#A52A2A', '#2E8B57', '#A0522D', '#FF6347', '#BC8F8F'],
+                'hoverBackgroundColor' => ['#6495ED', '#A52A2A', '#2E8B57', '#A0522D', '#FF6347', '#BC8F8F'],
+                'data' => [65, 59, 80, 81, 56, 55],
+            ],
+            
+        ])
+        ->options([]);
+
+        return view('admin.establishmentSettings.dashboard', 
+            compact('rhythmtotal',
+                'rhythmmonth',
+                'rhythmyearly',
+                'rhythmweek',
+                'establishmenttotal',
+                'categorytotal',
+                'categorymonth',
+                'categoryyearly',
+                'categoryweek',
+                'rhythmweekcustom',
+                'rhythmmonthcustom',
+                'rhythmtotalcustom',
+                'rhythmyearlycustom',
+                'establishmentstotal'
+            )
+        );
     }
 
     /**
