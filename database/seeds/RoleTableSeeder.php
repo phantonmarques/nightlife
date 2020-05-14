@@ -13,12 +13,12 @@ class RoleTableSeeder extends Seeder
      */
     public function run()
     {
+        #
+
         $manageCalled = Permission::where('slug','manage-called')->first();
         $manageEstablishment = Permission::where('slug','manage-establishment')->first();
         $manageUsers = Permission::where('slug','manage-users')->first();
         $acessAdmin = Permission::where('slug','access-admin')->first();
-
-        #
 
         $manager = new Role();
         $manager->name = 'Administrador';
@@ -33,8 +33,7 @@ class RoleTableSeeder extends Seeder
 
         $manager = Role::where('slug', 'establishment')->first();
         $establishmentManager = Permission::where('slug','establishment-manager')->first();
-
-        #
+        $establishmentEmployee = Permission::where('slug','establishment-employee')->first();
 
         $establishment = new Role();
         $establishment->name = 'Estabelecimento';
@@ -42,16 +41,13 @@ class RoleTableSeeder extends Seeder
         $establishment->save();
         $establishment->permissions()->attach($manager);
         $establishment->permissions()->attach($establishmentManager);
-
-        #
-
-        $establishmentEmployee = Permission::where('slug','establishment-employee')->first();
+        $establishment->permissions()->attach($establishmentEmployee);
 
         #
 
         $employee = new Role();
         $employee->name = 'Funcionário Estabelecimento';
-        $employee->slug = 'establishment';
+        $employee->slug = 'establishment-employee';
         $employee->save();
 
         $employee->permissions()->attach($establishmentEmployee);

@@ -24,6 +24,7 @@ Route::group(['middleware' => ['auth'], 'prefix' => '/control/'], function () {
     Route::get('details', 'Admin\\AdminController@details')->name('admin.details');
     Route::get('changePictures', 'Admin\\AdminController@changePictures')->name('admin.changePictures');
     Route::post('pictures', 'Admin\\AdminController@updatePictures')->name('admin.pictures');
+    Route::get('settings', 'Admin\\AdminController@settings')->name('admin.settings');
 
     # Admin\Employee Access *SPECIAL*
     Route::post('establishmentConnect', 'Admin\\AdminController@establishmentConnect')->name('admin.establishment');

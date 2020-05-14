@@ -38,5 +38,12 @@ class CategoryTableSeeder extends Seeder
         $category3->name = 'Bares';
         $category3->save();
         $category3->category_statistics()->create();
+
+        #
+
+        $category3 = new Category();
+        $category3->name = 'Rave';
+        $category3->save();
+        $category3->category_statistics()->create();
     }
 }

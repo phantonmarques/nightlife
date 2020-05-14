@@ -44,15 +44,17 @@
             $userSearch = $request->query('s');
 
             if (!empty($userSearch)):
-                $users = User::with('roles.permissions')
-                    ->with('city.state')
-                    ->where('email', 'like', "%{$userSearch}%")
-                    ->orWhere('cpf_cnpj', 'like', "%{$userSearch}%")
-                    ->orWhere('name', 'like', "%{$userSearch}%")
+                $users = User::whereLike(['name', 'email', 'cpf_cnpj', 'created_at'], $userSearch)
+                    ->orWhereHas('city', function ($q) use ($userSearch) {
+                        $q->where('name_visible', 'LIKE', "%{$userSearch}%");})
+                    ->orWhereHas('city.state', function ($q) use ($userSearch) {
+                        $q->where('name_visible', 'LIKE', "%{$userSearch}%");})
+                    ->orWhereHas('roles', function ($q) use ($userSearch) {
+                        $q->where('slug', 'LIKE', "%{$userSearch}%");})
                     ->paginate($this->paginate);
 
             else:
-                $users = User::with('roles.permissions')->with('city.state')->paginate($this->paginate);
+                $users = User::paginate($this->paginate);
             endif;
 
             return view('admin.user.index',

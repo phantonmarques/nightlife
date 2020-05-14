@@ -53,8 +53,14 @@ class EstablishmentAddressController extends Controller
         $this->access('Index Endereços Estabelecimento');
 
         if (!empty($establishmentAddressSearch))
-            $establishmentsAddress = EstablishmentAddress::where([['establishment_id', auth()->user()->establishment_connect],
-                                        ['street_name', 'like', "%{$establishmentAddressSearch}%"]])->paginate($this->paginate);
+            $establishmentsAddress = EstablishmentAddress::whereLike(['zip_code', 'street_name', 'building_number', 'created_at', 'updated_at'], $establishmentAddressSearch)
+                ->orWhereHas('city', function ($q) use ($establishmentAddressSearch) {
+                    $q->where('name_visible', 'LIKE', "%{$establishmentAddressSearch}%");})
+                ->orWhereHas('city.state', function ($q) use ($establishmentAddressSearch) {
+                    $q->where('name_visible', 'LIKE', "%{$establishmentAddressSearch}%");})
+                ->orWhereHas('establishments_phone', function ($q) use ($establishmentAddressSearch) {
+                    $q->where('phone', 'LIKE', "%{$establishmentAddressSearch}%")->orWhere('name', 'LIKE', "%{$establishmentAddressSearch}%");})
+                ->paginate($this->paginate);
         else
             $establishmentsAddress =  EstablishmentAddress::with(['establishments_phone' => function($q){
                 $q->where('main', 1);}])->where('establishment_id', auth()->user()->establishment_connect)->paginate($this->paginate);

@@ -36,7 +36,11 @@ class UserAccessController extends Controller
         $logsSearch = $request->query('s');
 
         if (!empty($logsSearch))
-            $logs = UserAccess::where('name', 'like' , "%{$logsSearch}%")->paginate($this->paginate);
+            $logs = UserAccess::whereLike(['class', 'description', 'data_access'], $logsSearch)
+                ->orWhereHas('establishment', function ($q) use ($logsSearch) {
+                    $q->where('corporate_name', 'LIKE', "%{$logsSearch}%");})
+                ->orWhereHas('users', function ($q) use ($logsSearch) {
+                    $q->where('name', 'LIKE', "%{$logsSearch}%");})->orderBy('id', 'DESC')->paginate($this->paginate);
         else
             $logs = UserAccess::orderBy('id', 'DESC')->paginate($this->paginate);
 

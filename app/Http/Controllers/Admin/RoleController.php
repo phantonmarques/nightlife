@@ -41,7 +41,9 @@ class RoleController extends Controller
         $roleSearch = $request->query('s');
 
         if (!empty($roleSearch))
-            $roles = Role::with('permissions')->where('name', 'like' , "%{$roleSearch}%")->paginate($this->paginate);
+            $roles = Role::with('permissions')->whereLike(['name', 'slug', 'created_at', 'updated_at'], $roleSearch)
+                ->orWhereHas('permissions', function ($q) use ($roleSearch) {
+                    $q->where('slug', 'LIKE', "%{$roleSearch}%");})->paginate($this->paginate);
         else
             $roles = Role::with('permissions')->paginate($this->paginate);
 

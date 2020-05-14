@@ -45,9 +45,8 @@
 }
 
 .img_glide {
-    width: 40%;
-    height: auto;
-    margin: auto;
+    width:100%;
+    object-fit:cover;
 }
 
 .slider {
@@ -58,3 +57,20 @@
     margin: auto;
     padding: auto;
 }
+
+.content_glide {
+    width: 35vw;
+    height: 50vh;
+    overflow: hidden;
+    margin:auto;
+}
+
+@media (max-width: 992px) {
+    .content_glide {
+        width: 90vw;
+        height: 50vh;
+        overflow: hidden;
+    }
+}
+
+

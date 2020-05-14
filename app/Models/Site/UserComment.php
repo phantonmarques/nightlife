@@ -16,6 +16,7 @@ class UserComment extends Model
      * @var array $fillable
      */
     protected $fillable = [
+        'author',
         'comment',
         'establishment_id',
         'user_id',

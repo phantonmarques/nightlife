@@ -54,5 +54,26 @@ class RhythmTableSeeder extends Seeder
         $rhythm5->save();
         $rhythm5->rhythm_statistics()->create();
 
+        #
+
+        $rhythm6 = new Rhythm();
+        $rhythm6->name = 'Eletrônica';
+        $rhythm6->save();
+        $rhythm6->rhythm_statistics()->create();
+
+        #
+
+        $rhythm7 = new Rhythm();
+        $rhythm7->name = 'Reggae';
+        $rhythm7->save();
+        $rhythm7->rhythm_statistics()->create();
+
+        #
+
+        $rhythm8 = new Rhythm();
+        $rhythm8->name = 'Axé';
+        $rhythm8->save();
+        $rhythm8->rhythm_statistics()->create();
+
     }
 }

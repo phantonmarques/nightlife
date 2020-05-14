@@ -44,13 +44,27 @@
             $establishmentsSearch = $request->query('s');
 
             if (!empty(trim($establishmentsDisabled)) && !empty(trim($establishmentsSearch)))
-                $establishments = $establishments->where([['status', 0],['corporate_name', 'like', "%{$establishmentsSearch}%"]])->paginate($this->paginate);
+                $establishments = $establishments->whereStatus(0)->whereLike(['corporate_name', 'state_registration', 'type_license', 'created_at', 'updated_at'], $establishmentsSearch)
+                    ->orWhereHas('users', function ($q) use ($establishmentsSearch) {
+                        $q->where('cpf_cnpj', 'LIKE', "%{$establishmentsSearch}%")->orWhere('email', 'LIKE', "%{$establishmentsSearch}%");})
+                    ->orWhereHas('category', function ($q) use ($establishmentsSearch) {
+                        $q->where('name', 'LIKE', "%{$establishmentsSearch}%");})
+                    ->orWhereHas('rhythm', function ($q) use ($establishmentsSearch) {
+                        $q->where('name', 'LIKE', "%{$establishmentsSearch}%");})
+                    ->paginate($this->paginate);
             else if (!empty(trim($establishmentsDisabled)))
-                $establishments = $establishments->where('status', 0)->paginate($this->paginate);
+                $establishments = $establishments->whereStatus(0)->paginate($this->paginate);
             else if (!empty(trim($establishmentsSearch)))
-                $establishments = $establishments->where([['status', 1],['corporate_name', 'like', "%{$establishmentsSearch}%"]])->paginate($this->paginate);
+                $establishments = $establishments->whereStatus(1)->whereLike(['corporate_name', 'state_registration', 'type_license', 'created_at', 'updated_at'], $establishmentsSearch)
+                    ->orWhereHas('users', function ($q) use ($establishmentsSearch) {
+                        $q->where('cpf_cnpj', 'LIKE', "%{$establishmentsSearch}%")->orWhere('email', 'LIKE', "%{$establishmentsSearch}%");})
+                    ->orWhereHas('establishments_category', function ($q) use ($establishmentsSearch) {
+                        $q->where('name', 'LIKE', "%{$establishmentsSearch}%");})
+                    ->orWhereHas('establishments_rhythm', function ($q) use ($establishmentsSearch) {
+                        $q->where('name', 'LIKE', "%{$establishmentsSearch}%");})
+                    ->paginate($this->paginate);
             else
-                $establishments = $establishments->where('status', 1)->paginate($this->paginate);
+                $establishments = $establishments->whereStatus(1)->paginate($this->paginate);
 
             return view('admin.establishment.index',
                 compact('establishments',

@@ -39,7 +39,7 @@ class CategoryController extends Controller
         $categorySearch = $request->query('s');
 
         if (!empty($categorySearch))
-            $categorys = Category::where('name', 'like' , "%{$categorySearch}%")->paginate($this->paginate);
+            $categorys = Category::whereLike(['name', 'created_at', 'updated_at'], $categorySearch)->paginate($this->paginate);
         else
             $categorys = Category::paginate($this->paginate);
 

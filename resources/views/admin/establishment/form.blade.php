@@ -63,33 +63,29 @@
 
                     <div class="row">
                         <div class="col-md-4">
-                            {{ Form::label('type_license','Tipo Conta ') }} <span class="span-required">*</span>
-                        </div>
-                        <div class="col-md-4">
-                            {{ Form::label('category','Categoria Estabelecimento ') }} <span
-                                    class="span-required">*</span>
-                        </div>
-                    </div>
+                            <div class="form-group">
+                                {{ Form::label('type_license','Tipo Conta ') }} <span class="span-required">*</span>
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        &nbsp;{{ Form::radio('type_license', 'b', (isset($establishment->type_license) && $establishment->type_license === 'b') ? true : false, [ 'id' => 'basicAccount']) }}
+                                    </span>
+                                    {{ Form::label('basicAccount','Plano Basico', ['class' => 'form-control noline-break']) }}
 
-                    <div class="row">
-                        <div class="col-md-2">
-                            <div class="input-group">
-                                <span class="input-group-addon">
-                                    &nbsp;{{ Form::radio('type_license', 'b', (isset($establishment->type_license) && $establishment->type_license === 'b') ? true : false, [ 'id' => 'basicAccount']) }}
-                                </span>
-                                {{ Form::label('basicAccount','Plano Basico', ['class' => 'form-control']) }}
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="input-group">
-                                <span class="input-group-addon">
-                                    {{ Form::radio('type_license', 'f', (isset($establishment->type_license) && $establishment->type_license === 'f') ? true : false, [  'id' => 'fullAccount' ]) }}
-                                </span>
-                                {{ Form::label('fullAccount','Plano Completo', ['class' => 'form-control']) }}
+                                    <span class="input-group-addon">
+                                        {{ Form::radio('type_license', 'f', (isset($establishment->type_license) && $establishment->type_license === 'f') ? true : false, [  'id' => 'fullAccount' ]) }}
+                                    </span>
+                                    {{ Form::label('fullAccount','Plano Completo', ['class' => 'form-control noline-break']) }}
+                                </div>
                             </div>
                         </div>
                         <div class="col-md-4">
-                            {{Form::select('category', $categorys, isset($establishment->establishments_category) ? $establishment->establishments_category : null, array('class' => 'form-control'))}}
+                            <div class="form-group">
+                                {{ Form::label('category','Categoria Estabelecimento ') }} <span
+                                    class="span-required">*</span>
+                                <div class="input-group">
+                                    {{Form::select('category', $categorys, isset($establishment->establishments_category) ? $establishment->establishments_category : null, array('class' => 'form-control'))}}
+                                </div>
+                            </div>
                         </div>
                     </div>
 

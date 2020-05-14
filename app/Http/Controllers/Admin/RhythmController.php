@@ -40,7 +40,7 @@ class RhythmController extends Controller
         $rhythmSearch = $request->query('s');
 
         if (!empty($rhythmSearch))
-            $rhythms = Rhythm::where('name', 'like' , "%{$rhythmSearch}%")->paginate($this->paginate);
+            $rhythms = Rhythm::whereLike(['name', 'created_at', 'updated_at'], $rhythmSearch)->paginate($this->paginate);
         else
             $rhythms = Rhythm::paginate($this->paginate);
 

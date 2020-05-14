@@ -40,7 +40,7 @@ class PermissionController extends Controller
         $permissionSearch = $request->query('s');
 
         if (!empty($permissionSearch))
-            $permissions = Permission::where('name', 'like' , "%{$permissionSearch}%")->paginate($this->paginate);
+            $permissions = Permission::whereLike(['name', 'slug', 'created_at', 'updated_at'], $permissionSearch)->paginate($this->paginate);
         else
             $permissions = Permission::paginate($this->paginate);
 

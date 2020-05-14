@@ -146,6 +146,8 @@ class UserController extends Controller
         DB::beginTransaction();
 
         try {
+            $data["author"] = auth()->user()->name;
+
             $created = auth()->user()->user_comment()->create($data);
 
             if (!$created)
@@ -181,6 +183,8 @@ class UserController extends Controller
         DB::beginTransaction();
 
         try {
+            $data["author"] = auth()->user()->name;
+
             $created = auth()->user()->user_rating()->create($data);
 
             if (!$created)

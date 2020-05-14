@@ -21,16 +21,18 @@
                 {!! csrf_field() !!}
                 <div class="box-body">
                     <div class="row">
-                        <div class="col-md-4">&nbsp;</div>
-                        <div class="col-md-2">
+                        <div class="pull-center">
                             <div class="custom-file">
                                 @if (!empty(auth()->user()->profile_picture_path))
                                     <img src="{{ asset("storage/" .auth()->user()->profile_picture_path) }}" alt="{{ auth()->user()->name }}"
-                                         style="max-width: 30vh;">
+                                         class="img_settings">
                                 @endif
                                 <br><br>
                             </div>
-
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="pull-center">
                             <div class="input-file-container">
                                 {{ Form::file('profile_picture_path', ['class' => 'input-file']) }}
                                 {{ Form::label('profile_picture_path', (!empty(auth()->user()->profile_picture_path) ? 'Mudar ' : '') . 'Foto de Perfil', ['class' => 'input-file-trigger']) }}
@@ -38,7 +40,6 @@
                             <p class="file-return"></p>
                         </div>
                     </div>
-
                     @if ($errors->has('profile_picture_path'))
                         <br>
                         <div class="row">

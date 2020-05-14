@@ -108,9 +108,9 @@
                         <div class="pull-left image">
                             @if (!empty(auth()->user()->profile_picture_path))
                                 <img src="{{ asset("storage/" . auth()->user()->profile_picture_path) }}"
-                                     class="img-circle" alt="{{ auth()->user()->name }}" style="max-height: 3vw;">
+                                     class="img-circle" alt="{{ auth()->user()->name }}" style="height: 6vh;width: 8vh">
                             @else
-                                <img src="{{ asset('assets\admin\imgs\unknown.jpg') }}" class="img-circle"
+                                <img src="{{ asset('assets\admin\imgs\unknown.jpg') }}"  class="img-circle"
                                      alt="User Image">
                             @endif
                         </div>

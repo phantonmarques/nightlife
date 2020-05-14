@@ -52,11 +52,9 @@
             $this->access('Index Evento');
 
             if (!empty($eventSearch))
-                $events = Event::where([['name', 'like', "%{$eventSearch}%"], ['status', 1]])->paginate($this->paginate);
+                $events = Event::whereStatus(1)->where('name', 'like', "%{$eventSearch}%")->paginate($this->paginate);
             else
-                $events = Event::with('establishment')
-                    ->where([['establishment_id', $eventPrepare], ['status', 1]])->paginate($this->paginate);
-
+                $events = Event::whereStatus(1)->where('establishment_id', $eventPrepare)->paginate($this->paginate);
 
             return view('admin.event.index',
                 compact('events',

@@ -58,6 +58,8 @@
                             <th>Título</th>
                             <th>Função</th>
                             <th>Permissões da Função</th>
+                            <th>Data de Criação</th>
+                            <th>Data de Atualização</th>
                             <th class="col-actions"></th>
                         </tr>
                         </thead>
@@ -82,6 +84,12 @@
                                         @foreach($role->permissions()->pluck('slug') as $permission)
                                             <span class="label label-primary">{{ $permission }}</span>
                                         @endforeach
+                                    </td>
+                                    <td>
+                                        {{ $role->created_at->format('d/m/Y - H:i') }}
+                                    </td>
+                                    <td>
+                                        {{ $role->updated_at->format('d/m/Y - H:i') }}
                                     </td>
                                     <td class="col-actions">
                                         <a href="{{ route('role.edit', $role) }}" class="action-edit"

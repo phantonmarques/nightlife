@@ -19,8 +19,8 @@
 
                 {{ Form::open(array('route' => 'admin.pictures', 'method' => 'POST', 'files' => true)) }}
                 {!! csrf_field() !!}
-                <div class="box-body">
-                    <div id="Glide" class="slider">
+                <div class="box-body content_glide">
+                    <div id="Glide" class="glide">
                         <!-- ARROWS -->
                         <div class="glide__arrows">
                             <button class="glide__arrow prev" data-glide-dir="<">prev</button>
@@ -31,10 +31,11 @@
                             <ul class="glide__track">
                                 <li class="glide__slide">
                                     <img src="https://spguia.melhoresdestinos.com.br/system/fotos_local/fotos/26013/show/praia-do-aventureiro.jpg"
-                                         alt="img">
+                                         class="content_glide" alt="img">
                                 </li>
                                 <li class="glide__slide">
-                                    <img src="{{ asset('assets\admin\imgs\unknown.jpg') }}" alt="img">
+                                    <img src="{{ asset('assets\admin\imgs\unknown.jpg') }}"
+                                         class="content_glide" alt="img">
                                 </li>
                             </ul>
                         </div>
@@ -42,15 +43,15 @@
                         <div class="glide__bullets"></div>
                     </div>
 
-                    <div class="row">
-                        <div class="col-lg-2">
-                            <div class="input-file-container">
-                                {{ Form::file('img_path[]', ['class' => 'input-file', 'multiple' => true]) }}
-                                {{ Form::label('img_path', (!empty(auth()->user()->profile_picture_path) ? 'Mudar ' : '') . 'Foto do Estabelecimento', ['class' => 'input-file-trigger']) }}
-                            </div>
-                            <p class="file-return"></p>
-                        </div>
-                    </div>
+{{--                    <div class="row">--}}
+{{--                        <div class="col-lg-2">--}}
+{{--                            <div class="input-file-container">--}}
+{{--                                {{ Form::file('img_path[]', ['class' => 'input-file', 'multiple' => true]) }}--}}
+{{--                                {{ Form::label('img_path', (!empty(auth()->user()->profile_picture_path) ? 'Mudar ' : '') . 'Foto do Estabelecimento', ['class' => 'input-file-trigger']) }}--}}
+{{--                            </div>--}}
+{{--                            <p class="file-return"></p>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
                     {{--                    <div class="row">--}}
                     {{--                        <div class="col-md-4">&nbsp;</div>--}}
                     {{--                        <div class="col-md-2">--}}

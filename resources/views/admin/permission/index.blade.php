@@ -57,6 +57,8 @@
                             <th>ID</th>
                             <th>Título</th>
                             <th>Permissão</th>
+                            <th>Data de Criação</th>
+                            <th>Data de Atualização</th>
                             <th class="col-actions"></th>
                         </tr>
                         </thead>
@@ -76,6 +78,12 @@
                                     </td>
                                     <td>
                                         {{ $permission->slug }}
+                                    </td>
+                                    <td>
+                                        {{ $permission->created_at->format('d/m/Y - H:i') }}
+                                    </td>
+                                    <td>
+                                        {{ $permission->updated_at->format('d/m/Y - H:i') }}
                                     </td>
                                     <td class="col-actions">
                                         <a href="{{ route('permission.edit', $permission) }}" class="action-edit"

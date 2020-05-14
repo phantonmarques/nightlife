@@ -218,7 +218,8 @@ return [
                 [
                     'text'      => 'Configurações Perfil',
                     'icon'      => 'far fa-list-alt',
-                    'url'       => '#',
+                    'route'     => 'admin.settings',
+                    'active'    => ['control/settings', 'control/settings/*', 'control/settings?*'],
                 ],
                 [
                     'text'          => 'Detalhes Conta',

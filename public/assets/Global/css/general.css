@@ -41,5 +41,24 @@
     text-align: center;
 }
 
+.img_settings{
+    width: 40vh;
+    display:block;
+    height: auto;
+}
+
+.pull-center {
+    margin:auto;
+    display:flex;
+    justify-content: center;
+}
+
+.noline-break {
+    white-space: nowrap;
+}
+
+.padding-left-5{
+    padding-left: 5%;
+}
 
 

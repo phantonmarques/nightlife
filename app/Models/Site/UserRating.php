@@ -16,6 +16,7 @@ class UserRating extends Model
      * @var array $fillable
      */
     protected $fillable = [
+        'author',
         'rating',
         'establishment_id',
         'user_id',
