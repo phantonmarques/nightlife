@@ -143,6 +143,12 @@ class UserController extends Controller
     {
         $data = $request->validated();
 
+        if (auth()->user()->user_comment()->count() > 0)
+            return response()->json([
+                'status' => false,
+                'message' => 'Não foi possível criar o comentário, é permitido apenas um comentário por estabelecimento!'
+            ]);
+
         DB::beginTransaction();
 
         try {
@@ -179,6 +185,12 @@ class UserController extends Controller
     public function storeRating(CreateUserRating $request)
     {
         $data = $request->validated();
+
+        if (auth()->user()->user_rating()->count() > 0)
+            return response()->json([
+                'status' => false,
+                'message' => 'Não foi possível criar a avaliação, é permitido apenas uma avaliação por estabelecimento!'
+            ]);
 
         DB::beginTransaction();
 

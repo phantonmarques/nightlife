@@ -93,9 +93,7 @@ function searchZipCode(type = '') {
                 if (typeof (data.logradouro) != "undefined") {
                     document.getElementById("addressEstablishment").style.display = "block";
                     document.getElementById("street_name").value = data.logradouro;
-                    document.getElementById("street_name").disabled = true;
                     document.getElementById("neighborhood").value = data.bairro;
-                    document.getElementById("neighborhood").disabled = true;
                     searchState(data.uf);
                     setTimeout(function() {
                         var city = data.localidade;
@@ -250,9 +248,7 @@ function validateFormEstablishmentAddress(f) {
         f.complement.disabled = true;
     }
 
-    if (f.street_name.disabled) {
-        f.street_name.disabled = false;
-        f.neighborhood.disabled = false;
+    if (f.city_id.disabled) {
         f.state_id.disabled = false;
         f.city_id.disabled = false;
     }

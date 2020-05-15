@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Admin\EstablishmentAddress;
 use App\Http\Requests\CreateOrUpdateEstablishmentAddress;
 use App\Models\Admin\EstablishmentPhones;
+use App\Models\Site\City;
 use Illuminate\Support\Facades\DB;
 use App\Models\Site\State;
 use Illuminate\Http\Request;
@@ -135,7 +136,7 @@ class EstablishmentAddressController extends Controller
             if (!isset($data["establishment_id"]))
                 $data["establishment_id"] = auth()->user()->establishment_connect;
 
-            $latLong = $this->getLatLong($data["street_name"], $data["building_number"], $data["neighborhood"], $data["zip_code"]);
+            $latLong = $this->getLatLong($data);
 
             if (!empty($latLong))
                 $data["location"] = new Point($latLong->lat, $latLong->lng);
@@ -247,7 +248,7 @@ class EstablishmentAddressController extends Controller
             if (!isset($data["establishment_id"]))
                 $data["establishment_id"] = auth()->user()->establishment_connect;
 
-            $latLong = $this->getLatLong($data["street_name"], $data["building_number"], $data["neighborhood"], $data["zip_code"]);
+            $latLong = $this->getLatLong($data);
 
             if (!empty($latLong))
                 $data["location"] = new Point($latLong->lat, $latLong->lng);
@@ -333,18 +334,31 @@ class EstablishmentAddressController extends Controller
     /**
      * Get long and lat geolocation address
      */
-    private function getLatLong($street_name, $building_number, $neighborhood, $zip_code)
+    private function getLatLong($address)
     {
+        $city = City::with('state')->where('id', $address["city_id"])->select('name_visible')->first();
+        $zip_code = $address['zip_code'];
+
+        if (strlen($zip_code)===7)
+            $zip_code = '0'.substr($zip_code, 0, 4) . '-' . substr($zip_code, 4, 3);
+        else
+            $zip_code = substr($zip_code, 0, 5) . '-' . substr($zip_code, 5, 3);
+
         $response = Curl::to($this->urlMaps)
-            ->withData(array(
-                'apiKey' => $this->keyMaps,
-                'q' => urlencode("{$street_name} {$building_number} {$neighborhood} {$zip_code}")))
+            ->withData(array( 'apiKey' => $this->keyMaps,
+                'q' => "{$address['street_name']} {$address['building_number']} {$address['neighborhood']} {$city->name_visible} {$zip_code}" ))
             ->returnResponseObject()
             ->get();
 
         $response = json_decode($response->content);
 
-        if (!empty($response->items[0]->position))
+        foreach ($response->items as $location):
+            if (strpos($location->title, $address['building_number'])!==FALSE):
+                return $location->position;
+            endif;
+        endforeach;
+
+        if (isset($response->items[0]->position))
             return $response->items[0]->position;
 
         return false;

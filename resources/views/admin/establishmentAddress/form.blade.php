@@ -49,7 +49,7 @@
                         <div class="row">
                             <div class="col-lg-6">
                                 {{ Form::label('street_name','Endereço ') }} <span class="span-required">*</span>
-                                {{ Form::text('street_name' , (isset($establishmentAddress->id) ? $establishmentAddress->street_name : ''), ['id' => 'street_name', 'placeholder' => 'Informe endereço do estabelecimento.', 'class' => 'form-control', 'onkeypress' => 'return onlyNumbers(event)']) }}
+                                {{ Form::text('street_name' , (isset($establishmentAddress->id) ? $establishmentAddress->street_name : ''), ['id' => 'street_name', 'placeholder' => 'Informe endereço do estabelecimento.', 'class' => 'form-control']) }}
                             </div>
                             <div class="col-lg-2">
                                 {{ Form::label('building_number','Número ') }} <span class="span-required">*</span>

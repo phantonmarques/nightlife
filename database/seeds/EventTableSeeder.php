@@ -16,7 +16,7 @@ class EventTableSeeder extends Seeder
     {
         # EVENTO PRIMO TABACARIA - ID = 1
 
-        $address = EstablishmentAddress::where('zip_code', '83326500')->first();
+        $address = EstablishmentAddress::where(['zip_code' => '83326500', 'building_number' => '322', 'neighborhood' => 'Jardim Claudia'])->first();
 
         $event = new Event();
 
@@ -50,7 +50,7 @@ class EventTableSeeder extends Seeder
 
         # VICTORIA VILLA - ID = 3
 
-        $address1 = EstablishmentAddress::where('zip_code', '82810350')->first();
+        $address1 = EstablishmentAddress::where(['zip_code' => '82810350', 'building_number' => '2291', 'neighborhood' => 'Tarumã'])->first();
 
         $event3 = new Event();
 
@@ -68,7 +68,7 @@ class EventTableSeeder extends Seeder
 
         # DANGHAI - ID = 4
 
-        $address2 = EstablishmentAddress::where('zip_code', '80420000')->first();
+        $address2 = EstablishmentAddress::where(['zip_code' => '80420000', 'building_number' => '609', 'neighborhood' => 'Batel'])->first();
 
         $event4 = new Event();
 
@@ -86,7 +86,7 @@ class EventTableSeeder extends Seeder
 
         # PARK ART - ID = 5
 
-        $address3 = EstablishmentAddress::where('zip_code', '83322210')->first();
+        $address3 = EstablishmentAddress::where(['zip_code' => '83322210', 'building_number' => '1700', 'neighborhood' => 'Weissópolis'])->first();
 
         $event5 = new Event();
 
@@ -104,7 +104,7 @@ class EventTableSeeder extends Seeder
 
         # Blood Rock - ID = 6
 
-        $address4 = EstablishmentAddress::where('building_number', '1212')->first();
+        $address4 = EstablishmentAddress::where(['zip_code' => '80510040', 'building_number' => '1212', 'neighborhood' => 'São Francisco'])->first();
 
         $event6 = new Event();
 
@@ -138,7 +138,7 @@ class EventTableSeeder extends Seeder
 
         # Mandela - ID = 8
 
-        $address5 = EstablishmentAddress::where('zip_code', '83325342')->first();
+        $address5 = EstablishmentAddress::where(['zip_code' => '83325342', 'building_number' => '1911', 'neighborhood' => 'Alto Tarumã'])->first();
 
         $event8 = new Event();
 
@@ -156,7 +156,7 @@ class EventTableSeeder extends Seeder
 
         # Millenium Club - ID = 9
 
-        $address6 = EstablishmentAddress::where('building_number', '12329')->first();
+        $address6 = EstablishmentAddress::where(['zip_code' => '83323410', 'building_number' => '12329', 'neighborhood' => 'Centro'])->first();
 
         $event9 = new Event();
 
@@ -190,7 +190,7 @@ class EventTableSeeder extends Seeder
 
         # Doiszerodois - ID = 11
 
-        $address7 = EstablishmentAddress::where('building_number', '12290')->first();
+        $address7 = EstablishmentAddress::where(['zip_code' => '83323410', 'building_number' => '12290', 'neighborhood' => 'Centro'])->first();
 
         $event11 = new Event();
 
@@ -208,7 +208,7 @@ class EventTableSeeder extends Seeder
 
         # Rodeo Bar - ID = 12
 
-        $address8 = EstablishmentAddress::where('zip_code', '82590300')->first();
+        $address8 = EstablishmentAddress::where(['zip_code' => '82590300', 'building_number' => '4100', 'neighborhood' => 'Bacacheri'])->first();
 
         $event12 = new Event();
 
@@ -226,7 +226,7 @@ class EventTableSeeder extends Seeder
 
         # Peppers - ID = 13
 
-        $address9 = EstablishmentAddress::where('building_number', '1122')->first();
+        $address9 = EstablishmentAddress::where(['zip_code' => '80510040', 'building_number' => '1122', 'neighborhood' => 'São Francisco'])->first();
 
         $event13 = new Event();
 
@@ -244,7 +244,7 @@ class EventTableSeeder extends Seeder
 
         # James Bar - ID = 14
 
-        $address10 = EstablishmentAddress::where('zip_code', '80430180')->first();
+        $address10 = EstablishmentAddress::where(['zip_code' => '80430180', 'building_number' => '680', 'neighborhood' => 'Centro'])->first();
 
         $event14 = new Event();
 
@@ -262,7 +262,7 @@ class EventTableSeeder extends Seeder
 
         # Shed Bar - ID = 15
 
-        $address11 = EstablishmentAddress::where('zip_code', '80440080')->first();
+        $address11 = EstablishmentAddress::where(['zip_code' => '88330036', 'building_number' => '5650', 'neighborhood' => 'Centro'])->first();
 
         $event15 = new Event();
 

@@ -212,7 +212,7 @@ class EventController extends Controller
         # FIM FORMATAÇÃO
 
         $addressFilter = EstablishmentAddress::distanceSphere( 'location', new Point(floatval($request->lat), floatval($request->long)), ($distance * 1000))
-            ->orWhere('city_id', (!empty(auth()->user()->city_id) ? auth()->user()->city_id : 0))
+            ->orWhere('city_id', (!empty(auth()->user()->city_id) ? auth()->user()->city_id : 0))->select('id')
             ->get();
 
         # TODO: Search type establishment
