@@ -131,7 +131,7 @@
                 if (!$establishment->exists)
                     throw new \Exception('Não foi possível criar o estabelecimento!');
 
-                $created = $establishment->establishment_statistics()->create(['establishment_id' => $establishment->id]);
+                $created = $establishment->establishment_statistics()->create();
 
                 if (!$created)
                     throw new \Exception('Não foi possível criar a estatistica do estabelecimento!');
@@ -296,6 +296,36 @@
                     ->withInput()
                     ->with('error', $e->getMessage());
             }
+        }
+
+        /**
+         * Delete all selected Establishment at once.
+         *
+         * @param Request $request
+         * @return string
+         */
+        public function massDestroy(Request $request)
+        {
+            if (! auth()->user()->can('manage-establishment'))
+                return abort(401);
+
+            $establishments = Establishment::whereIn('id', request('ids'))->get();
+
+            foreach ($establishments as $establishment):
+                $establishment->status = 0; 
+
+                if (!$establishment->save())
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'Erro ao desativar a(s) estabelecimento(s)!'
+                    ]);
+
+            endforeach;        
+            
+            return response()->json([
+                'status' => true,
+                'message' => 'Estabelecimento(s) desativado(s) com sucesso!'
+            ]);
         }
 
         /**

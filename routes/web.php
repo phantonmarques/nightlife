@@ -10,7 +10,7 @@ Route::get('/', 'SiteInstitucional\SiteInstController@index')->name('home');
 
 #######################################################################################################################################
 
-Route::group(['middleware' => ['auth'], 'prefix' => '/control/'], function () {
+Route::group(['middleware' => 'auth', 'prefix' => '/control/'], function () {
     /**
      *  Página de admin, com níveis de privilégio.
      * TODO: Admin
@@ -25,45 +25,52 @@ Route::group(['middleware' => ['auth'], 'prefix' => '/control/'], function () {
     Route::get('changePictures', 'Admin\\AdminController@changePictures')->name('admin.changePictures');
     Route::post('pictures', 'Admin\\AdminController@updatePictures')->name('admin.pictures');
     Route::get('settings', 'Admin\\AdminController@settings')->name('admin.settings');
+    Route::get('reports', 'Admin\\AdminController@reports')->name('admin.reports');
 
     # Admin\Employee Access *SPECIAL*
     Route::post('establishmentConnect', 'Admin\\AdminController@establishmentConnect')->name('admin.establishment');
 
     # Access Log User
-    Route::resource('logs', 'Admin\\UserAccessController')->except(['destroy'])->middleware('auth');
+    Route::resource('logs', 'Admin\\UserAccessController')->except(['destroy']);
 
     # Category
-    Route::get('category/{category}/destroy', 'Admin\\CategoryController@destroy')->name('category.destroy')->middleware('auth');
-    Route::resource('category', 'Admin\\CategoryController')->except(['destroy'])->middleware('auth');
+    Route::get('category/{category}/destroy', 'Admin\\CategoryController@destroy')->name('category.destroy');
+    Route::delete('category/massDestroy', 'Admin\\CategoryController@massDestroy')->name('category.massDestroy');
+    Route::resource('category', 'Admin\\CategoryController')->except(['destroy']);
 
     # Musical Rhythm
-    Route::get('rhythm/{rhythm}/destroy', 'Admin\\RhythmController@destroy')->name('rhythm.destroy')->middleware('auth');
-    Route::resource('rhythm', 'Admin\\RhythmController')->except(['destroy'])->middleware('auth');
+    Route::get('rhythm/{rhythm}/destroy', 'Admin\\RhythmController@destroy')->name('rhythm.destroy');
+    Route::delete('rhythm/massDestroy', 'Admin\\RhythmController@massDestroy')->name('rhythm.massDestroy');
+    Route::resource('rhythm', 'Admin\\RhythmController')->except(['destroy']);
 
     # Establishment
-    Route::get('establishment/{establishment}/destroy', 'Admin\\EstablishmentController@destroy')->name('establishment.destroy')->middleware('auth');
-    Route::resource('establishment', 'Admin\\EstablishmentController')->except(['destroy'])->middleware('auth');
+    Route::get('establishment/{establishment}/destroy', 'Admin\\EstablishmentController@destroy')->name('establishment.destroy');
+    Route::delete('establishment/massDestroy', 'Admin\\EstablishmentController@massDestroy')->name('establishment.massDestroy');
+    Route::resource('establishment', 'Admin\\EstablishmentController')->except(['destroy']);
 
     # Establishment Address
-    Route::get('establishmentAddress/{establishmentAddress}/destroy', 'Admin\\EstablishmentAddressController@destroy')->name('establishmentAddress.destroy')->middleware('auth');
-    Route::resource('establishmentAddress', 'Admin\\EstablishmentAddressController')->except(['destroy'])->middleware('auth');
+    Route::get('establishmentAddress/{establishmentAddress}/destroy', 'Admin\\EstablishmentAddressController@destroy')->name('establishmentAddress.destroy');
+    Route::delete('establishmentAddress/massDestroy', 'Admin\\EstablishmentAddressController@massDestroy')->name('establishmentAddress.massDestroy');
+    Route::resource('establishmentAddress', 'Admin\\EstablishmentAddressController')->except(['destroy']);
 
     # User
-    Route::get('user/{user}/destroy', 'Admin\\UserController@destroy')->name('user.destroy')->middleware('auth');
-    Route::resource('user', 'Admin\\UserController')->except(['destroy'])->middleware('auth');
+    Route::get('user/{user}/destroy', 'Admin\\UserController@destroy')->name('user.destroy');
+    Route::delete('user/massDestroy', 'Admin\\UserController@massDestroy')->name('user.massDestroy');
+    Route::resource('user', 'Admin\\UserController')->except(['destroy']);
 
     # Role
-    Route::get('role/{role}/destroy', 'Admin\\RoleController@destroy')->name('role.destroy')->middleware('auth');
-    Route::resource('role', 'Admin\\RoleController')->except(['destroy'])->middleware('auth');
+    Route::get('role/{role}/destroy', 'Admin\\RoleController@destroy')->name('role.destroy');
+    Route::delete('role/massDestroy', 'Admin\\RoleController@massDestroy')->name('role.massDestroy');
+    Route::resource('role', 'Admin\\RoleController')->except(['destroy']);
 
     # Permission
-    Route::get('permission/{permission}/destroy', 'Admin\\PermissionController@destroy')->name('permission.destroy')->middleware('auth');
-    Route::delete('massDestroy', 'Admin\PermissionController@massDestroy')->name('permission.massDestroy')->middleware('auth');;
-    Route::resource('permission', 'Admin\\PermissionController')->except(['destroy'])->middleware('auth');
+    Route::get('permission/{permission}/destroy', 'Admin\\PermissionController@destroy')->name('permission.destroy');
+    Route::delete('permission/massDestroy', 'Admin\\PermissionController@massDestroy')->name('permission.massDestroy');
+    Route::resource('permission', 'Admin\\PermissionController')->except(['destroy']);
 
     # Event
-    Route::get('event/{event}/destroy', 'Admin\\EventController@destroy')->name('event.destroy')->middleware('auth');
-    Route::resource('event', 'Admin\\EventController')->except(['destroy'])->middleware('auth');
+    Route::get('event/{event}/destroy', 'Admin\\EventController@destroy')->name('event.destroy');
+    Route::resource('event', 'Admin\\EventController')->except(['destroy']);
 
     /**
      * TODO: Settings all users that belongs

@@ -31,7 +31,7 @@ class RhythmController extends Controller
      */
     public function index(Request $request)
     {
-        if (! auth()->user()->can('manage-users'))
+        if (! auth()->user()->can('manage-establishment'))
             return abort(401);
 
         # Log Access Users
@@ -56,7 +56,7 @@ class RhythmController extends Controller
      */
     public function create()
     {
-        if (! auth()->user()->can('manage-users'))
+        if (! auth()->user()->can('manage-establishment'))
             return abort(401);
 
         /** Create form options */
@@ -82,7 +82,7 @@ class RhythmController extends Controller
      */
     public function store(CreateOrUpdateRhythm $request)
     {
-        if (! auth()->user()->can('manage-users'))
+        if (! auth()->user()->can('manage-establishment'))
             return abort(401);
 
         $data = $request->validated();
@@ -134,7 +134,7 @@ class RhythmController extends Controller
      */
     public function show(Rhythm $rhythm)
     {
-        if (! auth()->user()->can('manage-users'))
+        if (! auth()->user()->can('manage-establishment'))
             return abort(401);
 
         return view('admin.rhythm.show',
@@ -149,7 +149,7 @@ class RhythmController extends Controller
      */
     public function edit(Rhythm $rhythm)
     {
-        if (! auth()->user()->can('manage-users'))
+        if (! auth()->user()->can('manage-establishment'))
             return abort(401);
 
         /** Create form options */
@@ -174,7 +174,7 @@ class RhythmController extends Controller
      */
     public function update(CreateOrUpdateRhythm $request, Rhythm $rhythm)
     {
-        if (! auth()->user()->can('manage-users'))
+        if (! auth()->user()->can('manage-establishment'))
             return abort(401);
 
         $data = $request->validated();
@@ -214,7 +214,7 @@ class RhythmController extends Controller
      */
     public function destroy(Rhythm $rhythm)
     {
-        if (! auth()->user()->can('manage-users'))
+        if (! auth()->user()->can('manage-establishment'))
             return abort(401);
 
         # Log Access Users
@@ -243,6 +243,38 @@ class RhythmController extends Controller
                 ->withInput()
                 ->with('error', $e->getMessage());
         }
+    }
+
+    /**
+     * Delete all selected Rhythm at once.
+     *
+     * @param Request $request
+     * @return string
+     */
+    public function massDestroy(Request $request)
+    {
+        if (! auth()->user()->can('manage-establishment'))
+            return abort(401);
+
+        $rhythms = Rhythm::whereIn('id', request('ids'));    
+
+        foreach ($rhythms as $rhythm)
+            if (!$rhythm->rhythm_statistics()->delete())
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Erro ao excluir a(s) ritmo(s)!'
+                ]);
+        
+        if (!$rhythms->delete())
+            return response()->json([
+                'status' => false,
+                'message' => 'Erro ao excluir a(s) ritmo(s)!'
+            ]);
+        
+        return response()->json([
+            'status' => true,
+            'message' => 'Ritmo(s) excluído(s) com sucesso!'
+        ]);
     }
 
     /**

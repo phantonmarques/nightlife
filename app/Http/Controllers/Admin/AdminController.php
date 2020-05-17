@@ -393,6 +393,28 @@ class AdminController extends Controller
     }
 
     /**
+     * Display reports establishment
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View|string
+     */
+    public function reports()
+    {
+        if (!empty(auth()->user()->establishment_connect))
+            $id = auth()->user()->establishment_connect;
+        elseif (auth()->user()->establishments()->count() > 0)
+            $id = auth()->user()->establishments()->id;
+
+        if (empty($id) && auth()->user()->can('manage-called'))
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('error', 'Conecte em algum estabelecimento para realizar alterações, em seguida tente novamente!');
+
+        $establishment = Establishment::find($id);
+
+        return view('admin.establishmentSettings.reports', compact('establishment'));
+    }
+
+    /**
      * Function reset password user
      * @param UpdatePassword $request
      * @return \Illuminate\Http\RedirectResponse
@@ -451,6 +473,28 @@ class AdminController extends Controller
             return abort(401);
 
         return response()->json(State::where('state_cod', $state)->select('id')->first());
+    }
+
+    /**
+     * Display settings establishment
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View|string
+     */
+    public function settings()
+    {
+        if (!empty(auth()->user()->establishment_connect))
+            $id = auth()->user()->establishment_connect;
+        elseif (auth()->user()->establishments()->count() > 0)
+            $id = auth()->user()->establishments()->id;
+
+        if (empty($id) && auth()->user()->can('manage-called'))
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('error', 'Conecte em algum estabelecimento para realizar alterações, em seguida tente novamente!');
+
+        $establishment = Establishment::find($id);
+
+        return view('admin.establishmentSettings.settings', compact('establishment'));
     }
 
     public function updatePictures(){

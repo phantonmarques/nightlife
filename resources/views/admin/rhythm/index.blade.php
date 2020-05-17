@@ -14,7 +14,7 @@
         <div class="col-md-12">
             <div class="box box-warning">
                 <div class="box-header with-border">
-                    <div class="box-title col-xs-6 no-padding">
+                    <div class="box-title col-xs-1 no-padding">
                         <a class="btn btn-success btn-flat" href="{{ route('rhythm.create')  }}"
                            title="Cadastrar novo ritmo musical">
                             <i class="fas fa-sm fa-plus"></i>&nbsp;&nbsp;Novo Ritmo Musical
@@ -44,6 +44,12 @@
                             </div>
                         </div>
                         {{ Form::close() }}
+                    </div>
+                    <div class="col-xs-3 col-sm-2 no-padding separate pull-left" id="displayDelete" style="display: none;">
+                        <a class="btn btn-warning btn-flat" href="{{ route('rhythm.massDestroy') }}" id="deleteSelected"
+                           title="Exclusão de ritmos musical selecionado">
+                            <i class="glyphicon glyphicon-trash"></i>&nbsp;&nbsp;Apagar Selecionado(s)
+                        </a>
                     </div>
                 </div>
 

@@ -14,7 +14,7 @@
         <div class="col-md-12">
             <div class="box box-warning">
                 <div class="box-header with-border">
-                    <div class="box-title col-xs-6 no-padding">
+                    <div class="box-title col-xs-1 no-padding">
                         <a class="btn btn-success btn-flat" href="{{ route('role.create')  }}"
                            title="Cadastrar nova função">
                             <i class="fas fa-sm fa-plus"></i>&nbsp;&nbsp;Nova Função
@@ -44,6 +44,13 @@
                             </div>
                         </div>
                         {{ Form::close() }}
+                    </div>
+
+                    <div class="col-xs-1 col-sm-2 no-padding" id="displayDelete" style="display:none;">
+                        <a class="btn btn-warning btn-flat" href="{{ route('role.massDestroy') }}" id="deleteSelected"
+                           title="Exclusão de função selecionada">
+                            <i class="glyphicon glyphicon-trash"></i>&nbsp;&nbsp;Apagar Selecionado(s)
+                        </a>
                     </div>
                 </div>
 

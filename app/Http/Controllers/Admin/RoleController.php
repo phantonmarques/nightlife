@@ -258,6 +258,29 @@ class RoleController extends Controller
     }
 
     /**
+     * Delete all selected User at once.
+     *
+     * @param Request $request
+     * @return string
+     */
+    public function massDestroy(Request $request)
+    {
+        if (! auth()->user()->can('manage-users'))
+            return abort(401); 
+
+        if (!Role::whereIn('id', request('ids'))->delete())
+            return response()->json([
+                'status' => false,
+                'message' => 'Erro ao excluir as funções!'
+            ]);
+        
+        return response()->json([
+            'status' => true,
+            'message' => 'Funções excluídas com sucesso!'
+        ]);
+    }
+
+    /**
      * Create Access Log User
      */
     private function access($description, $content = NULL, $class = __CLASS__)

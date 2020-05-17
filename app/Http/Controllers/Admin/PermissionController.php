@@ -248,9 +248,16 @@ class PermissionController extends Controller
         if (! auth()->user()->can('manage-users'))
             return abort(401);
 
-        Permission::whereIn('id', request('ids'))->delete();
-
-        return response()->noContent();
+        if (!Permission::whereIn('id', request('ids'))->delete())
+            return response()->json([
+                'status' => false,
+                'message' => 'Houve um erro ao excluir a permissão!'
+            ]);
+        
+        return response()->json([
+            'status' => true,
+            'message' => 'Permissões excluídas com sucesso!'
+        ]);
     }
 
     /**

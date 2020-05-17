@@ -332,6 +332,38 @@ class EstablishmentAddressController extends Controller
     }
 
     /**
+     * Delete all selected EstablishmentAddress at once.
+     *
+     * @param Request $request
+     * @return string
+     */
+    public function massDestroy(Request $request)
+    {
+        if (! auth()->user()->can('manage-establishment'))
+            return abort(401);
+
+        $establishmentsAddresses = EstablishmentAddress::whereIn('id', request('ids'));    
+
+        foreach ($establishmentsAddresses as $address)
+            if (!$address->establishments_phone()->delete())
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Erro ao excluir o(s) endereço(s)!'
+                ]);
+        
+        if (!$establishmentsAddresses->delete())
+            return response()->json([
+                'status' => false,
+                'message' => 'Erro ao excluir o(s) endereço(s)!'
+            ]);
+        
+        return response()->json([
+            'status' => true,
+            'message' => 'Endereço(s) excluída(s) com sucesso!'
+        ]);
+    }
+
+    /**
      * Get long and lat geolocation address
      */
     private function getLatLong($address)

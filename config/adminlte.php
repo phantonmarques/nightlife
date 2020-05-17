@@ -184,7 +184,7 @@ return [
         [
             'text'      => 'Chamados',
             'icon'      => 'fas fa-phone-volume',
-            'url'       => 'admin/pages',
+            'url'       => '#',
             'active'    => ['control/roles', 'control/roles/*', 'control/roles?*'],
             'can'     => 'manage-called'
         ],
@@ -207,7 +207,7 @@ return [
         [
             'text'      => 'Chamados',
             'icon'      => 'fas fa-phone-alt',
-            'url'       => 'admin/settings',
+            'url'       => '#',
             //'can'     => 'EstablishmentPolicy'
         ],
         [
@@ -237,9 +237,10 @@ return [
             ],
         ],
         [
-            'text'      => 'Relatórios',
-            'icon'      => 'far fa-file-alt',
-            'url'       => '#',
+            'text'    => 'Relatórios',
+            'icon'    => 'far fa-file-alt',
+            'route'   => 'admin.reports',
+            'active'  => ['control/reports', 'control/reports/*', 'control/reports?*']
         ],
         [
             'header'    => 'CONFIGURAÇÕES USUÁRIO',

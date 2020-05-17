@@ -14,30 +14,11 @@
         <div class="col-md-12">
             <div class="box box-warning">
                 <div class="box-header with-border">
-                    <div class="box-title col-xs-6 no-padding">
+                    <div class="box-title col-xs-1 no-padding">
                         <a class="btn btn-success btn-flat" href="{{ route('establishment.create')  }}"
                            title="Cadastrar novo estabelecimento">
                             <i class="fas fa-sm fa-plus"></i>&nbsp;&nbsp;Novo Estabelecimento
                         </a>
-                    </div>
-
-                    <div class="box-title col-xs-6 col-sm-3">
-                        <div class="input-group pull-right">
-                            @if (!isset($_GET['d']))
-                                {{ Form::open(['method' => 'GET']) }}
-                                <button type="submit" class="btn btn-danger btn-flat"
-                                        title="Visualizar Estabelecimentos Desativados">
-                                    Desativados
-                                </button>
-                                {{ Form::hidden('d', 1, array('id' => 'd')) }}
-                                {{ Form::close() }}
-                            @else
-                                <a href="{{ route("establishment.index") }}" class="btn btn-success btn-flat"
-                                   title="Visualizar Estabelecimentos Ativos">
-                                    Ativos
-                                </a>
-                            @endif
-                        </div>
                     </div>
 
                     <div class="box-title col-xs-6 col-sm-3 no-padding pull-right">
@@ -68,6 +49,30 @@
                             </div>
                         </div>
                         {{ Form::close() }}
+                    </div>
+                    <div class="box-title col-xs-1 col-sm-1 pull-right">
+                        <div class="input-group">
+                            @if (!isset($_GET['d']))
+                                {{ Form::open(['method' => 'GET']) }}
+                                <button type="submit" class="btn btn-danger btn-flat"
+                                        title="Visualizar Estabelecimentos Desativados">
+                                    Desativados
+                                </button>
+                                {{ Form::hidden('d', 1, array('id' => 'd')) }}
+                                {{ Form::close() }}
+                            @else
+                                <a href="{{ route("establishment.index") }}" class="btn btn-success btn-flat"
+                                   title="Visualizar Estabelecimentos Ativos">
+                                    Ativos
+                                </a>
+                            @endif
+                        </div>
+                    </div>
+                    <div class="col-xs-1 col-sm-2 no-padding separate-2" id="displayDelete" style="display:none;">
+                        <a class="btn btn-warning btn-flat" href="{{ route('establishment.massDestroy') }}" id="deleteSelected" data-title="establishment"
+                           title="Exclusão de estabelecimento selecionado">
+                            <i class="glyphicon glyphicon-trash"></i>&nbsp;&nbsp;Apagar Selecionado(s)
+                        </a>
                     </div>
                 </div>
 

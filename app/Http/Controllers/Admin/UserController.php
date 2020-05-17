@@ -289,6 +289,29 @@
         }
 
         /**
+         * Delete all selected User at once.
+         *
+         * @param Request $request
+         * @return string
+         */
+        public function massDestroy(Request $request)
+        {
+            if (! auth()->user()->can('manage-users'))
+                return abort(401); 
+
+            if (!User::whereIn('id', request('ids'))->delete())
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Erro ao excluir o(s) usuário(s)!'
+                ]);
+            
+            return response()->json([
+                'status' => true,
+                'message' => 'Usuário(s) excluído(s) com sucesso!'
+            ]);
+        }
+
+        /**
          * Get type users
          *
          * @return array

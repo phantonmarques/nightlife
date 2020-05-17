@@ -24,7 +24,7 @@
                         <div class="pull-center">
                             <div class="custom-file">
                                 @if (!empty(auth()->user()->profile_picture_path))
-                                    <img src="{{ asset("storage/" .auth()->user()->profile_picture_path) }}" alt="{{ auth()->user()->name }}"
+                                    <img src="{{ asset("storage/" . auth()->user()->profile_picture_path) }}" alt="{{ auth()->user()->name }}"
                                          class="img_settings">
                                 @endif
                                 <br><br>

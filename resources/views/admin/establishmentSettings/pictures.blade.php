@@ -20,28 +20,33 @@
                 {{ Form::open(array('route' => 'admin.pictures', 'method' => 'POST', 'files' => true)) }}
                 {!! csrf_field() !!}
                 <div class="box-body content_glide">
-                    <div id="Glide" class="glide">
-                        <!-- ARROWS -->
-                        <div class="glide__arrows">
-                            <button class="glide__arrow prev" data-glide-dir="<">prev</button>
-                            <button class="glide__arrow next" data-glide-dir=">">next</button>
+                    @if ($establishment->establishments_photos()->count() > 0)
+                        <div id="Glide" class="glide">
+                            @if ($establishment->establishments_photos()->count() > 1)
+                                <!-- ARROWS -->
+                                <div class="glide__arrows">
+                                    <button class="glide__arrow prev" data-glide-dir="<">prev</button>
+                                    <button class="glide__arrow next" data-glide-dir=">">next</button>
+                                </div>
+                            @endif
+                            <!-- CAROUSEL -->
+                            <div class="glide__wrapper">
+                                <ul class="glide__track">
+                                    @foreach ($establishment->establishments_photos as $photo)
+                                        <li class="glide__slide">
+                                            <img src="{{ asset('storage/' . $photo->img_path) }}"
+                                                class="content_glide" alt="{{ $establishment->corporate_name }}">
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                            <!-- CAROUSEL DOTS -->
+                            <div class="glide__bullets"></div>
                         </div>
-                        <!-- CAROUSEL -->
-                        <div class="glide__wrapper">
-                            <ul class="glide__track">
-                                <li class="glide__slide">
-                                    <img src="https://spguia.melhoresdestinos.com.br/system/fotos_local/fotos/26013/show/praia-do-aventureiro.jpg"
-                                         class="content_glide" alt="img">
-                                </li>
-                                <li class="glide__slide">
-                                    <img src="{{ asset('assets\admin\imgs\unknown.jpg') }}"
-                                         class="content_glide" alt="img">
-                                </li>
-                            </ul>
-                        </div>
-                        <!-- CAROUSEL DOTS -->
-                        <div class="glide__bullets"></div>
-                    </div>
+                    @endif    
+
+
+                    
 
 {{--                    <div class="row">--}}
 {{--                        <div class="col-lg-2">--}}

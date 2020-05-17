@@ -30,7 +30,7 @@ class CategoryController extends Controller
      */
     public function index(Request $request)
     {
-        if (! auth()->user()->can('manage-users'))
+        if (! auth()->user()->can('manage-establishment'))
             return abort(401);
 
         # Log Access Users
@@ -55,7 +55,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        if (! auth()->user()->can('manage-users'))
+        if (! auth()->user()->can('manage-establishment'))
             return abort(401);
 
         /** Create form options */
@@ -81,7 +81,7 @@ class CategoryController extends Controller
      */
     public function store(CreateOrUpdateCategory $request)
     {
-        if (! auth()->user()->can('manage-users'))
+        if (! auth()->user()->can('manage-establishment'))
             return abort(401);
 
         $data = $request->validated();
@@ -133,7 +133,7 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-        if (! auth()->user()->can('manage-users'))
+        if (! auth()->user()->can('manage-establishment'))
             return abort(401);
 
         return view('admin.category.show',
@@ -148,7 +148,7 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
-        if (! auth()->user()->can('manage-users'))
+        if (! auth()->user()->can('manage-establishment'))
             return abort(401);
 
         /** Create form options */
@@ -173,7 +173,7 @@ class CategoryController extends Controller
      */
     public function update(CreateOrUpdateCategory $request, Category $category)
     {
-        if (! auth()->user()->can('manage-users'))
+        if (! auth()->user()->can('manage-establishment'))
             return abort(401);
 
         $data = $request->validated();
@@ -213,7 +213,7 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        if (! auth()->user()->can('manage-users'))
+        if (! auth()->user()->can('manage-establishment'))
             return abort(401);
 
         # Log Access Users
@@ -242,6 +242,38 @@ class CategoryController extends Controller
                 ->withInput()
                 ->with('error', $e->getMessage());
         }
+    }
+
+    /**
+     * Delete all selected Category at once.
+     *
+     * @param Request $request
+     * @return string
+     */
+    public function massDestroy(Request $request)
+    {
+        if (! auth()->user()->can('manage-establishment'))
+            return abort(401);
+
+        $categorys = Category::whereIn('id', request('ids'));    
+
+        foreach ($categorys as $category)
+            if(!$category->category_statistics()->delete())
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Erro ao excluir a(s) categoria(s)!'
+                ]);
+        
+        if (!$categorys->delete())
+            return response()->json([
+                'status' => false,
+                'message' => 'Erro ao excluir a(s) categoria(s)!'
+            ]);
+        
+        return response()->json([
+            'status' => true,
+            'message' => 'Categoria(s) excluída(s) com sucesso!'
+        ]);
     }
 
     /**
