@@ -44,6 +44,8 @@ class AdminController extends Controller
     {
         $category = CategoryStatistics::with('category')->orderBy('total_views_week', 'DESC')->first();
 
+        $id = null;
+
         if (!empty(auth()->user()->establishment_connect))
             $id = auth()->user()->establishment_connect;
         elseif (auth()->user()->establishments()->count() > 0)
