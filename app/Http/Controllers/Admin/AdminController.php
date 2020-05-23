@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Admin\EstablishmentAddress;
+use App\Models\Admin\EstablishmentStatistics;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Admin\Establishment;
@@ -91,28 +93,63 @@ class AdminController extends Controller
      */
     public function dashboard()
     {
-        #Total de visualização dos ritmos musicais
-        $rhythmtotal = app()->chartjs
-        ->name('pieChartTest')
-        ->type('pie')
-        ->size(['width' => 300, 'height' => 200])
-        ->labels([' Rock', ' Pop', ' Sertanejo', ' Funk', ' Pagode', 'Rap'])
-        ->datasets([
-            [
-                'backgroundColor' => ['#FF6384', '#36A2EB', '	#4682B4', '#008B8B', '#A52A2A', '#DAA520'],
-                'hoverBackgroundColor' => ['#FF6384', '#36A2EB', '	#4682B4', '#008B8B', '#A52A2A', '#DAA520'],
-                'data' => ['1','2','3', '4', '5', '6'],
-            ]
-        ])
-        ->options([]);
+        if (!empty(auth()->user()->establishment_connect))
+            $id = auth()->user()->establishment_connect;
+        elseif (auth()->user()->establishments()->count() > 0)
+            $id = auth()->user()->establishments()->id;
 
-        #Visualização anual dos ritmos musicais
-        $rhythmyearly = app()->chartjs
-        ->name('rhythmyearly')
-        ->type('bar')
-        ->size(['width' => 400, 'height' => 200])
-        ->labels(['Rock', ' Pop', ' Sertanejo', ' Funk', ' Pagode', 'Rap'])
-        ->datasets([
+        if (empty($id) && auth()->user()->can('manage-called'))
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('error', 'Conecte em algum estabelecimento para realizar alterações, em seguida tente novamente!');
+
+        # Config date BR
+        setlocale(LC_TIME, 'pt_BR', 'pt_BR.utf-8', 'pt_BR.utf-8', 'portuguese');
+        date_default_timezone_set('America/Sao_Paulo');
+        $monthCurrent = ucfirst(strftime('%B', strtotime('today')));
+
+        $establishment = Establishment::find($id);
+
+        $categorys = CategoryStatistics::with('category:id,name')->get()->toArray();
+
+        $arrayNameCategory = array();
+        $arrayTotalCategory = array();
+        $arrayYearCategory = array();
+        $arrayMonthCategory = array();
+        $arrayWeekCategory = array();
+
+        foreach ($categorys as $category):
+            $arrayTotalCategory[] = $category['total_views_created'];
+            $arrayYearCategory[] = $category['total_views_year'];
+            $arrayMonthCategory[] = $category['total_views_month'];
+            $arrayWeekCategory[] = $category['total_views_week'];
+            $arrayNameCategory[] = $category['category']['name'];
+
+        endforeach;
+
+        # Total de visualização das categorias
+        $categoryTotal = app()->chartjs
+            ->name('categoryTotal')
+            ->type('pie')
+            ->size(['width' => 300, 'height' => 200])
+            ->labels($arrayNameCategory)
+            ->datasets([
+                [
+                    'backgroundColor' => ['#FF6384', '#36A2EB', '	#4682B4', '#008B8B', '#A52A2A'],
+                    'hoverBackgroundColor' => ['#FF6384', '#36A2EB', '	#4682B4', '#008B8B', '#A52A2A'],
+                    'data' => $arrayTotalCategory,
+                ]
+            ])
+            ->options([]);
+
+        # Visualização anual das categorias
+        $categoryYear = app()->chartjs
+            ->name('categoryYear')
+            ->type('bar')
+            ->size(['width' => 400, 'height' => 200])
+            ->labels($arrayNameCategory)
+            ->datasets([
                 [
                     "label" => "Até o momento",
                     'backgroundColor' => "rgba(131,111,255, 0.8)",
@@ -121,62 +158,92 @@ class AdminController extends Controller
                     "pointBackgroundColor" => "rgba(131,111,255, 0.9)",
                     "pointHoverBackgroundColor" => "#fff",
                     "pointHoverBorderColor" => "rgba(220,220,220,1)",
-                    'data' => [65, 59, 80, 81, 56, 55],
+                    'data' => $arrayYearCategory,
                 ],
             ])
-        ->options([]);
+            ->options([]);
 
-        #Visualização do mês dos ritmos musicais
-        $rhythmmonth = app()->chartjs
-        ->name('rhythmmonth')
-        ->type('bar')
-        ->size(['width' => 400, 'height' => 200])
-        ->labels([' Rock', ' Pop', ' Sertanejo', ' Funk', ' Pagode', 'Rap'])
-        ->datasets([
-            [
-                "label" => "Maio",
-                'backgroundColor' => ['#6495ED', '#A52A2A', '#2E8B57', '#A0522D', '#FF6347', '#BC8F8F'],
-                'hoverBackgroundColor' => ['#6495ED', '#A52A2A', '#2E8B57', '#A0522D', '#FF6347', '#BC8F8F'],
-                'data' => [65, 59, 80, 81, 56, 55],
-            ],
+        # Visualização do mês das categorias
+        $categorymonth = app()->chartjs
+            ->name('categorymonth')
+            ->type('bar')
+            ->size(['width' => 400, 'height' => 200])
+            ->labels($arrayNameCategory)
+            ->datasets([
+                [
+                    "label" => $monthCurrent,
+                    'backgroundColor' => ['#6495ED', '#A52A2A', '#2E8B57', '#A0522D', '#FF6347'],
+                    'hoverBackgroundColor' => ['#6495ED', '#A52A2A', '#2E8B57', '#A0522D', '#FF6347'],
+                    'data' => $arrayMonthCategory,
+                ],
 
-        ])
-        ->options([]);
+            ])
+            ->options([]);
 
-        #Visualização da semana dos ritmos musicais
-        $rhythmweek = app()->chartjs
-        ->name('rhythmweek')
-        ->type('doughnut')
-        ->size(['width' => 300, 'height' => 200])
-        ->labels([' Rock', ' Pop', ' Sertanejo', ' Funk', ' Pagode', 'Rap'])
-        ->datasets([
-            [
-                "label" => "Maio",
-                'backgroundColor' => ['#6495ED', '#A52A2A', '#2E8B57', '#A0522D', '#FF6347', '#BC8F8F'],
-                'hoverBackgroundColor' => ['#6495ED', '#A52A2A', '#2E8B57', '#A0522D', '#FF6347', '#BC8F8F'],
-                'data' => [65, 59, 80, 81, 56, 55],
-            ],
+        # Visualização da semana das categorias
+        $categoryweek = app()->chartjs
+            ->name('categoryweek')
+            ->type('doughnut')
+            ->size(['width' => 300, 'height' => 200])
+            ->labels($arrayNameCategory)
+            ->datasets([
+                [
+                    "label" => $monthCurrent,
+                    'backgroundColor' => ['#6495ED', '#A52A2A', '#2E8B57', '#A0522D', '#FF6347'],
+                    'hoverBackgroundColor' => ['#6495ED', '#A52A2A', '#2E8B57', '#A0522D', '#FF6347'],
+                    'data' => $arrayWeekCategory,
+                ],
 
-        ])
-        ->options([]);
+            ])
+            ->options([]);
 
-        #Visualizações total do estabelecimento
+        $establishmentStatistics = EstablishmentStatistics::where('establishment_id', $establishment->id)->first();
+
+        # Visualizações total do estabelecimento
         $establishmenttotal = app()->chartjs
-        ->name('EstabTotal')
-        ->type('pie')
-        ->size(['width' => 200, 'height' => 150])
-        ->labels(['Semana', 'Mês', 'Ano', 'Total'])
-        ->datasets([
-            [
-                'backgroundColor' => ['#FF6384', '#36A2EB', '#4682B4', '#2E8B57'],
-                'hoverBackgroundColor' => ['#FF6384', '#36A2EB', '	#4682B4', '#2E8B57'],
-                'data' => ['40', '100', '200', '500'],
-            ]
-        ])
-        ->options([]);
+            ->name('EstabTotal')
+            ->type('pie')
+            ->size(['width' => 200, 'height' => 150])
+            ->labels(['Semana', 'Mês', 'Ano', 'Total'])
+            ->datasets([
+                [
+                    'backgroundColor' => ['#FF6384', '#36A2EB', '#4682B4', '#2E8B57'],
+                    'hoverBackgroundColor' => ['#FF6384', '#36A2EB', '	#4682B4', '#2E8B57'],
+                    'data' => $arrayNameViewEstablishment = [
+                        $establishmentStatistics->total_views_week,
+                        $establishmentStatistics->total_views_month,
+                        $establishmentStatistics->total_views_year,
+                        $establishmentStatistics->total_views_created,
+                    ],
+                ]
+            ])
+            ->options([]);
 
+        $citysEstablishment = array();
 
-        #Visualizações total do estabelecimento
+        foreach ($establishment->establishment_address as $address)
+            $citysEstablishment[] = $address->city_id;
+
+        $establishmentsCity = Establishment::whereHas('establishment_address', function ($q) use ($citysEstablishment) {
+            $q->where('city_id', $citysEstablishment);
+        })->select('id')->get()->toArray();
+
+        $establishmentsStatistics = EstablishmentStatistics::whereIn('establishment_id', $establishmentsCity)->get()->toArray();
+        $viewsWeek = 0;
+        $viewsMonth = 0;
+        $viewsYear = 0;
+        $viewsTotal = 0;
+
+        foreach ($establishmentsStatistics as $statistic):
+            if ($statistic['establishment_id'] !== $establishment->id):
+                $viewsWeek += $statistic['total_views_week'];
+                $viewsMonth += $statistic['total_views_month'];
+                $viewsYear += $statistic['total_views_year'];
+                $viewsTotal += $statistic['total_views_created'];
+            endif;
+        endforeach;
+
+        # Visualizações total do estabelecimento
         $establishmentstotal = app()->chartjs
             ->name('establishmentstotal')
             ->type('doughnut')
@@ -186,101 +253,49 @@ class AdminController extends Controller
                 [
                     'backgroundColor' => ['#FF6384', '#36A2EB', '#4682B4', '#2E8B57'],
                     'hoverBackgroundColor' => ['#FF6384', '#36A2EB', '	#4682B4', '#2E8B57'],
-                    'data' => ['40', '100', '200', '500'],
+                    'data' => [$viewsWeek, $viewsMonth, $viewsYear, $viewsTotal],
                 ]
             ])
             ->options([]);
 
-        #Total de visualização das categorias
-        $categorytotal = app()->chartjs
-        ->name('categorytotal')
+        $rhythms = RhythmStatistics::with('rhythm:id,name')->get()->toArray();
+
+        $arrayNameRhythm = array();
+        $arrayTotalRhythm = array();
+        $arrayYearRhythm = array();
+        $arrayMonthRhythm = array();
+        $arrayWeekRhythm = array();
+
+        foreach ($rhythms as $rhythm):
+            $arrayTotalRhythm[] = $rhythm['total_views_created'];
+            $arrayYearRhythm[] = $rhythm['total_views_year'];
+            $arrayMonthRhythm[] = $rhythm['total_views_month'];
+            $arrayWeekRhythm[] = $rhythm['total_views_week'];
+            $arrayNameRhythm[] = $rhythm['rhythm']['name'];
+
+        endforeach;
+
+        # Total de visualização dos ritmos musicais
+        $rhythmtotal = app()->chartjs
+        ->name('pieChartTest')
         ->type('pie')
         ->size(['width' => 300, 'height' => 200])
-        ->labels(['Bar', 'Balada', ' Tabacaria', ' Pub', 'Karaokê'])
-        ->datasets([
-            [
-                'backgroundColor' => ['#FF6384', '#36A2EB', '	#4682B4', '#008B8B', '#A52A2A'],
-                'hoverBackgroundColor' => ['#FF6384', '#36A2EB', '	#4682B4', '#008B8B', '#A52A2A'],
-                'data' => ['1','2','3', '4', '5'],
-            ]
-        ])
-        ->options([]);
-
-        #Visualização anual das categorias
-        $categoryyearly = app()->chartjs
-        ->name('categoryyearly')
-        ->type('bar')
-        ->size(['width' => 400, 'height' => 200])
-        ->labels(['Bar', 'Balada', ' Tabacaria', ' Pub', 'Karaokê'])
-        ->datasets([
-                [
-                    "label" => "Até o momento",
-                    'backgroundColor' => "rgba(131,111,255, 0.8)",
-                    'borderColor' => "rgba(131,111,255, 0.9)",
-                    "pointBorderColor" => "rgba(131,111,255, 0.9)",
-                    "pointBackgroundColor" => "rgba(131,111,255, 0.9)",
-                    "pointHoverBackgroundColor" => "#fff",
-                    "pointHoverBorderColor" => "rgba(220,220,220,1)",
-                    'data' => [65, 59, 80, 81, 56],
-                ],
-            ])
-        ->options([]);
-
-        #Visualização do mês das categorias
-        $categorymonth = app()->chartjs
-        ->name('categorymonth')
-        ->type('bar')
-        ->size(['width' => 400, 'height' => 200])
-        ->labels(['Bar', 'Balada', ' Tabacaria', ' Pub', 'Karaokê'])
-        ->datasets([
-            [
-                "label" => "Maio",
-                'backgroundColor' => ['#6495ED', '#A52A2A', '#2E8B57', '#A0522D', '#FF6347'],
-                'hoverBackgroundColor' => ['#6495ED', '#A52A2A', '#2E8B57', '#A0522D', '#FF6347'],
-                'data' => [65, 59, 80, 81, 56],
-            ],
-
-        ])
-        ->options([]);
-
-        #Visualização da semana das categorias
-        $categoryweek = app()->chartjs
-        ->name('categoryweek')
-        ->type('doughnut')
-        ->size(['width' => 300, 'height' => 200])
-        ->labels(['Bar', 'Balada', ' Tabacaria', ' Pub', 'Karaokê'])
-        ->datasets([
-            [
-                "label" => "Maio",
-                'backgroundColor' => ['#6495ED', '#A52A2A', '#2E8B57', '#A0522D', '#FF6347'],
-                'hoverBackgroundColor' => ['#6495ED', '#A52A2A', '#2E8B57', '#A0522D', '#FF6347'],
-                'data' => [65, 59, 80, 81, 56],
-            ],
-
-        ])
-        ->options([]);
-
-        #Total de visualização dos ritmos musicais de determinada cidade
-        $rhythmtotalcustom = app()->chartjs
-        ->name('rhythmtotalcustom')
-        ->type('pie')
-        ->size(['width' => 300, 'height' => 200])
-        ->labels([' Rock', ' Pop', ' Sertanejo', ' Funk', ' Pagode', 'Rap'])
+        ->labels($arrayNameRhythm)
         ->datasets([
             [
                 'backgroundColor' => ['#FF6384', '#36A2EB', '	#4682B4', '#008B8B', '#A52A2A', '#DAA520'],
                 'hoverBackgroundColor' => ['#FF6384', '#36A2EB', '	#4682B4', '#008B8B', '#A52A2A', '#DAA520'],
-                'data' => ['1','2','3', '4', '5', '6'],
+                'data' => $arrayTotalRhythm,
             ]
         ])
         ->options([]);
 
-        #Visualização anual dos ritmos musicais de determinada cidade
-        $rhythmyearlycustom = app()->chartjs
-        ->name('rhythmyearlycustom')
+        # Visualização anual dos ritmos musicais
+        $rhythmyearly = app()->chartjs
+        ->name('rhythmyearly')
         ->type('bar')
         ->size(['width' => 400, 'height' => 200])
-        ->labels(['Rock', ' Pop', ' Sertanejo', ' Funk', ' Pagode', 'Rap'])
+        ->labels($arrayNameRhythm)
         ->datasets([
                 [
                     "label" => "Até o momento",
@@ -290,60 +305,151 @@ class AdminController extends Controller
                     "pointBackgroundColor" => "rgba(131,111,255, 0.9)",
                     "pointHoverBackgroundColor" => "#fff",
                     "pointHoverBorderColor" => "rgba(220,220,220,1)",
-                    'data' => [65, 59, 80, 81, 56, 55],
+                    'data' => $arrayYearRhythm,
                 ],
             ])
         ->options([]);
 
-        #Visualização do mês dos ritmos musicais de determinada cidade
-        $rhythmmonthcustom = app()->chartjs
-        ->name('rhythmmonthcustom')
+        # Visualização do mês dos ritmos musicais
+        $rhythmmonth = app()->chartjs
+        ->name('rhythmmonth')
         ->type('bar')
         ->size(['width' => 400, 'height' => 200])
-        ->labels([' Rock', ' Pop', ' Sertanejo', ' Funk', ' Pagode', 'Rap'])
+        ->labels($arrayNameRhythm)
         ->datasets([
             [
-                "label" => "Maio",
+                "label" => $monthCurrent,
                 'backgroundColor' => ['#6495ED', '#A52A2A', '#2E8B57', '#A0522D', '#FF6347', '#BC8F8F'],
                 'hoverBackgroundColor' => ['#6495ED', '#A52A2A', '#2E8B57', '#A0522D', '#FF6347', '#BC8F8F'],
-                'data' => [65, 59, 80, 81, 56, 55],
+                'data' => $arrayMonthRhythm,
             ],
 
         ])
         ->options([]);
 
-        #Visualização da semana dos ritmos musicais de determinada cidade
-        $rhythmweekcustom = app()->chartjs
-        ->name('rhythmweekcustom')
+        # Visualização da semana dos ritmos musicais
+        $rhythmweek = app()->chartjs
+        ->name('rhythmweek')
         ->type('doughnut')
         ->size(['width' => 300, 'height' => 200])
-        ->labels([' Rock', ' Pop', ' Sertanejo', ' Funk', ' Pagode', 'Rap'])
+        ->labels($arrayNameRhythm)
         ->datasets([
             [
-                "label" => "Maio",
+                "label" => $monthCurrent,
                 'backgroundColor' => ['#6495ED', '#A52A2A', '#2E8B57', '#A0522D', '#FF6347', '#BC8F8F'],
                 'hoverBackgroundColor' => ['#6495ED', '#A52A2A', '#2E8B57', '#A0522D', '#FF6347', '#BC8F8F'],
-                'data' => [65, 59, 80, 81, 56, 55],
+                'data' => $arrayWeekRhythm,
+            ],
+
+        ])
+        ->options([]);
+
+        $establishmentsRhythm = Establishment::whereIn('id', $establishmentsCity)->with('establishments_rhythm')->get()->toArray();
+
+        $rhythmsCity = array();
+
+        foreach ($establishmentsRhythm as $establishmentRhythm):
+            if (count($establishmentRhythm['establishments_rhythm']) > 0):
+                foreach ($establishmentRhythm['establishments_rhythm'] as $eRhythm):
+                    if (!in_array($eRhythm['id'], $rhythmsCity))
+                        $rhythmsCity[] = $eRhythm['id'];
+
+                endforeach;
+
+            endif;
+        endforeach;
+
+
+        $rhythmCity = RhythmStatistics::whereIn('rhythm_id', $rhythmsCity)->with('rhythm:id,name')->get()->toArray();
+
+        $arrayNameRhythmCity = array();
+        $arrayMonthRhythmCity = array();
+
+        foreach ($rhythmCity as $rhythm):
+            $arrayMonthRhythmCity[] = $rhythm['total_views_month'];
+            $arrayNameRhythmCity[] = $rhythm['rhythm']['name'];
+
+        endforeach;
+
+
+        # Visualização anual dos ritmos musicais de determinada cidade
+        $rhythmyearlycustom = app()->chartjs
+        ->name('rhythmyearlycustom')
+        ->type('bar')
+        ->size(['width' => 400, 'height' => 200])
+        ->labels($arrayNameRhythmCity)
+        ->datasets([
+                [
+                    "label" => $monthCurrent,
+                    'backgroundColor' => "rgba(131,111,255, 0.8)",
+                    'borderColor' => "rgba(131,111,255, 0.9)",
+                    "pointBorderColor" => "rgba(131,111,255, 0.9)",
+                    "pointBackgroundColor" => "rgba(131,111,255, 0.9)",
+                    "pointHoverBackgroundColor" => "#fff",
+                    "pointHoverBorderColor" => "rgba(220,220,220,1)",
+                    'data' => $arrayMonthRhythmCity,
+                ],
+            ])
+        ->options([]);
+
+        $establishmentsCategory = Establishment::whereIn('id', $establishmentsCity)->with('establishments_category')->get()->toArray();
+
+        $categorysCity = array();
+
+        foreach ($establishmentsCategory as $establishmentCategory):
+            if (count($establishmentCategory['establishments_category']) > 0):
+                foreach ($establishmentCategory['establishments_category'] as $eCategory):
+                    if (!in_array($eCategory['id'], $categorysCity))
+                        $categorysCity[] = $eCategory['id'];
+
+                endforeach;
+
+            endif;
+        endforeach;
+
+
+        $categoryCity = CategoryStatistics::whereIn('category_id', $categorysCity)->with('category:id,name')->get()->toArray();
+
+        $arrayNameCategoryCity = array();
+        $arrayMonthCategoryCity = array();
+
+        foreach ($categoryCity as $category):
+            $arrayMonthCategoryCity[] = $category['total_views_month'];
+            $arrayNameCategoryCity[] = $category['category']['name'];
+
+        endforeach;
+
+        # Visualização do mês dos ritmos musicais de determinada cidade
+        $rhythmmonthcustom = app()->chartjs
+        ->name('rhythmmonthcustom')
+        ->type('bar')
+        ->size(['width' => 400, 'height' => 200])
+        ->labels($arrayNameCategoryCity)
+        ->datasets([
+            [
+                "label" => $monthCurrent,
+                'backgroundColor' => ['#6495ED', '#A52A2A', '#2E8B57', '#A0522D', '#FF6347', '#BC8F8F'],
+                'hoverBackgroundColor' => ['#6495ED', '#A52A2A', '#2E8B57', '#A0522D', '#FF6347', '#BC8F8F'],
+                'data' => $arrayMonthCategoryCity,
             ],
 
         ])
         ->options([]);
 
         return view('admin.establishmentSettings.dashboard',
-            compact('rhythmtotal',
+            compact('categoryTotal',
+                'categorymonth',
+                'categoryYear',
+                'categoryweek',
+                'establishment',
+                'establishmenttotal',
+                'establishmentstotal',
+                'rhythmtotal',
                 'rhythmmonth',
                 'rhythmyearly',
                 'rhythmweek',
-                'establishmenttotal',
-                'categorytotal',
-                'categorymonth',
-                'categoryyearly',
-                'categoryweek',
-                'rhythmweekcustom',
                 'rhythmmonthcustom',
-                'rhythmtotalcustom',
                 'rhythmyearlycustom',
-                'establishmentstotal'
             )
         );
     }
