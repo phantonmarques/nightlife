@@ -74,7 +74,7 @@ class EstablishmentController extends Controller
      */
     public function establishmentRatings($id)
     {
-        $establishment = Establishment::whereStatus(1)->with('ratings')->find($id);
+        $establishment = Establishment::whereStatus(1)->with(['ratings', 'establishments_photos'])->find($id);
 
         if (isset($establishment->corporate_name)):
             return response()->json([
@@ -96,7 +96,7 @@ class EstablishmentController extends Controller
      */
     public function establishmentComments($id)
     {
-        $establishment = Establishment::whereStatus(1)->with('comments')->find($id);
+        $establishment = Establishment::whereStatus(1)->with(['comments', 'establishments_photos'])->find($id);
 
         if (isset($establishment->corporate_name)):
             return response()->json([
