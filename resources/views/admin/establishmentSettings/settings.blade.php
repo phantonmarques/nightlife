@@ -18,8 +18,7 @@
                     <h6 align="right" style="color:red">* Campos obrigatórios</h6>
                 </div>
 
-                {{ Form::model($establishment, ['id' => 'teste']) }}
-                {!! csrf_field() !!}
+                {{ Form::model($establishment, ['route' => 'admin.updateSettings', 'method' => 'POST']) }}
                 <div class="box-body">
             
                     <div class="row">
@@ -50,13 +49,6 @@
     </div>
 @endsection
 
-@section('js')
-    <script type="text/javascript" src="{{ asset('assets/admin/js/event.js') }}"></script>
-    <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <script src="{{ asset('vendor/unisharp/laravel-ckeditor/ckeditor.js') }}"></script>
-@endsection
-
 @section('css')
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/Global/css/general.css') }}"/>
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
 @endsection

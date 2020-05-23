@@ -5,11 +5,12 @@
 .js .input-file-trigger {
     display: block;
     padding: 14px 45px;
-    background: #605ca8;
+    background: #3c8dbc;
     color: #fff;
     font-size: 1em;
     transition: all .4s;
     cursor: pointer;
+    text-align: center;
 }
 .js .input-file {
     position: absolute;
@@ -23,7 +24,7 @@
 .js .input-file:focus + .input-file-trigger,
 .js .input-file-trigger:hover,
 .js .input-file-trigger:focus {
-    background: #bb55f4;
+    background: #4c9bff;
     color: #000;
 }
 
@@ -63,6 +64,16 @@
     height: 50vh;
     overflow: hidden;
     margin:auto;
+}
+
+.zone {
+    background: white;
+    border-radius: 5px;
+    border: 2px dashed rgb(0, 135, 247);
+    border-image: none;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 @media (max-width: 992px) {

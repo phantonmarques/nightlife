@@ -148,9 +148,8 @@
                                         class="span-required">*</span>
 
                                 <div class="input-group">
-                                    {{ Form::time('start_time', (isset($event->id) ? formatHour($event->start_time) : ''), ['class'=>'form-control timepicker']) }}
-                                    <div class="input-group-addon">
-                                        <i class="far fa-clock"></i></div>
+                                    {{ Form::time('start_time', (isset($event->id) ? formatHour($event->start_time) : '')) }}
+                                    <i class="far fa-clock time_style"></i>
                                 </div>
                             </div>
                         </div>
@@ -160,9 +159,8 @@
                                         class="span-required">*</span>
 
                                 <div class="input-group">
-                                    {{ Form::time('end_time', (isset($event->id) ? formatHour($event->end_time) : ''), ['class'=>'form-control timepicker']) }}
-                                    <div class="input-group-addon">
-                                        <i class="far fa-clock"></i></div>
+                                    {{ Form::time('end_time', (isset($event->id) ? formatHour($event->end_time) : '')) }}
+                                    <i class="far fa-clock time_style"></i>
                                 </div>
                             </div>
                         </div>
@@ -231,13 +229,14 @@
 @endsection
 
 @section('js')
+    <script type="text/javascript" src="{{ asset('assets/Global/js/jquery.datetimepicker.full.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/Global/js/jquery-ui.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/admin/js/event.js') }}"></script>
-    <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <script src="{{ asset('vendor/unisharp/laravel-ckeditor/ckeditor.js') }}"></script>
 @endsection
 
 @section('css')
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/Global/css/general.css') }}"/>
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/admin/css/event.css') }}"/>
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/Global/css/jquery.datetimepicker.min.css') }}"/>
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/Global/css/jquery-ui.css') }}"/>
 @endsection

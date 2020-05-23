@@ -92,7 +92,7 @@ class Establishment extends Model
      */
     public function establishments_photos()
     {
-        return $this->hasMany(EstablishmentPhotos::class, 'establishment_id');
+        return $this->hasMany(EstablishmentPhotos::class, 'establishment_id')->orderBy('sequence');
     }
 
     /**

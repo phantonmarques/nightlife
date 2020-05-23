@@ -24,6 +24,16 @@ class UserSettings extends Model
     ];
 
     /**
+     * @var array $hidden
+     */
+    protected $hidden = [
+        'id',
+        'user_id',
+        'created_at',
+        'updated_at'
+    ];
+
+    /**
      * Get user of user_settings (USER COMMON)
      */
     public function users()

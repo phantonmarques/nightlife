@@ -5,7 +5,7 @@
     <h1>&nbsp;</h1>
     <ol class="breadcrumb">
         <li><a href="{{ route('admin.page') }}">Inicio</a></li>
-        <li><a href="{{ route('admin.changePictures') }}">Fotos Estabelecimento</a></li>
+        <li><a href="{{ route('admin.pictures') }}">Fotos Estabelecimento</a></li>
     </ol>
 @stop
 
@@ -17,9 +17,8 @@
                     <h3 class="box-title">Alterar fotos do estabelecimento [{{ $establishment->corporate_name }}]</h3>
                 </div>
 
-                {{ Form::open(array('route' => 'admin.pictures', 'method' => 'POST', 'files' => true)) }}
                 {!! csrf_field() !!}
-                <div class="box-body content_glide">
+                <div class="content_glide">
                     @if ($establishment->establishments_photos()->count() > 0)
                         <div id="Glide" class="glide">
                             @if ($establishment->establishments_photos()->count() > 1)
@@ -43,48 +42,18 @@
                             <!-- CAROUSEL DOTS -->
                             <div class="glide__bullets"></div>
                         </div>
-                    @endif    
-
-
-                    
-
-{{--                    <div class="row">--}}
-{{--                        <div class="col-lg-2">--}}
-{{--                            <div class="input-file-container">--}}
-{{--                                {{ Form::file('img_path[]', ['class' => 'input-file', 'multiple' => true]) }}--}}
-{{--                                {{ Form::label('img_path', (!empty(auth()->user()->profile_picture_path) ? 'Mudar ' : '') . 'Foto do Estabelecimento', ['class' => 'input-file-trigger']) }}--}}
-{{--                            </div>--}}
-{{--                            <p class="file-return"></p>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
-                    {{--                    <div class="row">--}}
-                    {{--                        <div class="col-md-4">&nbsp;</div>--}}
-                    {{--                        <div class="col-md-2">--}}
-                    {{--                            <div class="custom-file">--}}
-                    {{--                                @if (!empty(auth()->user()->profile_picture_path))--}}
-                    {{--                                    <img src="{{ asset("storage/" .auth()->user()->profile_picture_path) }}" alt="{{ auth()->user()->name }}"--}}
-                    {{--                                         style="max-width: 30vh;">--}}
-                    {{--                                @endif--}}
-                    {{--                                <br><br>--}}
-                    {{--                            </div>--}}
-
-                    {{--                            <div class="input-file-container">--}}
-                    {{--                                {{ Form::file('profile_picture_path', ['class' => 'input-file']) }}--}}
-                    {{--                                {{ Form::label('profile_picture_path', (!empty(auth()->user()->profile_picture_path) ? 'Mudar ' : '') . 'Foto de Perfil', ['class' => 'input-file-trigger']) }}--}}
-                    {{--                            </div>--}}
-                    {{--                            <p class="file-return"></p>--}}
-                    {{--                        </div>--}}
-                    {{--                    </div>--}}
-
-                    @if ($errors->has('profile_picture_path'))
-                        <br>
-                        <div class="row">
-                            <div class="col-md-10">
-                                <div class="text-red">{{ $errors->first('profile_picture_path') }}</div>
-                            </div>
-                        </div>
-                    @endif
+                    @endif                      
                 </div>
+
+                <div class="box-body pull-center">
+                        <div class="col-xs-10">
+                            {{ Form::open(['route' => 'admin.updatePictures', 'method' => 'POST', 'files' => true, 'enctype' => 'multipart/form-data', 'class' => 'dropzone', 'id' => 'dZone']) }}
+        
+                            {{ Form::close() }}    
+                        </div>
+                </div>
+
+                {{ Form::hidden('action', ($establishment->establishments_photos()->count() > 0) ? 'update' : 'new', ['id' => 'action']) }}
 
                 <div class="box-footer">
                     <div class="col-lg-2 pull-right">
@@ -98,20 +67,89 @@
 @endsection
 
 @section('js')
+    <script type="text/javascript" src="{{ asset('assets/Global/js/dropzone.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/admin/js/settings.js') }}"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/glidejs@2/dist/glide.min.js"></script>
     <script>
+        Dropzone.autoDiscover = false;
+
         $(document).ready(function () {
             $("#Glide").glide({
                 type: "carousel",
                 autoplay: "5000"
             });
+
+            let message = '';
+
+            if ($('#action').val() === 'new')
+                message = 'para inserir ao perfil do estabelecimento!';
+            else
+                message = 'para atualizar no estabelecimento!';
+
+            let uploadFile = {};
+
+            $("#dZone").dropzone({ 
+                url: '{{ route('admin.updatePictures') }}',
+                dictDefaultMessage: 'Clique ou arraste fotos ' + message,
+                dictInvalidFileType: 'É aceito apenas imagens para upload!',
+                dictFileTooBig: 'Arquivo muito pesado, não aceita arquivos com mais de 3mb!',
+                dictMaxFilesExceeded: 'É aceito apenas 10 imagens para o estabelecimento!',
+                dictRemoveFile: 'Remover',
+                dictCancelUpload: 'Cancelar',
+                acceptedFiles: ".jpeg,.jpg,.png,.gif",
+                addRemoveLinks: true,
+                maxFilesize: 1,
+                maxFiles: 10, 
+                resizeQuality: 10,
+                parallelUploads: 1,
+                success: function(file, response){
+                    uploadFile[file.name] = response.path;
+                },
+                error: function(file, response) {
+                    swal({
+                        title: response.message,
+                        icon: 'error',
+                    });
+                },
+                removedfile: function (file) {
+                    $.ajax({
+                        url: '{{ route('admin.removePicture') }}',
+                        headers: {
+                            'X-CSRF-Token': document.getElementsByTagName('meta')[2].getAttribute('content')
+                        },
+                        type: 'DELETE',
+                        data: {
+                            path: uploadFile[file.name]
+                        },
+                        success: function(data) {
+                            if (data.success)
+                                swal({
+                                    title: data.message,
+                                    icon: 'success',
+                                });
+                            else
+                                swal({
+                                    title: data.message,
+                                    icon: 'error',
+                                });
+                        },
+                        error: function() {
+                            swal({
+                                title: 'Desconhecido, favor recarrega a página e tente novamente!',
+                                icon: 'error',
+                            });
+                        },
+                    });
+                    file.previewElement.remove();
+                }
+             });
         });
     </script>
 @endsection
 
 @section('css')
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/admin/css/settings.css') }}"/>
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/Global/css/dropzone.css') }}" />
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/Global/css/general.css') }}"/>
     <link rel="stylesheet" type="text/css" href="https://cdn.bootcss.com/Glide.js/2.1.0/css/glide.core.min.css"/>
     <link rel="stylesheet" type="text/css" href="https://cdn.bootcss.com/Glide.js/2.1.0/css/glide.theme.min.css"/>

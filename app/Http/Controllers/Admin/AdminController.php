@@ -9,9 +9,12 @@ use App\Models\Site\City;
 use App\Models\Site\State;
 use App\Http\Requests\UpdatePassword;
 use App\Http\Requests\UpdateProfilePicture;
+use App\Http\Requests\UpdateEstablishmentSettings;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Intervention\Image\ImageManagerStatic as Image;
+use Illuminate\Support\Str;
 
 class AdminController extends Controller
 {
@@ -36,6 +39,20 @@ class AdminController extends Controller
     }
 
     /**
+     * Create Access Log User
+     */
+    private function access($description, $content = NULL, $class = __CLASS__)
+    {
+        auth()->user()->user_access()->create([
+            'class' => $class,
+            'establishment_connect' => !empty(auth()->user()->establishment_connect) ? auth()->user()->establishment_connect : NULL,
+            'description' => $description,
+            'content' => $content,
+            'data_access' => date('YmdHis')
+        ]);
+    }
+
+    /**
      * Display view dashboard establishment
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View|string
      */
@@ -55,7 +72,7 @@ class AdminController extends Controller
             ]
         ])
         ->options([]);
-        
+
         #Visualização anual dos ritmos musicais
         $rhythmyearly = app()->chartjs
         ->name('rhythmyearly')
@@ -83,13 +100,13 @@ class AdminController extends Controller
         ->size(['width' => 400, 'height' => 200])
         ->labels([' Rock', ' Pop', ' Sertanejo', ' Funk', ' Pagode', 'Rap'])
         ->datasets([
-            [   
+            [
                 "label" => "Maio",
                 'backgroundColor' => ['#6495ED', '#A52A2A', '#2E8B57', '#A0522D', '#FF6347', '#BC8F8F'],
                 'hoverBackgroundColor' => ['#6495ED', '#A52A2A', '#2E8B57', '#A0522D', '#FF6347', '#BC8F8F'],
                 'data' => [65, 59, 80, 81, 56, 55],
             ],
-            
+
         ])
         ->options([]);
 
@@ -100,13 +117,13 @@ class AdminController extends Controller
         ->size(['width' => 300, 'height' => 200])
         ->labels([' Rock', ' Pop', ' Sertanejo', ' Funk', ' Pagode', 'Rap'])
         ->datasets([
-            [   
+            [
                 "label" => "Maio",
                 'backgroundColor' => ['#6495ED', '#A52A2A', '#2E8B57', '#A0522D', '#FF6347', '#BC8F8F'],
                 'hoverBackgroundColor' => ['#6495ED', '#A52A2A', '#2E8B57', '#A0522D', '#FF6347', '#BC8F8F'],
                 'data' => [65, 59, 80, 81, 56, 55],
             ],
-            
+
         ])
         ->options([]);
 
@@ -124,7 +141,7 @@ class AdminController extends Controller
             ]
         ])
         ->options([]);
-        
+
 
         #Visualizações total do estabelecimento
         $establishmentstotal = app()->chartjs
@@ -140,7 +157,7 @@ class AdminController extends Controller
                 ]
             ])
             ->options([]);
-                
+
         #Total de visualização das categorias
         $categorytotal = app()->chartjs
         ->name('categorytotal')
@@ -155,7 +172,7 @@ class AdminController extends Controller
             ]
         ])
         ->options([]);
-        
+
         #Visualização anual das categorias
         $categoryyearly = app()->chartjs
         ->name('categoryyearly')
@@ -183,13 +200,13 @@ class AdminController extends Controller
         ->size(['width' => 400, 'height' => 200])
         ->labels(['Bar', 'Balada', ' Tabacaria', ' Pub', 'Karaokê'])
         ->datasets([
-            [   
+            [
                 "label" => "Maio",
                 'backgroundColor' => ['#6495ED', '#A52A2A', '#2E8B57', '#A0522D', '#FF6347'],
                 'hoverBackgroundColor' => ['#6495ED', '#A52A2A', '#2E8B57', '#A0522D', '#FF6347'],
                 'data' => [65, 59, 80, 81, 56],
             ],
-            
+
         ])
         ->options([]);
 
@@ -200,13 +217,13 @@ class AdminController extends Controller
         ->size(['width' => 300, 'height' => 200])
         ->labels(['Bar', 'Balada', ' Tabacaria', ' Pub', 'Karaokê'])
         ->datasets([
-            [   
+            [
                 "label" => "Maio",
                 'backgroundColor' => ['#6495ED', '#A52A2A', '#2E8B57', '#A0522D', '#FF6347'],
                 'hoverBackgroundColor' => ['#6495ED', '#A52A2A', '#2E8B57', '#A0522D', '#FF6347'],
                 'data' => [65, 59, 80, 81, 56],
             ],
-            
+
         ])
         ->options([]);
 
@@ -224,7 +241,7 @@ class AdminController extends Controller
             ]
         ])
         ->options([]);
-        
+
         #Visualização anual dos ritmos musicais de determinada cidade
         $rhythmyearlycustom = app()->chartjs
         ->name('rhythmyearlycustom')
@@ -252,13 +269,13 @@ class AdminController extends Controller
         ->size(['width' => 400, 'height' => 200])
         ->labels([' Rock', ' Pop', ' Sertanejo', ' Funk', ' Pagode', 'Rap'])
         ->datasets([
-            [   
+            [
                 "label" => "Maio",
                 'backgroundColor' => ['#6495ED', '#A52A2A', '#2E8B57', '#A0522D', '#FF6347', '#BC8F8F'],
                 'hoverBackgroundColor' => ['#6495ED', '#A52A2A', '#2E8B57', '#A0522D', '#FF6347', '#BC8F8F'],
                 'data' => [65, 59, 80, 81, 56, 55],
             ],
-            
+
         ])
         ->options([]);
 
@@ -269,17 +286,17 @@ class AdminController extends Controller
         ->size(['width' => 300, 'height' => 200])
         ->labels([' Rock', ' Pop', ' Sertanejo', ' Funk', ' Pagode', 'Rap'])
         ->datasets([
-            [   
+            [
                 "label" => "Maio",
                 'backgroundColor' => ['#6495ED', '#A52A2A', '#2E8B57', '#A0522D', '#FF6347', '#BC8F8F'],
                 'hoverBackgroundColor' => ['#6495ED', '#A52A2A', '#2E8B57', '#A0522D', '#FF6347', '#BC8F8F'],
                 'data' => [65, 59, 80, 81, 56, 55],
             ],
-            
+
         ])
         ->options([]);
 
-        return view('admin.establishmentSettings.dashboard', 
+        return view('admin.establishmentSettings.dashboard',
             compact('rhythmtotal',
                 'rhythmmonth',
                 'rhythmyearly',
@@ -450,6 +467,61 @@ class AdminController extends Controller
     }
 
     /**
+     * Remove Pictures DropzoneJS - Establishments Photos
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
+     */
+    public function removePicture()
+    {
+        if (!empty(auth()->user()->establishment_connect))
+            $id = auth()->user()->establishment_connect;
+        elseif (auth()->user()->establishments()->count() > 0)
+            $id = auth()->user()->establishments()->id;
+
+        if (empty($id) && auth()->user()->can('manage-called'))
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('error', 'Conecte em algum estabelecimento para realizar alterações, em seguida tente novamente!');
+
+        $establishment = Establishment::find($id);
+
+        $path = request('path');
+
+        # Log Access Users
+        $this->access('Excluir Fotos Estabelecimentos', $path);
+
+        DB::beginTransaction();
+
+        try {
+            foreach ($establishment->establishments_photos()->get() as $photo):
+                if ($photo->img_path === $path):
+                    if (!Storage::delete("public/" . $photo->img_path))
+                        throw new \Exception('Não foi possível atualizar as fotos do estabelecimento!');
+
+                    if (!$photo->delete())
+                        throw new \Exception('Não foi possível atualizar as fotos do estabelecimento!');
+
+                endif;
+            endforeach;
+
+            DB::commit();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Foto do estabelecimento excluída com sucesso!',
+            ], 200);
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ], 400);
+        }
+    }
+
+    /**
      * Function Search citys of certain state
      * @param $stateSelect
      * @return \Illuminate\Http\JsonResponse
@@ -497,12 +569,89 @@ class AdminController extends Controller
         return view('admin.establishmentSettings.settings', compact('establishment'));
     }
 
-    public function updatePictures(){
+    /**
+     * Function store and Update Pictures Establishment
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
+     */
+    public function updatePictures(Request $request)
+    {
+        if (!empty(auth()->user()->establishment_connect))
+            $id = auth()->user()->establishment_connect;
+        elseif (auth()->user()->establishments()->count() > 0)
+            $id = auth()->user()->establishments()->id;
 
+        if (empty($id) && auth()->user()->can('manage-called'))
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('error', 'Conecte em algum estabelecimento para realizar alterações, em seguida tente novamente!');
+
+        $establishment = Establishment::find($id);
+
+        if ($request->hasFile('file')):
+
+            DB::beginTransaction();
+
+            try {
+                if ($establishment->establishments_photos()->max('created_at') > date('Y-m-d H:i:s', strtotime('-5 minutes'))):
+                    foreach ($establishment->establishments_photos()->get() as $photo):
+                        if (!Storage::delete("public/" . $photo->img_path))
+                            throw new \Exception('Não foi possível atualizar as fotos do estabelecimento!');
+
+                        if (!$photo->delete())
+                            throw new \Exception('Não foi possível atualizar as fotos do estabelecimento!');
+
+                    endforeach;
+
+                endif;
+
+                $quantityPictures = $establishment->establishments_photos()->count();
+
+                if ($quantityPictures === 10)
+                    throw new \Exception('Não foi possível armazenar a foto do estabelecimento, máximo 10 fotos!');
+
+                if (!($path = $request->file->store('establishment', 'public')))
+                    throw new \Exception('Não foi possível armazenar a foto do estabelecimento!');
+
+                if (!$establishment->establishments_photos()->create(['img_path' => $path, 'sequence' => ($quantityPictures+1)]))
+                    throw new \Exception('Ocorreu um erro ao inserir a foto do estabelecimento!');
+
+                # Log Access Users
+                $this->access('Criar Fotos Estabelecimentos', $path);
+
+                DB::commit();
+
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Foto do estabelecimento inserida com sucesso!',
+                    'path' => $path,
+                ], 200);
+
+            } catch (\Exception $e) {
+                DB::rollBack();
+
+                return response()->json([
+                    'success' => false,
+                    'message' => $e->getMessage()
+                ], 400);
+            }
+
+        endif;
+
+        return response()->json([
+            'success' => false,
+            'message' => 'Erro desconhecido!'
+        ], 400);
     }
 
-
-    public function updateProfilePicture(UpdateProfilePicture $request){
+    /**
+     * Store and update picture profile painel admin
+     * @param UpdateProfilePicture $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function updateProfilePicture(UpdateProfilePicture $request)
+    {
         $data = $request->validated();
 
         # Log Access Users
@@ -518,12 +667,15 @@ class AdminController extends Controller
             if (!($path = $data['profile_picture_path']->store('settings', 'public')))
                 throw new \Exception('Não foi possível armazenar a foto do perfil!');
 
-            $data["profile_picture_path"] = $path;
-
             $user = auth()->user();
-            $user->profile_picture_path = $data["profile_picture_path"];
+            $user->profile_picture_path = $path;
 
             if (!$user->update())
+                throw new \Exception('Ocorreu um erro ao atualizar a foto do perfil!');
+
+            $picture = Image::make(public_path('storage/' . $user->profile_picture_path));
+
+            if (!$picture->resize(720, 720)->encode('png', 100)->save())
                 throw new \Exception('Ocorreu um erro ao atualizar a foto do perfil!');
 
             DB::commit();
@@ -542,6 +694,55 @@ class AdminController extends Controller
     }
 
     /**
+     * Function update details establishment
+     * @param UpdateEstablishmentSettings $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function updateSettings(UpdateEstablishmentSettings $request)
+    {
+        if (!empty(auth()->user()->establishment_connect))
+            $id = auth()->user()->establishment_connect;
+        elseif (auth()->user()->establishments()->count() > 0)
+            $id = auth()->user()->establishments()->id;
+
+        if (empty($id) && auth()->user()->can('manage-called'))
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('error', 'Conecte em algum estabelecimento para realizar alterações, em seguida tente novamente!');
+
+
+        $data = $request->validated();
+
+        # Log Access Users
+        $this->access('Atualização Detalhes Estabelecimento', $data);
+
+        DB::beginTransaction();
+
+        try {
+            $establishment = Establishment::find($id);
+
+            $establishment->details = $data['description'];
+
+            if (!$establishment->update())
+                throw new \Exception('Ocorreu um erro ao atualizar os detalhes do estabelecimento!');
+
+            DB::commit();
+
+            return redirect()
+                ->route('admin.settings')
+                ->with('success', 'Detalhes do estabelecimento atualizado com sucesso!');
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return redirect()
+                ->route('admin.settings')
+                ->withInput()
+                ->with('error', $e->getMessage());
+        }
+    }
+
+    /**
      * Function valid password recent
      * @param $password
      * @return json
@@ -551,85 +752,5 @@ class AdminController extends Controller
             return response()->json(['status' => true]);
         else
             return response()->json(['status' => false]);
-    }
-
-    /**
-     * Create Access Log User
-     */
-    private function access($description, $content = NULL, $class = __CLASS__)
-    {
-        auth()->user()->user_access()->create([
-            'class' => $class,
-            'establishment_connect' => !empty(auth()->user()->establishment_connect) ? auth()->user()->establishment_connect : NULL,
-            'description' => $description,
-            'content' => $content,
-            'data_access' => date('YmdHis')
-        ]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 }

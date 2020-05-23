@@ -38,6 +38,17 @@
       0 => 'Grimzy\\LaravelMysqlSpatial\\SpatialServiceProvider',
     ),
   ),
+  'intervention/image' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Intervention\\Image\\ImageServiceProvider',
+    ),
+    'aliases' => 
+    array (
+      'Image' => 'Intervention\\Image\\Facades\\Image',
+    ),
+  ),
   'ixudra/curl' => 
   array (
     'providers' => 

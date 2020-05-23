@@ -26,24 +26,32 @@
         {
             $emailUnique = '';
             $cpfcnpjUnique = '';
+            $nameRequired = 'required';
+            $emailRequired = 'required';
             $passwordRequired = 'required';
+            $favoriteRequired = '';
 
-            /** @var \App\Models\Admin\Establishment The establishment to update */
-            $user = $this->route()
-                ->parameter('user');
+            /** @var \App\Models\Site\User The user to update */
+            $user = auth()->user();
 
             // Append parameters for EMAIL AND CPF_CNPJ REGISTRATION validation
             if ($user instanceof User) {
                 $emailUnique = ',email,' . $user->id;
                 $cpfcnpjUnique = ',cpf_cnpj,' . $user->id;
                 $passwordRequired = '';
+                $nameRequired = '';
+                $emailRequired = '';
+                $favoriteRequired = 'required';
             }
 
             $rules = [
-                'name' => ['required', 'string', 'min:3'],
-                'email' => ['required', 'string', 'unique:user' . $emailUnique],
-                'password' => ['min:6', $passwordRequired],
+                'name' => [$nameRequired, 'string', 'min:3'],
+                'email' => [$emailRequired, 'string', 'unique:user' . $emailUnique],
+                'password' => [$passwordRequired, 'min:6'],
                 'cpf_cnpj' => ['string', 'min:11', 'unique:user' . $cpfcnpjUnique],
+                'city_id' => ['integer', 'digits_between:1,5'],
+                'favorite_rhythms' => ['nullable'],
+                'favorite_categorys' => ['nullable'],
             ];
 
             return $rules;
@@ -63,12 +71,15 @@
                 'email.required' => 'O campo [E-mail] é obrigatório, favor preencha!',
                 'email.string' => 'O campo [E-mail] é obrigatório, favor preencha!',
                 'email.unique' => 'Já existe esse e-mail cadastrado, favor informe outro!',
-                'password.min' => 'O campo [Senha] deve conter no mínimo 3 caracteres',
+                'password.min' => 'O campo [Senha] deve conter no mínimo 6 caracteres',
                 'password.required' => 'O campo [Senha] é obrigatório!',
-                'cpf_cnpj.required' => 'O campo [CPF/CNPJ] é obrigatório, favor preencha!',
                 'cpf_cnpj.string' => 'O campo [CPF/CNPJ] é obrigatório, favor preencha!',
                 'cpf_cnpj.min' => 'O campo [CPF/CNPJ] deve conter no mínimo 11 números!',
                 'cpf_cnpj.unique' => 'Já existe esse cpf/cnpj cadastrado, favor informe outro!',
+                'city_id.integer' => 'Cidade inválida, favor verifique!',
+                'city_id.digits_between' => 'Cidade inválida, favor verifique!',
+                'favorite_rhythms.required' => 'Lista de Categoria é obrigatória!',
+                'favorite_categorys.required' => 'Lista de Categoria é obrigatória',
             ];
         }
     }

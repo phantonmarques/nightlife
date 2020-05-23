@@ -174,6 +174,7 @@ return [
         App\Providers\PermissionServiceProvider::class,
         Grimzy\LaravelMysqlSpatial\SpatialServiceProvider::class,
         Ixudra\Curl\CurlServiceProvider::class,
+        Intervention\Image\ImageServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -237,6 +238,7 @@ return [
         'Form' => Collective\Html\FormFacade::class,
         'Html' => Collective\Html\HtmlFacade::class,
         'Curl' => Ixudra\Curl\Facades\Curl::class,
+        'Image' => Intervention\Image\Facades\Image::class,
 
     ],
 

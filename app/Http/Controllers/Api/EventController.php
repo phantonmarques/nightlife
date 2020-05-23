@@ -7,9 +7,11 @@ use App\Models\Site\UserRating;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Admin\Category;
+use App\Models\Admin\CategoryStatistics;
 use App\Models\Admin\Event;
 use App\Models\Admin\Establishment;
 use App\Models\Admin\Rhythm;
+use App\Models\Admin\RhythmStatistics;
 use Grimzy\LaravelMysqlSpatial\Types\Point;
 
 class EventController extends Controller
@@ -201,13 +203,13 @@ class EventController extends Controller
 
         if (sizeof($category) === 0)
             $category = null;
-//        else # COUNTERS CATEGORY
-//            incrementViewCategory()
+        else # COUNTERS CATEGORY
+            $this->incrementViewCategory($category);
 
         if (sizeof($rhythm) === 0)
             $rhythm = null;
-        //        else # COUNTERS RHYTHM
-//            incrementViewRhythm()
+        else # COUNTERS RHYTHM
+            $this->incrementViewRhythm($rhythm);
 
         # FIM FORMATAÇÃO
 
@@ -370,5 +372,35 @@ class EventController extends Controller
             'status' => false,
             'data' => []
         ]);
+    }
+
+    /**
+     * Function increments views users
+     * @param $categorys
+     */
+    private function incrementViewCategory($categorys)
+    {
+        foreach ($categorys as $category):
+            $statistics = CategoryStatistics::where('category_id', $category);
+            $statistics->increment('total_views_week');
+            $statistics->increment('total_views_month');
+            $statistics->increment('total_views_year');
+            $statistics->increment('total_views_created');
+        endforeach;
+    }
+
+    /**
+     * Function increments views users
+     * @param $rhythms
+     */
+    private function incrementViewRhythm($rhythms)
+    {
+        foreach ($rhythms as $rhythm):
+            $statistics = RhythmStatistics::where('rhythm_id', $rhythm);
+            $statistics->increment('total_views_week');
+            $statistics->increment('total_views_month');
+            $statistics->increment('total_views_year');
+            $statistics->increment('total_views_created');
+        endforeach;
     }
 }

@@ -118,7 +118,7 @@ class UserRatingTableSeeder extends Seeder
 
         $data = [
             'author' => $user->name,
-            'rating' => 9,
+            'rating' => 5,
             'establishment_id' => 9
         ];
         $user->user_rating()->create($data);
@@ -157,7 +157,7 @@ class UserRatingTableSeeder extends Seeder
 
         $data = [
             'author' => $user->name,
-            'rating' => 9,
+            'rating' => 2,
             'establishment_id' => 9
         ];
         $user->user_rating()->create($data);

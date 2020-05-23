@@ -37,8 +37,8 @@
                                 {{ Form::file('profile_picture_path', ['class' => 'input-file']) }}
                                 {{ Form::label('profile_picture_path', (!empty(auth()->user()->profile_picture_path) ? 'Mudar ' : '') . 'Foto de Perfil', ['class' => 'input-file-trigger']) }}
                             </div>
-                            <p class="file-return"></p>
                         </div>
+                        <p class="file-return pull-center"></p>
                     </div>
                     @if ($errors->has('profile_picture_path'))
                         <br>

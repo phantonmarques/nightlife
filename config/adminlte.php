@@ -231,8 +231,8 @@ return [
                 [
                     'text'      => 'Fotos Perfil',
                     'icon'      => 'fas fa-images',
-                    'route'     => 'admin.changePictures',
-                    'active'    => ['control/changePictures', 'control/changePictures/*', 'control/changePictures?*'],
+                    'route'     => 'admin.pictures',
+                    'active'    => ['control/pictures', 'control/pictures/*', 'control/pictures?*'],
                 ],
             ],
         ],

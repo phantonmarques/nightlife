@@ -41,9 +41,9 @@ class EstablishmentTableSeeder extends Seeder
         $establishment->save();
         $establishment->establishments_category()->attach($tabacaria);
         $establishment->establishment_statistics()->create();
-        $establishment->establishments_photos()->create(['img_path' => 'establishment/primos1.jpg', 'main' => 1]);
-        $establishment->establishments_photos()->create(['img_path' => 'establishment/primos2.jpg', 'main' => 0]);
-        $establishment->establishments_photos()->create(['img_path' => 'establishment/primos3.jpg', 'main' => 0]);
+        $establishment->establishments_photos()->create(['img_path' => 'establishment/primos1.jpg', 'sequence' => 1]);
+        $establishment->establishments_photos()->create(['img_path' => 'establishment/primos2.jpg', 'sequence' => 2]);
+        $establishment->establishments_photos()->create(['img_path' => 'establishment/primos3.jpg', 'sequence' => 3]);
 
         # VICTORIA VILLA - ID = 2
 
@@ -59,7 +59,7 @@ class EstablishmentTableSeeder extends Seeder
         $establishment2->establishments_rhythm()->attach($sertanejo);
         $establishment2->establishments_rhythm()->attach($pagode);
         $establishment2->establishment_statistics()->create();
-        $establishment2->establishments_photos()->create(['img_path' => 'establishment/victoriavilla1.jpg', 'main' => 1]);
+        $establishment2->establishments_photos()->create(['img_path' => 'establishment/victoriavilla1.jpg', 'sequence' => 1]);
 
         # DANGHAI - ID = 3
 
@@ -74,9 +74,9 @@ class EstablishmentTableSeeder extends Seeder
         $establishment3->establishments_category()->attach($balada);
         $establishment3->establishments_rhythm()->attach($eletronica);
         $establishment3->establishment_statistics()->create();
-        $establishment3->establishments_photos()->create(['img_path' => 'establishment/danghai1.jpg', 'main' => 1]);
-        $establishment3->establishments_photos()->create(['img_path' => 'establishment/danghai2.jpg', 'main' => 0]);
-        $establishment3->establishments_photos()->create(['img_path' => 'establishment/danghai3.png', 'main' => 0]);
+        $establishment3->establishments_photos()->create(['img_path' => 'establishment/danghai1.jpg', 'sequence' => 1]);
+        $establishment3->establishments_photos()->create(['img_path' => 'establishment/danghai2.jpg', 'sequence' => 2]);
+        $establishment3->establishments_photos()->create(['img_path' => 'establishment/danghai3.png', 'sequence' => 3]);
 
         # PARK ART - ID = 4
 
@@ -91,9 +91,9 @@ class EstablishmentTableSeeder extends Seeder
         $establishment4->establishments_category()->attach($rave);
         $establishment4->establishments_rhythm()->attach($eletronica);
         $establishment4->establishment_statistics()->create();
-        $establishment4->establishments_photos()->create(['img_path' => 'establishment/parkart1.jpg', 'main' => 1]);
-        $establishment4->establishments_photos()->create(['img_path' => 'establishment/parkart2.jpg', 'main' => 0]);
-        $establishment4->establishments_photos()->create(['img_path' => 'establishment/parkart3.jpg', 'main' => 0]);
+        $establishment4->establishments_photos()->create(['img_path' => 'establishment/parkart1.jpg', 'sequence' => 1]);
+        $establishment4->establishments_photos()->create(['img_path' => 'establishment/parkart2.jpg', 'sequence' => 2]);
+        $establishment4->establishments_photos()->create(['img_path' => 'establishment/parkart3.jpg', 'sequence' => 3]);
 
         # BLOOD ROCK - ID = 5
 
@@ -108,9 +108,9 @@ class EstablishmentTableSeeder extends Seeder
         $establishment5->establishments_category()->attach($balada);
         $establishment5->establishments_rhythm()->attach($rock);
         $establishment5->establishment_statistics()->create();
-        $establishment5->establishments_photos()->create(['img_path' => 'establishment/bloodbar1.jpg', 'main' => 1]);
-        $establishment5->establishments_photos()->create(['img_path' => 'establishment/bloodbar2.jpg', 'main' => 0]);
-        $establishment5->establishments_photos()->create(['img_path' => 'establishment/bloodbar3.jpg', 'main' => 0]);
+        $establishment5->establishments_photos()->create(['img_path' => 'establishment/bloodbar1.jpg', 'sequence' => 1]);
+        $establishment5->establishments_photos()->create(['img_path' => 'establishment/bloodbar2.jpg', 'sequence' => 2]);
+        $establishment5->establishments_photos()->create(['img_path' => 'establishment/bloodbar3.jpg', 'sequence' => 3]);
 
         # TABACARIA MANDELA - ID = 6
 
@@ -128,7 +128,7 @@ class EstablishmentTableSeeder extends Seeder
         $establishment->establishments_rhythm()->attach($reggae);
         $establishment->establishments_rhythm()->attach($funk);
         $establishment6->establishment_statistics()->create();
-        $establishment6->establishments_photos()->create(['img_path' => 'establishment/mandela1.jpg', 'main' => 1]);
+        $establishment6->establishments_photos()->create(['img_path' => 'establishment/mandela1.jpg', 'sequence' => 1]);
 
         # MILLENIUM DISCO CLUB - ID = 7
 
@@ -146,8 +146,8 @@ class EstablishmentTableSeeder extends Seeder
         $establishment7->establishments_rhythm()->attach($axe);
         $establishment7->establishments_rhythm()->attach($eletronica);
         $establishment7->establishment_statistics()->create();
-        $establishment7->establishments_photos()->create(['img_path' => 'establishment/millenium1.jpg', 'main' => 1]);
-        $establishment7->establishments_photos()->create(['img_path' => 'establishment/millenium2.jpg', 'main' => 0]);
+        $establishment7->establishments_photos()->create(['img_path' => 'establishment/millenium1.jpg', 'sequence' => 1]);
+        $establishment7->establishments_photos()->create(['img_path' => 'establishment/millenium2.jpg', 'sequence' => 2]);
 
         # DOISZERODOIS - ID = 8
 
@@ -165,9 +165,9 @@ class EstablishmentTableSeeder extends Seeder
         $establishment8->establishments_rhythm()->attach($reggae);
         $establishment8->establishments_rhythm()->attach($funk);
         $establishment8->establishment_statistics()->create();
-        $establishment8->establishments_photos()->create(['img_path' => 'establishment/doiszerodois1.jpg', 'main' => 1]);
-        $establishment8->establishments_photos()->create(['img_path' => 'establishment/doiszerodois2.jpg', 'main' => 0]);
-        $establishment8->establishments_photos()->create(['img_path' => 'establishment/doiszerodois3.jpg', 'main' => 0]);
+        $establishment8->establishments_photos()->create(['img_path' => 'establishment/doiszerodois1.jpg', 'sequence' => 1]);
+        $establishment8->establishments_photos()->create(['img_path' => 'establishment/doiszerodois2.jpg', 'sequence' => 2]);
+        $establishment8->establishments_photos()->create(['img_path' => 'establishment/doiszerodois3.jpg', 'sequence' => 3]);
 
 
         # RODEO BAR - ID = 9
@@ -185,9 +185,9 @@ class EstablishmentTableSeeder extends Seeder
         $establishment9->establishments_rhythm()->attach($pagode);
         $establishment9->establishments_rhythm()->attach($funk);
         $establishment9->establishment_statistics()->create();
-        $establishment9->establishments_photos()->create(['img_path' => 'establishment/rodeobar1.jpg', 'main' => 1]);
-        $establishment9->establishments_photos()->create(['img_path' => 'establishment/rodeobar2.jpg', 'main' => 0]);
-        $establishment9->establishments_photos()->create(['img_path' => 'establishment/rodeobar3.jpg', 'main' => 0]);
+        $establishment9->establishments_photos()->create(['img_path' => 'establishment/rodeobar1.jpg', 'sequence' => 1]);
+        $establishment9->establishments_photos()->create(['img_path' => 'establishment/rodeobar2.jpg', 'sequence' => 2]);
+        $establishment9->establishments_photos()->create(['img_path' => 'establishment/rodeobar3.jpg', 'sequence' => 3]);
 
         # Havana Bar - ID = 10
 
@@ -206,7 +206,7 @@ class EstablishmentTableSeeder extends Seeder
         $establishment10->establishments_rhythm()->attach($rap);
         $establishment10->establishments_rhythm()->attach($reggae);
         $establishment10->establishment_statistics()->create();
-        $establishment10->establishments_photos()->create(['img_path' => 'establishment/havana1.jpg', 'main' => 1]);
+        $establishment10->establishments_photos()->create(['img_path' => 'establishment/havana1.jpg', 'sequence' => 1]);
 
         # Peppers - ID = 11
 
@@ -222,9 +222,9 @@ class EstablishmentTableSeeder extends Seeder
         $establishment11->establishments_rhythm()->attach($pop);
         $establishment11->establishments_rhythm()->attach($rock);
         $establishment11->establishment_statistics()->create();
-        $establishment11->establishments_photos()->create(['img_path' => 'establishment/peppers1.jpg', 'main' => 1]);
-        $establishment11->establishments_photos()->create(['img_path' => 'establishment/peppers2.png', 'main' => 0]);
-        $establishment11->establishments_photos()->create(['img_path' => 'establishment/peppers3.png', 'main' => 0]);
+        $establishment11->establishments_photos()->create(['img_path' => 'establishment/peppers1.jpg', 'sequence' => 1]);
+        $establishment11->establishments_photos()->create(['img_path' => 'establishment/peppers2.png', 'sequence' => 2]);
+        $establishment11->establishments_photos()->create(['img_path' => 'establishment/peppers3.png', 'sequence' => 3]);
 
         # James Bar - ID = 12
 
@@ -241,9 +241,9 @@ class EstablishmentTableSeeder extends Seeder
         $establishment12->establishments_rhythm()->attach($rock);
         $establishment12->establishments_rhythm()->attach($funk);
         $establishment12->establishment_statistics()->create();
-        $establishment12->establishments_photos()->create(['img_path' => 'establishment/james1.jpg', 'main' => 1]);
-        $establishment12->establishments_photos()->create(['img_path' => 'establishment/james2.png', 'main' => 0]);
-        $establishment12->establishments_photos()->create(['img_path' => 'establishment/james3.png', 'main' => 0]);
+        $establishment12->establishments_photos()->create(['img_path' => 'establishment/james1.jpg', 'sequence' => 1]);
+        $establishment12->establishments_photos()->create(['img_path' => 'establishment/james2.png', 'sequence' => 2]);
+        $establishment12->establishments_photos()->create(['img_path' => 'establishment/james3.png', 'sequence' => 3]);
 
         # Shed Bar - ID = 13
 
@@ -260,9 +260,9 @@ class EstablishmentTableSeeder extends Seeder
         $establishment13->establishments_rhythm()->attach($pagode);
         $establishment13->establishments_rhythm()->attach($funk);
         $establishment13->establishment_statistics()->create();
-        $establishment13->establishments_photos()->create(['img_path' => 'establishment/shed1.jpg', 'main' => 1]);
-        $establishment13->establishments_photos()->create(['img_path' => 'establishment/shed2.jpg', 'main' => 0]);
-        $establishment13->establishments_photos()->create(['img_path' => 'establishment/shed3.jpg', 'main' => 0]);
-        $establishment13->establishments_photos()->create(['img_path' => 'establishment/shed4.jpg', 'main' => 0]);
+        $establishment13->establishments_photos()->create(['img_path' => 'establishment/shed1.jpg', 'sequence' => 1]);
+        $establishment13->establishments_photos()->create(['img_path' => 'establishment/shed2.jpg', 'sequence' => 2]);
+        $establishment13->establishments_photos()->create(['img_path' => 'establishment/shed3.jpg', 'sequence' => 3]);
+        $establishment13->establishments_photos()->create(['img_path' => 'establishment/shed4.jpg', 'sequence' => 4]);
     }
 }

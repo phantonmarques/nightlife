@@ -1,5 +1,13 @@
 $(document).ready(function() {
-    CKEDITOR.replace('description');
+    $('#start_time').datetimepicker({
+        datepicker:false,
+        format:'H:i'
+    });
+
+    $('#end_time').datetimepicker({
+        datepicker:false,
+        format:'H:i'
+    });
 
     document.querySelector("html").classList.add('js');
 

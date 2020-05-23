@@ -17,7 +17,7 @@ class CreateEstablishmentsPhotosTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('establishment_id');
             $table->string('img_path')->unique();
-            $table->boolean('main')->default(0);
+            $table->integer('sequence')->default(1);
             $table->timestamps();
 
             $table->foreign('establishment_id')->references('id')->on('establishment')->onDelete('cascade');

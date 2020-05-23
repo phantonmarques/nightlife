@@ -22,9 +22,11 @@ Route::group(['middleware' => 'auth', 'prefix' => '/control/'], function () {
     # Establishment Routes Access
     Route::get('dashboard', 'Admin\\AdminController@dashboard')->name('admin.dashboard');
     Route::get('details', 'Admin\\AdminController@details')->name('admin.details');
-    Route::get('changePictures', 'Admin\\AdminController@changePictures')->name('admin.changePictures');
-    Route::post('pictures', 'Admin\\AdminController@updatePictures')->name('admin.pictures');
+    Route::get('pictures', 'Admin\\AdminController@changePictures')->name('admin.pictures');
+    Route::post('updatePictures', 'Admin\\AdminController@updatePictures')->name('admin.updatePictures');
+    Route::delete('removePicture', 'Admin\\AdminController@removePicture')->name('admin.removePicture');
     Route::get('settings', 'Admin\\AdminController@settings')->name('admin.settings');
+    Route::post('updateSettings', 'Admin\\AdminController@updateSettings')->name('admin.updateSettings');
     Route::get('reports', 'Admin\\AdminController@reports')->name('admin.reports');
 
     # Admin\Employee Access *SPECIAL*

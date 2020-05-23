@@ -5,14 +5,20 @@ namespace App\Http\Controllers\Api;
 use App\Http\Requests\Api\CreateOrUpdateUser;
 use App\Http\Requests\Api\CreateUserComment;
 use App\Http\Requests\Api\CreateUserRating;
+use App\Http\Requests\Api\UpdatePicture;
 use App\Models\Site\UserComment;
 use App\Models\Site\UserRating;
+use App\Models\Site\State;
+use App\Models\Site\City;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Site\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\ImageManagerStatic as Image;
+use Zend\Diactoros\Response\JsonResponse;
 
 class UserController extends Controller
 {
@@ -23,7 +29,8 @@ class UserController extends Controller
      */
     public function login(Request $request)
     {
-        $user = User::where('email', $request->email)->first();
+        $user = User::where('email', $request->user)
+            ->orWhere('cpf_cnpj', $request->user)->first();
 
         if ($user) {
             if (Hash::check($request->password, $user->password) && !empty($user->email_verified_at)) {
@@ -65,11 +72,13 @@ class UserController extends Controller
     {
         $user = auth()->user();
 
-        $user->rating_establishments = UserRating::with('establishment')->whereHas('establishment', function ($q) {
+        $user->recent_rating_establishments = UserRating::with('establishment')->whereHas('establishment', function ($q) {
             $q->whereStatus(1); })->where('user_id', $user->id)->orderBy('created_at', 'DESC')->get();;
 
-        $user->comments_establishments = UserComment::with('establishment')->whereHas('establishment', function ($q) {
+        $user->recent_comments_establishments = UserComment::with('establishment')->whereHas('establishment', function ($q) {
             $q->whereStatus(1); })->where('user_id', $user->id)->where('user_id', $user->id)->orderBy('created_at', 'DESC')->get();;
+
+        $user->user_settings;
 
         if (!empty($user->name))
             return response()->json([
@@ -80,6 +89,40 @@ class UserController extends Controller
         return response()->json([
             'status' => false,
             'data' => 'Ocorreu erro ao buscar suas informações, por favor verifique a conexão e tente novamente'
+        ]);
+    }
+
+    /**
+     * Function Search citys of certain state
+     * @param $stateSelect
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function searchCitys($state)
+    {
+        $citys = City::where('state_id', $state)->pluck('id', 'name_visible');
+
+        if (count($citys) > 0)
+            return response()->json([
+                'status' => true,
+                'data' => City::where('state_id', $state)->pluck('id', 'name_visible')
+            ]);
+
+        return response()->json([
+            'status' => false,
+            'message' => 'Cidade não encontrada!'
+        ]);
+    }
+
+    /**
+     * Function Search state selected
+     * @param $state
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function searchStates()
+    {
+        return response()->json([
+            'status' => true,
+            'data' => State::pluck('id', 'name_visible')
         ]);
     }
 
@@ -224,20 +267,96 @@ class UserController extends Controller
      * Update user common
      * @param Request $request
      * @param User $user
+     * @return JsonResponse
      */
-    public function update(Request $request, User $user)
+    public function update(CreateOrUpdateUser $request)
     {
-        //
+        $data = $request->validated();
+
+        DB::beginTransaction();
+
+        try {
+            if (isset($data["password"]))
+                $data["password"] = bcrypt($data["password"]);
+
+            $user = auth()->user();
+
+            $user->fill($data);
+
+            if ($user->isDirty())
+                if (!$user->save())
+                    throw new \Exception('Não foi possível atualizar o usuário');
+
+            $favorites = $user->user_settings;
+
+            $favorites->fill($data);
+
+            if ($favorites->isDirty())
+                if (!$favorites->save())
+                    throw new \Exception('Não foi possível atualizar o usuário');
+
+            DB::commit();
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Usuário atualizado com sucesso!',
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return response()->json([
+                'status' => false,
+                'message' => 'Não foi possível atualizar o usuário!',
+                'errors' => $e->getMessage()
+            ]);
+        }
     }
 
     /**
-     * Remove user common
-     *
-     * @param User $user
-     * @return \Illuminate\Http\Response
+     * Update/Insert image user common
+     * @param UpdatePicture $request
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy($user)
+    public function updateImg(UpdatePicture $request)
     {
-        //
+        $data = $request->validated();
+
+        DB::beginTransaction();
+
+        try {
+            if (!empty(auth()->user()->profile_picture_path))
+                if (!Storage::delete("public/" . auth()->user()->profile_picture_path))
+                    throw new \Exception('Não foi possível atualizar a foto do perfil!');
+
+            if (!($path = $data['profile_picture_path']->store('settings', 'public')))
+                throw new \Exception('Não foi possível armazenar a foto do perfil!');
+
+            $user = auth()->user();
+            $user->profile_picture_path = $path;
+
+            if (!$user->update())
+                throw new \Exception('Ocorreu um erro ao atualizar a foto do perfil!');
+
+            $picture = Image::make(public_path('storage/' . $user->profile_picture_path));
+
+            if (!$picture->resize(400, 400)->encode('png', 100)->save())
+                throw new \Exception('Ocorreu um erro ao atualizar a foto do perfil!');
+
+            DB::commit();
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Foto inserida com sucesso!',
+                'path_img' => $path
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return response()->json([
+                'status' => false,
+                'message' => 'Não foi possível inserir a foto!',
+                'errors' => $e->getMessage()
+            ]);
+        }
     }
 }

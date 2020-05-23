@@ -222,7 +222,7 @@
 
                 if ($user->isDirty())
                     if (!$user->save())
-                        throw new \Exception('Não foi possível atualizar o usuário');
+                        throw new \Exception('Não foi possível atualizar o usuário!');
 
                 if (isset($data["user_role"])):
                     $role = Role::where('id', $data["user_role"])->with('permissions')->first();
@@ -238,7 +238,7 @@
 
                 return redirect()
                     ->route('user.index')
-                    ->with('success', 'Usuário atualizado com sucesso');
+                    ->with('success', 'Usuário atualizado com sucesso!');
             } catch (\Exception $e) {
                 DB::rollBack();
 
