@@ -178,6 +178,14 @@ return [
             'can'       => 'access-admin'
         ],
         [
+            'text'      => 'Notícias',
+            'icon'      => 'far fa-newspaper',
+            'route'     => 'news.index',
+            'active'    => ['control/news', 'control/news/*', 'control/news?*'],
+            'can'       => 'manage-called'
+        ],
+
+        [
             'header'    => 'ATENDIMENTO ESTABELECIMENTO',
             'can'       => 'manage-called'
         ],
@@ -186,11 +194,10 @@ return [
             'icon'      => 'fas fa-phone-volume',
             'url'       => '#',
             'active'    => ['control/roles', 'control/roles/*', 'control/roles?*'],
-            'can'     => 'manage-called'
+            'can'       => 'manage-called'
         ],
         [
             'header'    => 'GERENCIAMENTO DE ESTABELECIMENTO',
-            'can'       => ['manage-called']
         ],
         [
             'text'      => 'Dashboard',

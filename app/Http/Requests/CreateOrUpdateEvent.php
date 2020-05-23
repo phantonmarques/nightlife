@@ -64,7 +64,7 @@
             return [
                 'name.required' => 'Campo [Nome] é obrigatório, favor informe!',
                 'name.min' => 'Campo [Nome] deve conter no mínimo 5 caracteres, favor corrija e tente novamente!',
-                'unique.min' => 'Já existe um evento com esse nome, favor informe outro!',
+                'name.unique' => 'Já existe um evento com esse nome, favor informe outro!',
                 'cover_path.required' => 'Favor, insira imagem para capa do evento!',
                 'cover_path.image' => 'Imagem inválida, favor insira uma imagem no formato correto!',
                 'cover_path.mimes' => 'Imagem inválida, favor insira uma imagem no formato correto (jpeg, jpg, png, gif e svg)!',

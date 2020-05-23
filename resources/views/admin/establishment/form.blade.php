@@ -241,15 +241,6 @@
                     @endif
                 </div>
 
-                @if ($message = Session::get('error'))
-                    <br>
-                    <div class="row">
-                        <div class="col-md-10">
-                            <div class="text-red">{{ $message }}</div>
-                        </div>
-                    </div>
-                @endif
-
                 <div class="box-footer">
                     <div class="col-lg-2 pull-right">
                         {{ Form::submit('Salvar', ['class' => 'btn btn-block btn-success']) }}

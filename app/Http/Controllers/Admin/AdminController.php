@@ -2,11 +2,16 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\Admin\Establishment;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Admin\Establishment;
+use App\Models\Admin\Event;
+use App\Models\Admin\News;
+use App\Models\Admin\CategoryStatistics;
+use App\Models\Admin\RhythmStatistics;
 use App\Models\Site\City;
 use App\Models\Site\State;
+use App\Models\Site\User;
 use App\Http\Requests\UpdatePassword;
 use App\Http\Requests\UpdateProfilePicture;
 use App\Http\Requests\UpdateEstablishmentSettings;
@@ -14,7 +19,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\ImageManagerStatic as Image;
-use Illuminate\Support\Str;
+use Barryvdh\DomPDF\PDF;
 
 class AdminController extends Controller
 {
@@ -35,7 +40,35 @@ class AdminController extends Controller
      */
     public function index()
     {
-        return view('admin.home.index');
+        $category = CategoryStatistics::with('category')->orderBy('total_views_week', 'DESC')->first();
+
+        if (!empty(auth()->user()->establishment_connect))
+            $id = auth()->user()->establishment_connect;
+        elseif (auth()->user()->establishments()->count() > 0)
+            $id = auth()->user()->establishments()->id;
+
+        if (isset($id))
+            $events = Event::where('establishment_id', $id)->count();
+        else
+            $events = Event::count();
+
+        $news = News::where('important', 0)->whereDate('updated_at', '<=', date('Y-m-d H:i:s', strtotime('+15 days')))->get();
+
+        $newsImportant = News::where('important', 1)->whereDate('updated_at', '<=', date('Y-m-d H:i:s', strtotime('+15 days')))->get();
+
+        $rhythm = RhythmStatistics::with('rhythm')->orderBy('total_views_week', 'DESC')->first();
+
+        $user = User::whereDate('created_at', '>=', date('Y-m-d H:i:s', strtotime('-7 days')))->count();
+
+        return view('admin.home.index', compact(
+            'category',
+            'events',
+            'id',
+            'news',
+            'newsImportant',
+            'rhythm',
+            'user'
+        ));
     }
 
     /**
@@ -407,6 +440,41 @@ class AdminController extends Controller
             ->back()
             ->withInput()
             ->with('success', 'Conectado ao estabelecimento com sucesso!');
+    }
+
+    /**
+     * Function generate PDF info Establishment
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function generatePDF()
+    {
+        if (!empty(auth()->user()->establishment_connect))
+            $id = auth()->user()->establishment_connect;
+        elseif (auth()->user()->establishments()->count() > 0)
+            $id = auth()->user()->establishments()->id;
+
+        if (empty($id) && auth()->user()->can('manage-called'))
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('error', 'Conecte em algum estabelecimento para realizar alterações, em seguida tente novamente!');
+
+        $establishment = Establishment::with([
+            'users',
+            'establishment_address',
+            'establishment_phones',
+            'establishment_statistics',
+            'events',
+            'ratings',
+            'comments'
+        ])->find($id);
+
+        #MERIELLY FAZER FUNÇÃO AQUI ABAIXO...
+
+
+
+
+
     }
 
     /**

@@ -2,7 +2,11 @@
 @section('title', 'Detalhes da Conta ·')
 
 @section('content_header')
-    <h1>Detalhes da Conta</h1>
+    <h1>&nbsp;</h1>
+    <ol class="breadcrumb">
+        <li><a href="{{ route('admin.page') }}">Inicio</a></li>
+        <li><a href="{{ route('admin.details') }}">Detalhes da Conta</a></li>
+    </ol>
 @stop
 
 @section('breadcrumbs')
@@ -14,7 +18,7 @@
         <div class="col-md-12">
             <div class="box box-warning">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Informações do estabelecimento</h3>
+                    <h3 class="box-title">Detalhes da Conta</h3>
                 </div>
 
                 <div class="box-body">
@@ -191,15 +195,6 @@
                             </div>
                         @endforeach
                     @endif
-                </div>
-
-                <div class="box-footer">
-                    <div class="col-md-1">
-                        {{ link_to_route('establishment.index', $title = 'Voltar', '', ['class' => 'btn btn-block btn-danger']) }}
-                    </div>
-                    <div class="col-md-1">
-                        {{ link_to_route('establishment.edit', $title = 'Editar', $establishment, ['class' => 'btn btn-block btn-primary']) }}
-                    </div>
                 </div>
             </div>
         </div>

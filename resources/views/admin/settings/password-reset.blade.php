@@ -99,14 +99,6 @@
 
                     {{ Form::hidden('uv', url('control/valid'), ['id' => 'url_valid']) }}
 
-                    @if ($message = Session::get('error'))
-                        <br>
-                        <div class="row">
-                            <div class="col-md-10">
-                                <div class="text-red">{{ $message }}</div>
-                            </div>
-                        </div>
-                    @endif
                 </div>
 
                 <div class="box-footer">

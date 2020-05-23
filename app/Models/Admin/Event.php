@@ -36,7 +36,8 @@ class Event extends Model
         'views',
         'status',
         'created_at',
-        'updated_at'];
+        'updated_at'
+    ];
 
     /**
      * Get the establishment record associated with the event.

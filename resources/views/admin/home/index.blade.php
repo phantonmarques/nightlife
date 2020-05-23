@@ -4,9 +4,6 @@
 
 @section('content_header')
     <h1>&nbsp;</h1>
-    <ol class="breadcrumb">
-        <li><a href="{{ route('admin.page') }}">Inicio</a></li>
-    </ol>
 @stop
 
 @section('content')
@@ -20,19 +17,29 @@
         <div class="col-md-16">
             <div class="callout callout-info box">
                 <h4><i class="icon fa fa-info"></i> Atualizações </h4>
-                <p>Aqui terá atualizações.</p>
+                @if (count($news) > 0)
+                    @foreach($news as $n)
+                        <p><label>{{ $n->title }}: </label> {{ $n->description }}</p>
+                    @endforeach
+                @else
+                    <p>Não há nenhuma atualização recente.</p>
+                @endif
             </div>
         </div>
     </div>
 
-    <div class="container">
-        <div class="col-md-16">
-            <div class="callout callout-danger box">
-                <h4><i class="fa fa-fw fa-times"></i> Importante!</h4>
-                <p>Informações importantes aqui.</p>
+    @if (count($newsImportant) > 0)
+        <div class="container">
+            <div class="col-md-16">
+                <div class="callout callout-danger box">
+                    <h4><i class="fa fa-fw fa-times"></i> Importante!</h4>
+                    @foreach($newsImportant as $n)
+                        <p><label>{{ $n->title }}: </label> {{ $n->description }}</p>
+                    @endforeach
+                </div>
             </div>
         </div>
-    </div>
+    @endif
 
     <br>
 
@@ -42,7 +49,7 @@
                 <span class="info-box-icon bg-green"><i class="fa fa-volume-up"></i></span>
                 <div class="info-box-content">
                     <span class="info-box-text">Ritmo musical mais procurado essa semana</span>
-                    <span class="info-box-number">O RITMO</span>
+                    <span class="info-box-number">{{ $rhythm->rhythm->name }}</span>
                 </div>
             </div>
         </div>
@@ -50,8 +57,8 @@
             <div class="info-box box">
                 <span class="info-box-icon bg-yellow"><i class="fa fa-users"></i></span>
                 <div class="info-box-content">
-                    <span class="info-box-text">Eventos feitos</span>
-                    <span class="info-box-number">NUMERO DOS EVENTOS</span>
+                    <span class="info-box-text">Eventos feitos [{{ isset($id) ? 'Estabelecimento' : 'Todos' }}]</span>
+                    <span class="info-box-number">{{ isset($events) ? $events : '' }}</span>
                 </div>
             </div>
         </div>
@@ -60,7 +67,7 @@
                 <span class="info-box-icon bg-blue"><i class="fa fa-search"></i></span>
                 <div class="info-box-content">
                     <span class="info-box-text">Categoria mais procurada essa semana</span>
-                    <span class="info-box-number">A CATEGORIA</span>
+                    <span class="info-box-number">{{ isset($category) ? $category->category->name : '' }}</span>
                 </div>
             </div>
         </div>
@@ -68,8 +75,8 @@
             <div class="info-box box">
                 <span class="info-box-icon bg-red"><i class="ion ion-person-add"></i></span>
                 <div class="info-box-content">
-                    <span class="info-box-text">Novos usuários essa semana</span>
-                    <span class="info-box-number">QUANTIDADE</span>
+                    <span class="info-box-text">Novos usuários nos últimos 7 dias</span>
+                    <span class="info-box-number">{{ isset($user) ? $user : 0 }}</span>
                 </div>
             </div>
         </div>
