@@ -15,6 +15,7 @@ class CreateCalledTable extends Migration
     {
         Schema::create('called', function (Blueprint $table) {
             $table->increments('id');
+            $table->unsignedInteger('establishment_request');
             $table->unsignedInteger('user_request');
             $table->unsignedInteger('user_attendant')->nullable();
             $table->string('title');
@@ -25,6 +26,7 @@ class CreateCalledTable extends Migration
             $table->boolean('status')->default(1);
             $table->timestamps();
 
+            $table->foreign('establishment_request')->references('id')->on('establishment')->onDelete('cascade');
             $table->foreign('user_request')->references('id')->on('user')->onDelete('cascade');
             $table->foreign('user_attendant')->references('id')->on('user')->onDelete('cascade');
         });

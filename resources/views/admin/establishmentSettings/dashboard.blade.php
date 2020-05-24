@@ -12,13 +12,12 @@
         </div>
     </div>
 
-    <div class="container">
         <div class="row">
-            <div class="col-sm-6">
+            <div class="col-md-6">
                 <!-- small box -->
                 <div class="small-box bg-success bg-yellow-active">
                     <div class="inner">
-                        <h3>10</h3>
+                        <h3>{{ $eventScheduled }}</h3>
                         <p>Eventos agendados</p>
                     </div>
                     <div class="icon">
@@ -26,10 +25,10 @@
                     </div>
                 </div>
             </div>
-            <div class="col-sm-6">
+            <div class="col-md-6">
                 <div class="small-box bg-success bg-green-gradient">
                     <div class="inner">
-                        <h3>10</h3>
+                        <h3>{{ $eventClosed }}</h3>
                         <p>Eventos até o momento</p>
                     </div>
                     <div class="icon">
@@ -38,7 +37,7 @@
                 </div>
             </div>
         </div>
-    </div>
+
 
     <div class="row">
         <div class="col-md-12">
@@ -68,7 +67,7 @@
                 <div class="box-body no-padding">
                     <div class="row">
                         <div class="pad">
-                            {!! $establishmenttotal->render() !!}
+                            {!! $establishmentTotal->render() !!}
                         </div>
                     </div>
                 </div>
@@ -91,7 +90,7 @@
                 <div class="box-body no-padding">
                     <div class="row">
                         <div class="pad">
-                            {!! $establishmentstotal->render() !!}
+                            {!! $establishmentsTotal->render() !!}
                         </div>
                     </div>
                 </div>
@@ -127,7 +126,7 @@
                 <div class="box-body no-padding">
                     <div class="row">
                         <div class="pad">
-                            {!! $rhythmweek->render() !!}
+                            {!! $rhythmWeek->render() !!}
                         </div>
                     </div>
                 </div>
@@ -150,7 +149,7 @@
                 <div class="box-body no-padding">
                     <div class="row">
                         <div class="pad">
-                            {!! $rhythmmonth->render() !!}
+                            {!! $rhythmMonth->render() !!}
                         </div>
                     </div>
                 </div>
@@ -176,7 +175,7 @@
                 <div class="box-body no-padding">
                     <div class="row">
                         <div class="pad">
-                            {!! $rhythmtotal->render() !!}
+                            {!! $rhythmTotal->render() !!}
                         </div>
                     </div>
                 </div>
@@ -199,7 +198,7 @@
                 <div class="box-body no-padding">
                     <div class="row">
                         <div class="pad">
-                            {!! $rhythmyearly->render() !!}
+                            {!! $rhythmYear->render() !!}
                         </div>
                     </div>
                 </div>
@@ -235,7 +234,7 @@
                 <div class="box-body no-padding">
                     <div class="row">
                         <div class="pad">
-                            {!! $categoryweek->render() !!}
+                            {!! $categoryWeek->render() !!}
                         </div>
                     </div>
                 </div>
@@ -258,7 +257,7 @@
                 <div class="box-body no-padding">
                     <div class="row">
                         <div class="pad">
-                            {!! $categorymonth->render() !!}
+                            {!! $categoryMonth->render() !!}
                         </div>
                     </div>
                 </div>
@@ -343,7 +342,7 @@
                 <div class="box-body no-padding">
                     <div class="row">
                         <div class="pad">
-                            {!! $rhythmyearlycustom->render() !!}
+                            {!! $categoryCityMonth->render() !!}
                         </div>
                     </div>
                 </div>
@@ -366,14 +365,13 @@
                 <div class="box-body no-padding">
                     <div class="row">
                         <div class="pad">
-                            {!! $rhythmmonthcustom->render() !!}
+                            {!! $rhythmCityMonth->render() !!}
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
 @endsection
 
 @section('css')

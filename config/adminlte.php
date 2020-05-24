@@ -106,8 +106,15 @@ return [
 
     'menu' => [
         [
-            'header'    => 'ADMINISTRADOR',
+            'header'    => 'GERENCIAMENTO GERAL',
             'can'       => 'manage-establishment'
+        ],
+        [
+            'text'      => 'Chamados',
+            'icon'      => 'fas fa-phone-volume',
+            'route'     => 'called.index',
+            'active'    => ['control/called', 'control/called/*', 'control/called?*'],
+            //'can'       => 'manage-called'
         ],
         [
             'text'      => 'Gerenciar Estabelecimento',
@@ -184,20 +191,8 @@ return [
             'active'    => ['control/news', 'control/news/*', 'control/news?*'],
             'can'       => 'manage-called'
         ],
-
         [
-            'header'    => 'ATENDIMENTO ESTABELECIMENTO',
-            'can'       => 'manage-called'
-        ],
-        [
-            'text'      => 'Chamados',
-            'icon'      => 'fas fa-phone-volume',
-            'url'       => '#',
-            'active'    => ['control/roles', 'control/roles/*', 'control/roles?*'],
-            'can'       => 'manage-called'
-        ],
-        [
-            'header'    => 'GERENCIAMENTO DE ESTABELECIMENTO',
+            'header'    => 'GERENCIAMENTO ESTABELECIMENTO',
         ],
         [
             'text'      => 'Dashboard',
@@ -214,8 +209,9 @@ return [
         [
             'text'      => 'Chamados',
             'icon'      => 'fas fa-phone-alt',
-            'url'       => '#',
-            //'can'     => 'EstablishmentPolicy'
+            'route'     => 'called.index',
+            'active'    => ['control/called', 'control/called/*', 'control/called?*'],
+            //'can'       => 'establishment-employee'
         ],
         [
             'text'      => 'Config. Estabelecimento',

@@ -111,10 +111,17 @@ class AdminController extends Controller
         date_default_timezone_set('America/Sao_Paulo');
         $monthCurrent = ucfirst(strftime('%B', strtotime('today')));
 
+        # Establishment Selected
         $establishment = Establishment::find($id);
 
-        $categorys = CategoryStatistics::with('category:id,name')->get()->toArray();
+        # Events Scheduled Establishment Selected
+        $eventScheduled = Event::whereStatus(1)->where('establishment_id', $establishment->id)->count();
 
+        # Events Closed Establishment Selected
+        $eventClosed = Event::whereStatus(0)->where('establishment_id', $establishment->id)->count();
+
+        # Info Category Statistics
+        $categorys = CategoryStatistics::with('category:id,name')->get()->toArray();
         $arrayNameCategory = array();
         $arrayTotalCategory = array();
         $arrayYearCategory = array();
@@ -127,7 +134,6 @@ class AdminController extends Controller
             $arrayMonthCategory[] = $category['total_views_month'];
             $arrayWeekCategory[] = $category['total_views_week'];
             $arrayNameCategory[] = $category['category']['name'];
-
         endforeach;
 
         # Total de visualização das categorias
@@ -142,8 +148,7 @@ class AdminController extends Controller
                     'hoverBackgroundColor' => ['#FF6384', '#36A2EB', '	#4682B4', '#008B8B', '#A52A2A'],
                     'data' => $arrayTotalCategory,
                 ]
-            ])
-            ->options([]);
+        ])->options([]);
 
         # Visualização anual das categorias
         $categoryYear = app()->chartjs
@@ -162,12 +167,11 @@ class AdminController extends Controller
                     "pointHoverBorderColor" => "rgba(220,220,220,1)",
                     'data' => $arrayYearCategory,
                 ],
-            ])
-            ->options([]);
+        ])->options([]);
 
         # Visualização do mês das categorias
-        $categorymonth = app()->chartjs
-            ->name('categorymonth')
+        $categoryMonth = app()->chartjs
+            ->name('categoryMonth')
             ->type('bar')
             ->size(['width' => 400, 'height' => 200])
             ->labels($arrayNameCategory)
@@ -178,13 +182,11 @@ class AdminController extends Controller
                     'hoverBackgroundColor' => ['#6495ED', '#A52A2A', '#2E8B57', '#A0522D', '#FF6347'],
                     'data' => $arrayMonthCategory,
                 ],
-
-            ])
-            ->options([]);
+        ])->options([]);
 
         # Visualização da semana das categorias
-        $categoryweek = app()->chartjs
-            ->name('categoryweek')
+        $categoryWeek = app()->chartjs
+            ->name('categoryWeek')
             ->type('doughnut')
             ->size(['width' => 300, 'height' => 200])
             ->labels($arrayNameCategory)
@@ -195,15 +197,14 @@ class AdminController extends Controller
                     'hoverBackgroundColor' => ['#6495ED', '#A52A2A', '#2E8B57', '#A0522D', '#FF6347'],
                     'data' => $arrayWeekCategory,
                 ],
+        ])->options([]);
 
-            ])
-            ->options([]);
-
+        # Establishment Statistics
         $establishmentStatistics = EstablishmentStatistics::where('establishment_id', $establishment->id)->first();
 
         # Visualizações total do estabelecimento
-        $establishmenttotal = app()->chartjs
-            ->name('EstabTotal')
+        $establishmentTotal = app()->chartjs
+            ->name('establishmentTotal')
             ->type('pie')
             ->size(['width' => 200, 'height' => 150])
             ->labels(['Semana', 'Mês', 'Ano', 'Total'])
@@ -218,9 +219,9 @@ class AdminController extends Controller
                         $establishmentStatistics->total_views_created,
                     ],
                 ]
-            ])
-            ->options([]);
+        ])->options([]);
 
+        # Search Establishments City
         $citysEstablishment = array();
 
         foreach ($establishment->establishment_address as $address)
@@ -230,6 +231,7 @@ class AdminController extends Controller
             $q->where('city_id', $citysEstablishment);
         })->select('id')->get()->toArray();
 
+        # Establishment Statistics
         $establishmentsStatistics = EstablishmentStatistics::whereIn('establishment_id', $establishmentsCity)->get()->toArray();
         $viewsWeek = 0;
         $viewsMonth = 0;
@@ -246,8 +248,8 @@ class AdminController extends Controller
         endforeach;
 
         # Visualizações total do estabelecimento
-        $establishmentstotal = app()->chartjs
-            ->name('establishmentstotal')
+        $establishmentsTotal = app()->chartjs
+            ->name('establishmentsTotal')
             ->type('doughnut')
             ->size(['width' => 200, 'height' => 150])
             ->labels(['Semana', 'Mês', 'Ano', 'Total'])
@@ -257,11 +259,10 @@ class AdminController extends Controller
                     'hoverBackgroundColor' => ['#FF6384', '#36A2EB', '	#4682B4', '#2E8B57'],
                     'data' => [$viewsWeek, $viewsMonth, $viewsYear, $viewsTotal],
                 ]
-            ])
-            ->options([]);
+        ])->options([]);
 
+        # Rhythm Statistics
         $rhythms = RhythmStatistics::with('rhythm:id,name')->get()->toArray();
-
         $arrayNameRhythm = array();
         $arrayTotalRhythm = array();
         $arrayYearRhythm = array();
@@ -274,12 +275,11 @@ class AdminController extends Controller
             $arrayMonthRhythm[] = $rhythm['total_views_month'];
             $arrayWeekRhythm[] = $rhythm['total_views_week'];
             $arrayNameRhythm[] = $rhythm['rhythm']['name'];
-
         endforeach;
 
         # Total de visualização dos ritmos musicais
-        $rhythmtotal = app()->chartjs
-        ->name('pieChartTest')
+        $rhythmTotal = app()->chartjs
+        ->name('rhythmTotal')
         ->type('pie')
         ->size(['width' => 300, 'height' => 200])
         ->labels($arrayNameRhythm)
@@ -289,12 +289,11 @@ class AdminController extends Controller
                 'hoverBackgroundColor' => ['#FF6384', '#36A2EB', '	#4682B4', '#008B8B', '#A52A2A', '#DAA520'],
                 'data' => $arrayTotalRhythm,
             ]
-        ])
-        ->options([]);
+        ])->options([]);
 
         # Visualização anual dos ritmos musicais
-        $rhythmyearly = app()->chartjs
-        ->name('rhythmyearly')
+        $rhythmYear = app()->chartjs
+        ->name('rhythmYear')
         ->type('bar')
         ->size(['width' => 400, 'height' => 200])
         ->labels($arrayNameRhythm)
@@ -309,12 +308,11 @@ class AdminController extends Controller
                     "pointHoverBorderColor" => "rgba(220,220,220,1)",
                     'data' => $arrayYearRhythm,
                 ],
-            ])
-        ->options([]);
+        ])->options([]);
 
         # Visualização do mês dos ritmos musicais
-        $rhythmmonth = app()->chartjs
-        ->name('rhythmmonth')
+        $rhythmMonth = app()->chartjs
+        ->name('rhythmMonth')
         ->type('bar')
         ->size(['width' => 400, 'height' => 200])
         ->labels($arrayNameRhythm)
@@ -325,13 +323,11 @@ class AdminController extends Controller
                 'hoverBackgroundColor' => ['#6495ED', '#A52A2A', '#2E8B57', '#A0522D', '#FF6347', '#BC8F8F'],
                 'data' => $arrayMonthRhythm,
             ],
-
-        ])
-        ->options([]);
+        ])->options([]);
 
         # Visualização da semana dos ritmos musicais
-        $rhythmweek = app()->chartjs
-        ->name('rhythmweek')
+        $rhythmWeek = app()->chartjs
+        ->name('rhythmWeek')
         ->type('doughnut')
         ->size(['width' => 300, 'height' => 200])
         ->labels($arrayNameRhythm)
@@ -342,12 +338,10 @@ class AdminController extends Controller
                 'hoverBackgroundColor' => ['#6495ED', '#A52A2A', '#2E8B57', '#A0522D', '#FF6347', '#BC8F8F'],
                 'data' => $arrayWeekRhythm,
             ],
+        ])->options([]);
 
-        ])
-        ->options([]);
-
+        # Rhythm determined City
         $establishmentsRhythm = Establishment::whereIn('id', $establishmentsCity)->with('establishments_rhythm')->get()->toArray();
-
         $rhythmsCity = array();
 
         foreach ($establishmentsRhythm as $establishmentRhythm):
@@ -355,28 +349,22 @@ class AdminController extends Controller
                 foreach ($establishmentRhythm['establishments_rhythm'] as $eRhythm):
                     if (!in_array($eRhythm['id'], $rhythmsCity))
                         $rhythmsCity[] = $eRhythm['id'];
-
                 endforeach;
-
             endif;
         endforeach;
 
-
         $rhythmCity = RhythmStatistics::whereIn('rhythm_id', $rhythmsCity)->with('rhythm:id,name')->get()->toArray();
-
         $arrayNameRhythmCity = array();
         $arrayMonthRhythmCity = array();
 
         foreach ($rhythmCity as $rhythm):
             $arrayMonthRhythmCity[] = $rhythm['total_views_month'];
             $arrayNameRhythmCity[] = $rhythm['rhythm']['name'];
-
         endforeach;
 
-
-        # Visualização anual dos ritmos musicais de determinada cidade
-        $rhythmyearlycustom = app()->chartjs
-        ->name('rhythmyearlycustom')
+        # Visualização do mês das Categorias de determinada cidade
+        $rhythmCityMonth = app()->chartjs
+        ->name('rhythmCityMonth')
         ->type('bar')
         ->size(['width' => 400, 'height' => 200])
         ->labels($arrayNameRhythmCity)
@@ -391,11 +379,10 @@ class AdminController extends Controller
                     "pointHoverBorderColor" => "rgba(220,220,220,1)",
                     'data' => $arrayMonthRhythmCity,
                 ],
-            ])
-        ->options([]);
+        ])->options([]);
 
+        # Category determined City
         $establishmentsCategory = Establishment::whereIn('id', $establishmentsCity)->with('establishments_category')->get()->toArray();
-
         $categorysCity = array();
 
         foreach ($establishmentsCategory as $establishmentCategory):
@@ -403,12 +390,9 @@ class AdminController extends Controller
                 foreach ($establishmentCategory['establishments_category'] as $eCategory):
                     if (!in_array($eCategory['id'], $categorysCity))
                         $categorysCity[] = $eCategory['id'];
-
                 endforeach;
-
             endif;
         endforeach;
-
 
         $categoryCity = CategoryStatistics::whereIn('category_id', $categorysCity)->with('category:id,name')->get()->toArray();
 
@@ -418,12 +402,11 @@ class AdminController extends Controller
         foreach ($categoryCity as $category):
             $arrayMonthCategoryCity[] = $category['total_views_month'];
             $arrayNameCategoryCity[] = $category['category']['name'];
-
         endforeach;
 
         # Visualização do mês dos ritmos musicais de determinada cidade
-        $rhythmmonthcustom = app()->chartjs
-        ->name('rhythmmonthcustom')
+        $categoryCityMonth = app()->chartjs
+        ->name('categoryCityMonth')
         ->type('bar')
         ->size(['width' => 400, 'height' => 200])
         ->labels($arrayNameCategoryCity)
@@ -434,24 +417,24 @@ class AdminController extends Controller
                 'hoverBackgroundColor' => ['#6495ED', '#A52A2A', '#2E8B57', '#A0522D', '#FF6347', '#BC8F8F'],
                 'data' => $arrayMonthCategoryCity,
             ],
-
-        ])
-        ->options([]);
+        ])->options([]);
 
         return view('admin.establishmentSettings.dashboard',
             compact('categoryTotal',
-                'categorymonth',
+                'categoryMonth',
                 'categoryYear',
-                'categoryweek',
+                'categoryWeek',
                 'establishment',
-                'establishmenttotal',
-                'establishmentstotal',
-                'rhythmtotal',
-                'rhythmmonth',
-                'rhythmyearly',
-                'rhythmweek',
-                'rhythmmonthcustom',
-                'rhythmyearlycustom',
+                'establishmentTotal',
+                'establishmentsTotal',
+                'eventClosed',
+                'eventScheduled',
+                'rhythmTotal',
+                'rhythmMonth',
+                'rhythmYear',
+                'rhythmWeek',
+                'categoryCityMonth',
+                'rhythmCityMonth'
             )
         );
     }

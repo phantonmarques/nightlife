@@ -6,5 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Called extends Model
 {
-    //
+    /**
+     * @var string $table
+     */
+    protected $table = 'called';
+
 }

@@ -1,0 +1,66 @@
+@extends('adminlte::page')
+@section('title', (isset($category->id) ? 'Editar ' : 'Criar ') . 'Categoria · ')
+
+@section('content_header')
+    <h1>&nbsp;</h1>
+    <ol class="breadcrumb">
+        <li><a href="{{ route('admin.page') }}">Inicio</a></li>
+        <li><a href="{{ route('category.index') }}">Categorias</a></li>
+        <li>
+            <a href="{{ (isset($category->id) ? route('category.edit', $category) : route('category.create')) }}">{{ (isset($category->id) ? 'Editar ' : 'Criar ') }}
+                Categoria
+            </a>
+        </li>
+    </ol>
+@stop
+
+@section('content')
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-warning">
+                <div class="box-header with-border">
+                    <h3 class="box-title">{{ (isset($category->id) ? 'Editar Categoria' : 'Cadastrar nova Categoria') }}</h3>
+                    <h6 align="right" style="color:red">* Campos obrigatórios</h6>
+                </div>
+
+                {{ Form::model($category, $formOptions) }}
+                {!! csrf_field() !!}
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            {{ Form::label('name','Nome') }} <span class="span-required">*</span>
+                            {{ Form::text('name', (isset($category->id) ? $category->name : ''), ['placeholder' => 'Informe nome do categoria', 'class' => 'form-control required']) }}
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            @if ($errors->has('name'))
+                                <div class="text-red">{{ $errors->first('name') }}</div>
+                            @endif
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="box-footer">
+                    <div class="col-lg-2 pull-right">
+                        {{ Form::submit('Salvar', ['class' => 'btn btn-block btn-success']) }}
+                    </div>
+                    <div class="col-lg-2 pull-right">
+                        {{ link_to_route('category.index', $title = 'Voltar', '', ['class' => 'btn btn-block btn-danger']) }}
+                    </div>
+                </div>
+                {{ Form::close() }}
+            </div>
+        </div>
+    </div>
+@endsection
+
+@section('js')
+    <script type="text/javascript" src="{{ asset('assets/admin/js/category.js') }}"></script>
+@endsection
+
+@section('css')
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/Global/css/general.css') }}"/>
+@endsection

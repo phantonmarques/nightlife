@@ -52,6 +52,10 @@ Route::group(['middleware' => 'auth', 'prefix' => '/control/'], function () {
         Route::delete('category/massDestroy', 'Admin\\CategoryController@massDestroy')->name('category.massDestroy');
         Route::resource('category', 'Admin\\CategoryController')->except(['destroy']);
 
+    # Called
+        Route::get('called/{called}/destroy', 'Admin\\CalledController@destroy')->name('category.destroy');
+        Route::resource('called', 'Admin\\CalledController')->except(['destroy']);
+
     # Musical Rhythm
         Route::get('rhythm/{rhythm}/destroy', 'Admin\\RhythmController@destroy')->name('rhythm.destroy');
         Route::delete('rhythm/massDestroy', 'Admin\\RhythmController@massDestroy')->name('rhythm.massDestroy');

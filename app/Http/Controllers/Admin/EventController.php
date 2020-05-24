@@ -59,7 +59,6 @@
             return view('admin.event.index',
                 compact('events',
                     'eventSearch'));
-
         }
 
         /**
