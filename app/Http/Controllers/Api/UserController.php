@@ -40,7 +40,8 @@ class UserController extends Controller
                 return response()->json([
                     'message' => 'Login efetuado com sucesso',
                     'status' => true,
-                    'token' => $token,
+										'token' => $token,
+										'type' => $user->type_user,
                 ]);
             } else if (empty($user->email_verified_at)) {
                 // enviar novo link de confirmação
@@ -319,7 +320,12 @@ class UserController extends Controller
      */
     public function updateImg(UpdatePicture $request)
     {
-        $data = $request->validated();
+				$data = $request->validated();
+
+				$explode = explode(',', $data['image']);
+				$format = str_replace(['data:image/', ';', 'base64'], ['', '', ''], $explode[0]);
+				$file = base64_decode($explode[1]);
+				$name = 'user/'.uniqid().'.'.$format;
 
         DB::beginTransaction();
 
@@ -328,26 +334,26 @@ class UserController extends Controller
                 if (!Storage::delete("public/" . auth()->user()->profile_picture_path))
                     throw new \Exception('Não foi possível atualizar a foto do perfil!');
 
-            if (!($path = $data['profile_picture_path']->store('settings', 'public')))
-                throw new \Exception('Não foi possível armazenar a foto do perfil!');
-
+            if (!($path = Storage::put('public/'.$name, $file, 'public')))
+								throw new \Exception('Não foi possível armazenar a foto do perfil!');
+								
             $user = auth()->user();
-            $user->profile_picture_path = $path;
+            $user->profile_picture_path = $name;
 
             if (!$user->update())
                 throw new \Exception('Ocorreu um erro ao atualizar a foto do perfil!');
 
-            $picture = Image::make(public_path('storage/' . $user->profile_picture_path));
+            // $picture = Image::make(public_path('storage/' . $user->profile_picture_path));
 
-            if (!$picture->resize(400, 400)->encode('png', 100)->save())
-                throw new \Exception('Ocorreu um erro ao atualizar a foto do perfil!');
+            // if (!$picture->resize(400, 400)->encode('png', 100)->save())
+            //     throw new \Exception('Ocorreu um erro ao atualizar a foto do perfil!');
 
             DB::commit();
 
             return response()->json([
                 'status' => true,
                 'message' => 'Foto inserida com sucesso!',
-                'path_img' => $path
+                'path' => $name
             ]);
         } catch (\Exception $e) {
             DB::rollBack();
@@ -358,5 +364,5 @@ class UserController extends Controller
                 'errors' => $e->getMessage()
             ]);
         }
-    }
+		}
 }

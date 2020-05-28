@@ -22,7 +22,7 @@
         public function rules()
         {
             $rules = [
-                'profile_picture_path' => ['required' , 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2096'],
+                'image' => ['required'],
             ];
 
             return $rules;
