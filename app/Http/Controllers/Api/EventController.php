@@ -37,7 +37,7 @@ class EventController extends Controller
                     ->with('establishment_address')->find($id);
 
         if (isset($event->name)):
-            $phone = $event->establishment_address->establishments_phone()->where('main', 1)->select('phone', 'whatsapp')->first();
+            $phone = $event->establishment_address->establishments_phone()->where('main', 1)->select('phone', 'whatsapp')->get();
             $event->description = strip_tags($event->description);
             $event->increment('views');
 
