@@ -319,40 +319,35 @@ class UserController extends Controller
      */
     public function updateImg(UpdatePicture $request)
     {
-				$data = $request->validated();
-
-				$explode = explode(',', $data['image']);
-				$format = str_replace(['data:image/', ';', 'base64'], ['', '', ''], $explode[0]);
-				$file = base64_decode($explode[1]);
-				$name = 'user/'.uniqid().'.'.$format;
+		$data = $request->validated();
 
         DB::beginTransaction();
 
         try {
             if (!empty(auth()->user()->profile_picture_path))
-                if (!Storage::delete("public/" . auth()->user()->profile_picture_path))
+                if (!Storage::delete(auth()->user()->profile_picture_path))
                     throw new \Exception('Não foi possível atualizar a foto do perfil!');
 
-            if (!($path = Storage::put('public/'.$name, $file, 'public')))
+            $imageBase64 = explode(',', $data['image']);
+            $format = '.' . str_replace(['data:image/', ';', 'base64'], ['', '', ''], $imageBase64[0]);
+            $file = base64_decode($imageBase64[1]);
+            $path = 'user/' . Str::random(40) . $format;
+
+            if (!Storage::disk('public')->put($path, $file))
 								throw new \Exception('Não foi possível armazenar a foto do perfil!');
-								
+
             $user = auth()->user();
-            $user->profile_picture_path = $name;
+            $user->profile_picture_path = $path;
 
             if (!$user->update())
                 throw new \Exception('Ocorreu um erro ao atualizar a foto do perfil!');
-
-            // $picture = Image::make(public_path('storage/' . $user->profile_picture_path));
-
-            // if (!$picture->resize(400, 400)->encode('png', 100)->save())
-            //     throw new \Exception('Ocorreu um erro ao atualizar a foto do perfil!');
 
             DB::commit();
 
             return response()->json([
                 'status' => true,
                 'message' => 'Foto inserida com sucesso!',
-                'path' => $name
+                'path' => $path
             ]);
         } catch (\Exception $e) {
             DB::rollBack();
@@ -363,5 +358,5 @@ class UserController extends Controller
                 'errors' => $e->getMessage()
             ]);
         }
-		}
+    }
 }
