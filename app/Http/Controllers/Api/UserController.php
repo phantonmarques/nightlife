@@ -17,7 +17,6 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
-use Intervention\Image\ImageManagerStatic as Image;
 use Zend\Diactoros\Response\JsonResponse;
 
 class UserController extends Controller
@@ -32,36 +31,36 @@ class UserController extends Controller
         $user = User::where('email', $request->user)
             ->orWhere('cpf_cnpj', $request->user)->first();
 
-        if ($user) {
-            if (Hash::check($request->password, $user->password) && !empty($user->email_verified_at)) {
+        if ($user):
+            if (Hash::check($request->password, $user->password) && !empty($user->email_verified_at)):
                 $token = Str::random(90);
                 $user->remember_token = $token;
                 $user->update();
                 return response()->json([
                     'message' => 'Login efetuado com sucesso',
                     'status' => true,
-										'token' => $token,
-										'type' => $user->type_user,
+					'token' => $token,
+					'type' => $user->type_user,
                 ]);
-            } else if (empty($user->email_verified_at)) {
+            elseif (empty($user->email_verified_at)):
                 // enviar novo link de confirmação
                 return response()->json([
                     'message' => 'Cadastro não confirmado, favor acesse o link de confirmação enviado no e-mail cadastrado!',
                     'status' => false
                 ]);
-            } else {
+            else:
                 return response()->json([
                     'message' => 'Senha inválida',
                     'status' => false
                 ]);
-            }
+            endif;
 
-        } else {
+        else:
             return response()->json([
                 'message' => 'Usuário não encontrado',
                 'status' => false
             ]);
-        }
+        endif;
     }
 
     /**
@@ -187,7 +186,7 @@ class UserController extends Controller
     {
         $data = $request->validated();
 
-        if (auth()->user()->user_comment()->count() > 0)
+        if (auth()->user()->user_comment()->where('establishment_id', $data['establishment_id'])->count() > 0)
             return response()->json([
                 'status' => false,
                 'message' => 'Não foi possível criar o comentário, é permitido apenas um comentário por estabelecimento!'
@@ -230,7 +229,7 @@ class UserController extends Controller
     {
         $data = $request->validated();
 
-        if (auth()->user()->user_rating()->count() > 0)
+        if (auth()->user()->user_rating()->where('establishment_id', $data['establishment_id'])->count() > 0)
             return response()->json([
                 'status' => false,
                 'message' => 'Não foi possível criar a avaliação, é permitido apenas uma avaliação por estabelecimento!'
