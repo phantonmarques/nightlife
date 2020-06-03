@@ -47,7 +47,7 @@
             $rules = [
                 'name' => [$nameRequired, 'string', 'min:3'],
                 'email' => [$emailRequired, 'string', 'unique:user' . $emailUnique],
-                'password' => [$passwordRequired, 'min:6'],
+                'password' => [$passwordRequired, 'min:6', 'confirmed'],
                 'cpf_cnpj' => ['string', 'min:11', 'unique:user' . $cpfcnpjUnique],
                 'city_id' => ['integer', 'digits_between:1,5'],
                 'favorite_rhythms' => ['nullable'],

@@ -271,7 +271,20 @@ class UserController extends Controller
      */
     public function update(CreateOrUpdateUser $request)
     {
-        $data = $request->validated();
+				$data = $request->validated();
+				
+				$category = $rhythm = [];
+
+        # FORMATAÇÃO DOS DADOS RECEBIDOS
+        foreach ($request->all() as $key => $requestField):
+            if (strpos($key, 'category') !== false)
+                $category[] = preg_split("/(\[|\])/", $key)[1];
+            else if (strpos($key, 'rhythm') !== false)
+								$rhythm[] = preg_split("/(\[|\])/", $key)[1];
+				endforeach;
+								
+				$data['favorite_rhythms'] = $rhythm;
+				$data['favorite_categorys'] = $category;
 
         DB::beginTransaction();
 
@@ -325,7 +338,7 @@ class UserController extends Controller
 
         try {
             if (!empty(auth()->user()->profile_picture_path))
-                if (!Storage::delete(auth()->user()->profile_picture_path))
+                if (!Storage::disk('public')->delete(auth()->user()->profile_picture_path))
                     throw new \Exception('Não foi possível atualizar a foto do perfil!');
 
             $imageBase64 = explode(',', $data['image']);
