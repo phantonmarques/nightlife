@@ -10,37 +10,39 @@
         <div class="col-md-12">
             <div class="box box-warning">
                 <div class="box-header with-border">
-                    <div class="box-title col-xs-1 no-padding">
-                        <a class="btn btn-success btn-flat" href="{{ route('called.create')  }}"
-                           title="Cadastro de nova categoria">
-                            <i class="fas fa-sm fa-plus"></i>&nbsp;&nbsp;Novo Chamado
-                        </a>
-                    </div>
-
-                    <div class="box-title col-xs-6 col-sm-3 no-padding pull-right">
-                        {{ Form::open(['method' => 'GET']) }}
-                        <div class="input-group">
-                        @if (empty($calledSearch))
-                            {{ $calledSearch = '' }}
-                        @endif
-                        <!-- SEARCH PESQUISA INPUT -->
-                        {{ Form::text('s', $calledSearch, ['placeholder' => 'Pesquisar', 'class' => 'form-control col-md-4']) }}
-                        <!-- FIM SEARCH PESQUISA -->
-
-                            <div class="input-group-btn">
-                                <button type="submit" class="btn btn-default btn-flat" title="Buscar Categorias">
-                                    <i class="fas fa-search"></i>
-                                </button>
-                                @if (!empty($calledSearch))
-                                    <a title="Limpar busca" class="btn btn-default"
-                                       href="{{ route('called.index') }}">
-                                        <i class="fas fa-backspace"></i>
-                                    </a>
-                                @endif
-                            </div>
+                    @can ('establishment-employee')
+                        <div class="box-title col-xs-1 no-padding">
+                            <a class="btn btn-success btn-flat" href="{{ route('called.create')  }}"
+                               title="Cadastro de nova categoria">
+                                <i class="fas fa-sm fa-plus"></i>&nbsp;&nbsp;Novo Chamado
+                            </a>
                         </div>
-                        {{ Form::close() }}
-                    </div>
+                    @elsecan ('manage-called')
+                        <div class="box-title col-xs-6 col-sm-3 no-padding pull-right">
+                            {{ Form::open(['method' => 'GET']) }}
+                            <div class="input-group">
+                            @if (empty($calledSearch))
+                                {{ $calledSearch = '' }}
+                            @endif
+                            <!-- SEARCH PESQUISA INPUT -->
+                            {{ Form::text('s', $calledSearch, ['placeholder' => 'Pesquisar', 'class' => 'form-control col-md-4']) }}
+                            <!-- FIM SEARCH PESQUISA -->
+
+                                <div class="input-group-btn">
+                                    <button type="submit" class="btn btn-default btn-flat" title="Buscar Categorias">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                    @if (!empty($calledSearch))
+                                        <a title="Limpar busca" class="btn btn-default"
+                                           href="{{ route('called.index') }}">
+                                            <i class="fas fa-backspace"></i>
+                                        </a>
+                                    @endif
+                                </div>
+                            </div>
+                            {{ Form::close() }}
+                        </div>
+                    @endcan
                 </div>
 
                 <div class="box-body table-responsive no-padding">
@@ -50,8 +52,8 @@
                             <th>ID</th>
                             <th>Título</th>
                             <th>Situação Chamado</th>
-                            <th>Data Atendimento</th>
-                            <th>Tempo Atendimento</th>
+                            <th>Data Último Atendimento</th>
+                            <th>Tempo Último Atendimento</th>
                             <th>Status</th>
                             <th>Data de Criação</th>
                             <th>Data de Atualização</th>
@@ -66,16 +68,16 @@
                                         {{ $call->id }}
                                     </td>
                                     <td>
-                                        {{ $call->title }}
+                                        {{ $call->subject }}
                                     </td>
                                     <td>
-                                        {{ $call->situation }}
+                                        {{ formatSituation($call->called_interaction()->orderBy('id', 'DESC')->first()->situation) }}
                                     </td>
                                     <td>
-                                        {{ $call->data_service }}
+                                        {{ formatDate($call->called_interaction()->orderBy('id', 'DESC')->first()->date_service) }}
                                     </td>
                                     <td>
-                                        {{ $call->time_service }}
+                                        {{ $call->called_interaction()->orderBy('id', 'DESC')->first()->time_service }}
                                     </td>
                                     <td>
                                         {{ ($call->status) ? 'Aberto' : 'Fechado' }}
@@ -88,13 +90,10 @@
                                     </td>
                                     <td class="col-actions">
                                         <a href="{{ route('called.edit', $call) }}" class="action-edit"
-                                           title="Editar {{ $call->name }}"><span
+                                           title="Interagir {{ $call->subject }}"><span
                                                     class="glyphicon glyphicon-pencil"></span></a>
-                                        <a href="{{ route('called.destroy', $call) }}"
-                                           class="action-delete"><span class="glyphicon glyphicon-trash"
-                                                                       title="Apagar {{ $call->name }}"></span></a>
                                         <a href="{{ route('called.show', $call) }}" class="action-show"
-                                           title="Visualizar {{ $call->name }}"><span
+                                           title="Visualizar {{ $call->subject }}"><span
                                                     class="glyphicon glyphicon-info-sign"></span></a>
                                     </td>
                                 </tr>

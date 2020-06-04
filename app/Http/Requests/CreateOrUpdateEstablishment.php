@@ -40,10 +40,11 @@
             $rules = [
                 'user_id'               => ['required', 'numeric', 'unique:establishment'. $userUnique],
                 'corporate_name'        => ['required', 'min:4', 'max:50'],
+                'company_name'          => ['required', 'min:4', 'max:50'],
                 'state_registration'    => ['required', 'min:5', 'max:22', 'unique:establishment'. $stateRegisterUnique],
                 'type_license'          => ['required', 'min:1', 'max:1'],
                 'status'                => ['required', 'boolean'],
-                'category'            => ['required'],
+                'category'              => ['required'],
                 'rhythm.*'              => ['required'],
             ];
 
@@ -61,9 +62,12 @@
                 'user_id.required'              => 'O cliente deve ser selecionado',
                 'user_id.numeric'               => 'O cliente cadastrado deve conter apenas números',
                 'user_id.unique'                => 'O cliente não deve conter cadastro em outro estabelecimento',
-                'corporate_name.required'       => 'A razão social é obrigatória!',
-                'corporate_name.min'            => 'A razão social deve conter no mínimo 4 caracteres',
-                'corporate_name.max'            => 'A razão social deve conter no máximo 50 caracteres',
+                'corporate_name.required'       => 'O nome do estabelecimento  é obrigatória!',
+                'corporate_name.min'            => 'O nome do estabelecimento deve conter no mínimo 4 caracteres',
+                'corporate_name.max'            => 'O nome do estabelecimento deve conter no máximo 50 caracteres',
+                'company_name.required'         => 'A razão social é obrigatória!',
+                'company_name.min'              => 'A razão social deve conter no mínimo 4 caracteres',
+                'company_name.max'              => 'A razão social deve conter no máximo 50 caracteres',
                 'state_registration.required'   => 'A inscrição estadual é obrigatória!',
                 'state_registration.min'        => 'A inscrição estadual deve conter no mínimo 5 caracteres',
                 'state_registration.max'        => 'A inscrição estadual deve conter no máximo 22 caracteres',

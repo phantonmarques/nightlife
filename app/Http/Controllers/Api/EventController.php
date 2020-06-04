@@ -19,15 +19,6 @@ class EventController extends Controller
     protected $paginate = 10;
 
     /**
-     * EventController constructor.
-     */
-    public function __construct()
-    {
-        #ONLY AUTH
-//        $this->middleware('auth');
-    }
-
-    /**
      * Function get event info
      * @param $id
      * @return \Illuminate\Http\JsonResponse

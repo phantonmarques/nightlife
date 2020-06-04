@@ -36,10 +36,7 @@
         public function messages()
         {
             return [
-                'profile_picture_path.required' => 'Favor, insira imagem para capa do evento!',
-                'profile_picture_path.image' => 'Imagem inválida, favor insira uma imagem no formato correto!',
-                'profile_picture_path.mimes' => 'Imagem inválida, favor insira uma imagem no formato correto (jpeg, jpg, png, gif e svg)!',
-                'profile_picture_path.max' => 'Imagem inválida, favor insira uma imagem no formato correto!',
+                'image.required' => 'Favor, insira imagem para perfil!',
             ];
         }
     }

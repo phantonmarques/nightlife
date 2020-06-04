@@ -3,6 +3,7 @@
     namespace App\Http\Controllers\Admin;
 
     use App\Http\Requests\CreateOrUpdateEvent;
+    use App\Models\Admin\Establishment;
     use App\Models\Admin\EstablishmentAddress;
     use App\Models\Admin\Event;
     use Illuminate\Http\Request;
@@ -22,7 +23,7 @@
             #ONLY AUTH
             $this->middleware('auth');
             #ONLY WITH ROLE ACTIVE [ADMIN]
-            $this->middleware(['role:admin'], ['role:establishment']);
+            $this->middleware('role:admin|establishment|establishment-employee');
         }
 
         /**
@@ -40,7 +41,7 @@
             if (!empty(auth()->user()->establishment_connect))
                 $eventPrepare = auth()->user()->establishment_connect;
             elseif (auth()->user()->establishments()->count() > 0)
-                $eventPrepare = auth()->user()->establishments()->id;
+                $eventPrepare = auth()->user()->establishments->id;
 
             if (empty($eventPrepare) && auth()->user()->can('manage-called'))
                 return redirect()
@@ -79,10 +80,21 @@
                 'onsubmit'  => 'return validateFormEvent(this)'
             ];
 
-            if (auth()->user()->establishments()->count() > 0)
-                $establishment_id = auth()->user()->establishments()->id;
-            else
+            if (auth()->user()->establishments()->count() > 0):
+                $establishment_id = auth()->user()->establishments->id;
+
+                $verifyPlanLimited = Event::whereStatus(1)->where('establishment_id', $establishment_id)->count();
+
+                if ($verifyPlanLimited > 2 && auth()->user()->establishments->type_license === 'b'):
+                    return redirect()
+                        ->back()
+                        ->withInput()
+                        ->with('error', 'Limite de criação de eventos excedido, mude o plano ou aguarde finalizar os eventos agendados atualmente!');
+                endif;
+
+            else:
                 $establishment_id = auth()->user()->establishment_connect;
+            endif;
 
             if (empty($establishment_id) && auth()->user()->can('manage-called'))
                 return redirect()
@@ -127,7 +139,7 @@
                 endif;
 
                 if (auth()->user()->establishments()->count() > 0)
-                    $data["establishment_id"] = auth()->user()->establishments()->id;
+                    $data["establishment_id"] = auth()->user()->establishments->id;
                 else
                     $data["establishment_id"] = auth()->user()->establishment_connect;
 
@@ -188,9 +200,8 @@
                 'onsubmit'  => 'return validateFormEvent(this)',
             ];
 
-
             if (auth()->user()->establishments()->count() > 0)
-                $establishment_id = auth()->user()->establishments()->id;
+                $establishment_id = auth()->user()->establishments->id;
             else
                 $establishment_id = auth()->user()->establishment_connect;
 
@@ -199,6 +210,8 @@
                     ->back()
                     ->withInput()
                     ->with('error', 'Conecte em algum estabelecimento para realizar alterações, em seguida tente novamente!');
+            elseif ($event->establishment_id !== $establishment_id)
+                return abort(401);
 
             $addresses = EstablishmentAddress::where('establishment_id', $establishment_id)->get();
 
@@ -239,7 +252,7 @@
                 endif;
 
                 if (auth()->user()->establishments()->count() > 0)
-                    $data["establishment_id"] = auth()->user()->establishments()->id;
+                    $data["establishment_id"] = auth()->user()->establishments->id;
                 else
                     $data["establishment_id"] = auth()->user()->establishment_connect;
 
@@ -264,7 +277,8 @@
                     ->route('event.edit', compact('event'))
                     ->withInput()
                     ->with('error', $e->getMessage());
-            }}
+            }
+        }
 
         /**
          * Remove the specified resource from storage.

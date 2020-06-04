@@ -83,7 +83,7 @@
                             <th class="text-center">
                                 <input class="icheck check-all" type="checkbox"/>
                             </th>
-                            <th>Razão Social</th>
+                            <th>Nome Estabelecimento</th>
                             <th>Inscrição Estadual</th>
                             <th>CNPJ</th>
                             <th>Tipo Licença</th>

@@ -4,6 +4,7 @@
 
     use App\Http\Requests\CreateOrUpdateEstablishment;
     use App\Models\Admin\Category;
+    use App\Models\Admin\Event;
     use App\Models\Admin\Establishment;
     use App\Models\Admin\Rhythm;
     use App\Models\Site\User;
@@ -273,11 +274,23 @@
                 return abort(401);
 
             # Log Access Users
-            $this->access('Exclusão Estabelecimento', $establishment);
+            $this->access('Desativa Estabelecimento', $establishment);
 
             DB::beginTransaction();
 
             try {
+                if (auth()->user()->establishment_connect === $establishment->id):
+                    auth()->user()->establishment_connect = null;
+                    if (!auth()->user()->save())
+                        throw new \Exception('Não foi possível desativar o estabelecimento');
+
+                endif;
+
+                $eventsDesative = Event::whereStatus(1)->where('establishment_id', $establishment->id)->update(['status' => 0]);
+
+                if (!$eventsDesative)
+                    throw new \Exception('Não foi possível desativar o estabelecimento');
+
                 $establishment->status = 0;
 
                 if (!$establishment->save())
@@ -312,6 +325,24 @@
             $establishments = Establishment::whereIn('id', request('ids'))->get();
 
             foreach ($establishments as $establishment):
+                if (auth()->user()->establishment_connect === $establishment->id):
+                    auth()->user()->establishment_connect = null;
+                    if (!auth()->user()->save())
+                        return response()->json([
+                            'status' => false,
+                            'message' => 'Erro ao desativar a(s) estabelecimento(s)!'
+                        ]);
+
+                endif;
+
+                $eventsDesative = Event::whereStatus(1)->where('establishment_id', $establishment->id)->update(['status' => 0]);
+
+                if (!$eventsDesative)
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'Erro ao desativar a(s) estabelecimento(s)!'
+                    ]);
+
                 $establishment->status = 0; 
 
                 if (!$establishment->save())

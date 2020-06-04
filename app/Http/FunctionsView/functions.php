@@ -85,3 +85,19 @@
         return date("H:i", strtotime($value));
     }
 
+    /**
+     * Return format situation
+     * @param $situation
+     * @return mixed|string
+     */
+    function formatSituation($situation)
+    {
+        $situations = [
+            'waiting' => 'Aguardando Atendimento',
+            'analyze' => 'Em análise',
+            'development' => 'Em desenvolvimento',
+            'closed' => 'Encerrado'
+        ];
+
+        return isset($situations[$situation]) ? $situations[$situation] : '';
+    }

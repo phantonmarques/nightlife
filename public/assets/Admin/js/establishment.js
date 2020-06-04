@@ -75,6 +75,9 @@ function onlyNumbers(e) {
 
 function validateFormEstablishment(f) {
     if (f.corporate_name.value.length === 0 || f.corporate_name.value.trim() === ''){
+        swal("Erro", "O campo [Nome do Estabelecimento] é obrigatório, favor preencha!", "error");
+        return false;
+    }if (f.company_name.value.length === 0 || f.company_name.value.trim() === ''){
         swal("Erro", "O campo [Razão Social] é obrigatório, favor preencha!", "error");
         return false;
     }else if (f.state_registration.value.length === 0 || f.state_registration.value.trim() === ''){

@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Console\Commands\DisableExpiredEvents;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -13,7 +14,8 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        Commands\DisableExpiredEvents::class,
+        Commands\ResetCountersStatistics::class,
     ];
 
     /**
@@ -26,6 +28,8 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')
         //          ->hourly();
+        $schedule->command('DisableExpiredEvents:verifyEvents')->daily();
+        $schedule->command('ResetCountersStatistics:resetCounters')->daily();
     }
 
     /**

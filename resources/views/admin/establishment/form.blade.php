@@ -27,19 +27,28 @@
                 {!! csrf_field() !!}
                 <div class="box-body">
                     <div class="row">
-                        <div class="col-md-10">
-                            {{ Form::label('corporate_name','Razão Social ') }} <span class="span-required">*</span>
-                            {{ Form::text('corporate_name' , (isset($establishment->id) ? $establishment->corporate_name : ''), ['placeholder' => 'Informe a razão social', 'class' => 'form-control required']) }}
+                        <div class="col-md-5">
+                            {{ Form::label('company_name','Razão Social ') }} <span class="span-required">*</span>
+                            {{ Form::text('company_name' , (isset($establishment->id) ? $establishment->company_name : ''), ['placeholder' => 'Informe a razão social', 'class' => 'form-control required']) }}
+                        </div>
+                        <div class="col-md-5">
+                            {{ Form::label('corporate_name','Nome Estabelecimento ') }} <span class="span-required">*</span>
+                            {{ Form::text('corporate_name' , (isset($establishment->id) ? $establishment->corporate_name : ''), ['placeholder' => 'Informe o nome do estabelecimento', 'class' => 'form-control required']) }}
                         </div>
                     </div>
 
-                    @if ($errors->has('corporate_name'))
-                        <div class="row">
-                            <div class="col-md-10">
-                                <div class="text-red">{{ $errors->first('corporate_name') }}</div>
-                            </div>
+                    <div class="row">
+                        <div class="col-md-5">
+                            @if ($errors->has('company_name'))
+                                 <div class="text-red">{{ $errors->first('company_name') }}</div>
+                            @endif
                         </div>
-                    @endif
+                        <div class="col-md-5">
+                            @if ($errors->has('corporate_name'))
+                                <div class="text-red">{{ $errors->first('corporate_name') }}</div>
+                            @endif
+                        </div>
+                    </div>
 
                     <br>
 

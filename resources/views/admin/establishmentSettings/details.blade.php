@@ -26,9 +26,18 @@
                         <div class="col-md-4">
                             @include('adminlte::form.input.static', [
                                 'label' => 'Razão Social',
+                                'value' => $establishment->company_name
+                            ])
+                        </div>
+                        <div class="col-md-4">
+                            @include('adminlte::form.input.static', [
+                                'label' => 'Nome do estabelecimento',
                                 'value' => $establishment->corporate_name
                             ])
                         </div>
+                    </div>
+
+                    <div class="row">
                         <div class="col-md-4">
                             @include('adminlte::form.input.static', [
                                 'label' => 'Inscrição Estadual',

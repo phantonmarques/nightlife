@@ -49,7 +49,7 @@ class AdminController extends Controller
         if (!empty(auth()->user()->establishment_connect))
             $id = auth()->user()->establishment_connect;
         elseif (auth()->user()->establishments()->count() > 0)
-            $id = auth()->user()->establishments()->id;
+            $id = auth()->user()->establishments->id;
 
         if (isset($id))
             $events = Event::where('establishment_id', $id)->count();
@@ -98,7 +98,7 @@ class AdminController extends Controller
         if (!empty(auth()->user()->establishment_connect))
             $id = auth()->user()->establishment_connect;
         elseif (auth()->user()->establishments()->count() > 0)
-            $id = auth()->user()->establishments()->id;
+            $id = auth()->user()->establishments->id;
 
         if (empty($id) && auth()->user()->can('manage-called'))
             return redirect()
@@ -448,7 +448,7 @@ class AdminController extends Controller
         if (!empty(auth()->user()->establishment_connect))
             $id = auth()->user()->establishment_connect;
         elseif (auth()->user()->establishments()->count() > 0)
-            $id = auth()->user()->establishments()->id;
+            $id = auth()->user()->establishments->id;
 
         if (empty($id) && auth()->user()->can('manage-called'))
             return redirect()
@@ -470,7 +470,7 @@ class AdminController extends Controller
         if (!empty(auth()->user()->establishment_connect))
             $id = auth()->user()->establishment_connect;
         elseif (auth()->user()->establishments()->count() > 0)
-            $id = auth()->user()->establishments()->id;
+            $id = auth()->user()->establishments->id;
 
         if (empty($id) && auth()->user()->can('manage-called'))
             return redirect()
@@ -513,7 +513,7 @@ class AdminController extends Controller
             return abort(401);
 
         $user = auth()->user();
-        $user->establishment_connect = intval($request->establishment_connect);
+        $user->establishment_connect = intval($request->connect);
 
         if (!$user->save())
             return redirect()
@@ -521,7 +521,7 @@ class AdminController extends Controller
                 ->withInput()
                 ->with('error', 'Erro ao atualizar o estabelecimento conectado!');
 
-        if (intval($request->establishment_connect) === 0)
+        if (intval($request->connect) === 0)
             return redirect()
                 ->route('admin.page')
                 ->withInput()
@@ -542,7 +542,7 @@ class AdminController extends Controller
         if (!empty(auth()->user()->establishment_connect))
             $id = auth()->user()->establishment_connect;
         elseif (auth()->user()->establishments()->count() > 0)
-            $id = auth()->user()->establishments()->id;
+            $id = auth()->user()->establishments->id;
 
         if (empty($id) && auth()->user()->can('manage-called'))
             return redirect()
@@ -559,15 +559,15 @@ class AdminController extends Controller
             'ratings',
             'comments'
         ])->find($id);
-        
+
         /**$pdf = PDF::loadView('pdf', compact('establishment'));
 
         return $pdf->setPaper('a4')->stream('RatingsandComments');
-        Caso 1 
-        Todas as notas do estabelecimento 
+        Caso 1
+        Todas as notas do estabelecimento
+        **/
 
 
-            */
     }
 
     /**
@@ -579,7 +579,7 @@ class AdminController extends Controller
         if (!empty(auth()->user()->establishment_connect))
             $id = auth()->user()->establishment_connect;
         elseif (auth()->user()->establishments()->count() > 0)
-            $id = auth()->user()->establishments()->id;
+            $id = auth()->user()->establishments->id;
 
         if (empty($id) && auth()->user()->can('manage-called'))
             return redirect()
@@ -636,7 +636,7 @@ class AdminController extends Controller
         if (!empty(auth()->user()->establishment_connect))
             $id = auth()->user()->establishment_connect;
         elseif (auth()->user()->establishments()->count() > 0)
-            $id = auth()->user()->establishments()->id;
+            $id = auth()->user()->establishments->id;
 
         if (empty($id) && auth()->user()->can('manage-called'))
             return redirect()
@@ -717,7 +717,7 @@ class AdminController extends Controller
         if (!empty(auth()->user()->establishment_connect))
             $id = auth()->user()->establishment_connect;
         elseif (auth()->user()->establishments()->count() > 0)
-            $id = auth()->user()->establishments()->id;
+            $id = auth()->user()->establishments->id;
 
         if (empty($id) && auth()->user()->can('manage-called'))
             return redirect()
@@ -740,7 +740,7 @@ class AdminController extends Controller
         if (!empty(auth()->user()->establishment_connect))
             $id = auth()->user()->establishment_connect;
         elseif (auth()->user()->establishments()->count() > 0)
-            $id = auth()->user()->establishments()->id;
+            $id = auth()->user()->establishments->id;
 
         if (empty($id) && auth()->user()->can('manage-called'))
             return redirect()
@@ -864,7 +864,7 @@ class AdminController extends Controller
         if (!empty(auth()->user()->establishment_connect))
             $id = auth()->user()->establishment_connect;
         elseif (auth()->user()->establishments()->count() > 0)
-            $id = auth()->user()->establishments()->id;
+            $id = auth()->user()->establishments->id;
 
         if (empty($id) && auth()->user()->can('manage-called'))
             return redirect()

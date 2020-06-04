@@ -5,7 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Admin\Called;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Prophecy\Call\Call;
+use App\Http\Requests\CreateOrUpdateCalled;
+use Illuminate\Support\Facades\DB;
 
 class CalledController extends Controller
 {
@@ -19,7 +20,7 @@ class CalledController extends Controller
         #ONLY AUTH
         $this->middleware('auth');
         #ONLY WITH ROLE ACTIVE [ADMIN]
-        $this->middleware(['role:admin'], ['role:establishment']);
+        $this->middleware('role:admin|establishment');
     }
 
     /**
@@ -29,7 +30,7 @@ class CalledController extends Controller
      */
     public function index(Request $request)
     {
-        if (!auth()->user()->can('manage-called') && !auth()->user()->can('establishment-manager'))
+        if (!auth()->user()->can('manage-called') && !auth()->user()->can('establishment-employee'))
             return abort(401);
 
         $calledSearch = $request->query('s');
@@ -37,13 +38,7 @@ class CalledController extends Controller
         if (!empty(auth()->user()->establishment_connect))
             $calledPrepare = auth()->user()->establishment_connect;
         elseif (auth()->user()->establishments()->count() > 0)
-            $calledPrepare = auth()->user()->establishments()->id;
-
-        if (empty($calledPrepare) && auth()->user()->can('manage-called'))
-            return redirect()
-                ->back()
-                ->withInput()
-                ->with('error', 'Conecte em algum estabelecimento para realizar alterações, em seguida tente novamente!');
+            $calledPrepare = auth()->user()->establishments->id;
 
         # Log Access Users
         $this->access('Index Chamados');
@@ -55,7 +50,7 @@ class CalledController extends Controller
         elseif (auth()->user()->can('manage-called'))
             $called = Called::whereStatus(1)->paginate($this->paginate);
         else
-            $called = Called::whereStatus(1)->where('establishment_request', $calledPrepare)->paginate($this->paginate);
+            $called = Called::where('establishment_id', $calledPrepare)->paginate($this->paginate);
 
         return view('admin.called.index',
             compact('called',
@@ -70,7 +65,31 @@ class CalledController extends Controller
      */
     public function create()
     {
-        //
+        if (!auth()->user()->can('establishment-employee'))
+            return abort(401);
+
+        /** Create form options */
+        $formOptions = [
+            'route'     => 'called.store',
+            'method'    => Request::METHOD_POST,
+            'files'     => false,
+            'onsubmit'  => 'return validateFormCalled(this)'
+        ];
+
+        $situations = [
+          'waiting' => 'Aguardando Atendimento',
+          'analyze' => 'Em análise',
+          'development' => 'Em desenvolvimento',
+          'closed' => 'Encerrado'
+        ];
+
+        $called = new Called();
+
+        return view('admin.called.form',
+            compact('called',
+                'formOptions',
+                    'situations'
+        ));
     }
 
     /**
@@ -79,9 +98,71 @@ class CalledController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateOrUpdateCalled $request)
     {
-        //
+        if (!auth()->user()->can('establishment-employee'))
+            return abort(401);
+
+        $data = $request->validated();
+
+        # Log Access Users
+        $this->access('Criar Chamado', $data);
+
+        DB::beginTransaction();
+
+        try {
+            if (auth()->user()->establishments()->count() > 0)
+                $data["establishment_id"] = auth()->user()->establishments->id;
+            else
+                $data["establishment_id"] = auth()->user()->establishment_connect;
+
+            $data['user_id'] = auth()->user()->id;
+            $data['situation'] = 'waiting';
+
+            $called = Called::create($data);
+
+            if (!$called->exists)
+                throw new \Exception('Não foi possível criar o chamado!');
+
+            $created = $called->called_interaction()->create($data);
+
+            if (!$created)
+                throw new \Exception('Não foi possível criar o chamado!');
+
+
+
+//
+//            "subject" => "teste"
+//  "status" => "1"
+//  "description" => "<p>teste daniel chamado urgente</p>"
+//  "date_service" => "2020-06-02"
+
+            //            {{--                    $table->unsignedInteger('establishment_id');--}}
+//            {{--                    $table->unsignedInteger('user_id');--}}
+//            {{--                    $table->string('subject');--}}
+//            {{--                    $table->boolean('status')->default(1);--}}
+//
+//            {{--                    $table->text('description');--}}
+//            {{--                    $table->string('situation');--}}
+//            {{--                    $table->date('date_service')->nullable();--}}
+//            {{--                    $table->time('time_service')->nullable();--}}
+//            {{--                    $table->unsignedInteger('called_id');--}}
+//            {{--                    $table->unsignedInteger('establishment_id');--}}
+//            {{--                    $table->unsignedInteger('user_id');--}}
+
+            DB::commit();
+
+            return redirect()
+                ->route('called.index')
+                ->with('success', 'Chamado criado com sucesso!');
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return redirect()
+                ->route('called.create')
+                ->withInput()
+                ->with('error', $e->getMessage());
+        }
     }
 
     /**

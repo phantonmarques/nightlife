@@ -62,7 +62,7 @@
                                             <li>
                                                 {{ Form::open(['route' => 'admin.establishment','method' => 'POST', 'id' => 'formConnect']) }}
                                                 <div style="margin-top: 5%">
-                                                    {{ Form::select('establishment_connect', (array_add(\App\Models\Admin\Establishment::where('status', 1)->pluck('corporate_name', 'id'), '', 'Conectar em Estabelecimento')), (!empty(auth()->user()->establishment_connect) ? auth()->user()->establishment_connect : ''), ['class' => 'form-control']) }}
+                                                    {{ Form::select('connect', (array_add(\App\Models\Admin\Establishment::where('status', 1)->pluck('corporate_name', 'id'), '', 'Conectar em Estabelecimento')), (!empty(auth()->user()->establishment_connect) ? auth()->user()->establishment_connect : ''), ['class' => 'form-control']) }}
                                                 </div>
                                                 {{ Form::close() }}
 

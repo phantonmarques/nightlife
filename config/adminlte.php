@@ -106,21 +106,21 @@ return [
 
     'menu' => [
         [
-            'header'    => 'GERENCIAMENTO GERAL',
-            'can'       => 'manage-establishment'
+            'header'        => 'GERENCIAMENTO GERAL',
+            'permission'    => 'manage-called'
         ],
         [
-            'text'      => 'Chamados',
-            'icon'      => 'fas fa-phone-volume',
-            'route'     => 'called.index',
-            'active'    => ['control/called', 'control/called/*', 'control/called?*'],
-            //'can'       => 'manage-called'
+            'text'       => 'Chamados',
+            'icon'       => 'fas fa-phone-volume',
+            'route'      => 'called.index',
+            'active'     => ['control/called', 'control/called/*', 'control/called?*'],
+            'permission' => 'manage-called'
         ],
         [
-            'text'      => 'Gerenciar Estabelecimento',
-            'icon'      => 'fas fa-warehouse',
-            'can'       => 'manage-establishment',
-            'submenu'   => [
+            'text'       => 'Gerenciar Estabelecimento',
+            'icon'       => 'fas fa-warehouse',
+            'permission' => 'manage-establishment',
+            'submenu'    => [
                 [
                     'text'      => 'Categoria',
                     'icon'      => 'fas fa-list-ul',
@@ -153,10 +153,10 @@ return [
             ],
         ],
         [
-            'text'      => 'Gerenciar Usuários',
-            'icon'      => 'fas fa-users',
-            'can'       => 'manage-users',
-            'submenu'   => [
+            'text'       => 'Gerenciar Usuários',
+            'icon'       => 'fas fa-users',
+            'permission' => 'manage-users',
+            'submenu'    => [
                 [
                     'text'      => 'Usuários',
                     'icon'      => 'fas fa-users',
@@ -182,14 +182,14 @@ return [
             'icon'      => 'fas fa-user',
             'route'     => 'logs.index',
             'active'    => ['control/logs', 'control/logs/*', 'control/logs?*'],
-            'can'       => 'access-admin'
+            'permission'       => 'access-admin'
         ],
         [
             'text'      => 'Notícias',
             'icon'      => 'far fa-newspaper',
             'route'     => 'news.index',
             'active'    => ['control/news', 'control/news/*', 'control/news?*'],
-            'can'       => 'manage-called'
+            'permission'       => 'manage-called'
         ],
         [
             'header'    => 'GERENCIAMENTO ESTABELECIMENTO',
@@ -207,17 +207,17 @@ return [
             'active'    => ['control/event', 'control/event/*', 'control/event?*'],
         ],
         [
-            'text'      => 'Chamados',
-            'icon'      => 'fas fa-phone-alt',
-            'route'     => 'called.index',
-            'active'    => ['control/called', 'control/called/*', 'control/called?*'],
-            //'can'       => 'establishment-employee'
+            'text'       => 'Chamados',
+            'icon'       => 'fas fa-phone-alt',
+            'route'      => 'called.index',
+            'active'     => ['control/called', 'control/called/*', 'control/called?*'],
+            'permission' => 'establishment-employee'
         ],
         [
-            'text'      => 'Config. Estabelecimento',
-            'icon'      => 'fas fa-cog',
-            'can'       => 'manage-users',
-            'submenu'   => [
+            'text'          => 'Config. Estabelecimento',
+            'icon'          => 'fas fa-cog',
+            'permission'    => ['manage-users', 'manage-establishment'],
+            'submenu'       => [
                 [
                     'text'      => 'Configurações Perfil',
                     'icon'      => 'far fa-list-alt',
@@ -243,7 +243,9 @@ return [
             'text'    => 'Relatórios',
             'icon'    => 'far fa-file-alt',
             'route'   => 'admin.reports',
-            'active'  => ['control/reports', 'control/reports/*', 'control/reports?*']
+            'active'  => ['control/reports', 'control/reports/*', 'control/reports?*'],
+            'permission'    => ['manage-users', 'manage-establishment'],
+
         ],
         [
             'header'    => 'CONFIGURAÇÕES USUÁRIO',
@@ -282,6 +284,7 @@ return [
         JeroenNoten\LaravelAdminLte\Menu\Filters\ClassesFilter::class,
         JeroenNoten\LaravelAdminLte\Menu\Filters\GateFilter::class,
         JeroenNoten\LaravelAdminLte\Menu\Filters\LangFilter::class,
+        App\Http\Filters\MenuGateCan::class,
     ],
 
     /*

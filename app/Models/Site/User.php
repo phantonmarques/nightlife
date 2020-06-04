@@ -26,6 +26,7 @@ class User extends Authenticatable
         'name',
         'email',
         'email_verified_at',
+        'establishment_connect',
         'password',
         'cpf_cnpj',
         'city_id',
@@ -55,7 +56,7 @@ class User extends Authenticatable
      * Get users type establishment.
      */
     public function establishments(){
-        return $this->hasOne(Establishment::class, 'id', 'user_id');
+        return $this->hasOne(Establishment::class, 'user_id');
     }
 
     /**

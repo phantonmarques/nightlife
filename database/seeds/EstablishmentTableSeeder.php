@@ -34,6 +34,7 @@ class EstablishmentTableSeeder extends Seeder
         $establishment = new Establishment();
         $establishment->user_id = 2;
         $establishment->corporate_name = 'Tabacaria Primo';
+        $establishment->company_name = 'Tabacaria Primo';
         $establishment->state_registration = '8869182916';
         $establishment->details = 'Tabacaria primo, venha conhecer e fumar um narguile conosco.';
         $establishment->type_license = 'b';
@@ -50,6 +51,7 @@ class EstablishmentTableSeeder extends Seeder
         $establishment2 = new Establishment();
         $establishment2->user_id = 3;
         $establishment2->corporate_name = 'Victoria Villa';
+        $establishment2->company_name = 'Victoria Villa';
         $establishment2->state_registration = '2050239090';
         $establishment2->details = 'Venha dançar aqui no Victoria Villa, temos dois palcos e diversas atrações.';
         $establishment2->type_license = 'f';
@@ -66,6 +68,7 @@ class EstablishmentTableSeeder extends Seeder
         $establishment3 = new Establishment();
         $establishment3->user_id = 4;
         $establishment3->corporate_name = 'Danghai Club';
+        $establishment3->company_name = 'Danghai Club';
         $establishment3->state_registration = '7621624584';
         $establishment3->details = 'Venha conhecer nossas musicas eletrônica, tem muita novidade e diversos artistas talentosos.';
         $establishment3->type_license = 'f';
@@ -83,6 +86,7 @@ class EstablishmentTableSeeder extends Seeder
         $establishment4 = new Establishment();
         $establishment4->user_id = 5;
         $establishment4->corporate_name = 'Park Art';
+        $establishment4->company_name = 'Park Art';
         $establishment4->state_registration = '5360925872';
         $establishment4->details = 'Venha conhecer nossas musicas eletrônica, tem muita novidade e diversos artistas talentosos.';
         $establishment4->type_license = 'f';
@@ -100,6 +104,7 @@ class EstablishmentTableSeeder extends Seeder
         $establishment5 = new Establishment();
         $establishment5->user_id = 6;
         $establishment5->corporate_name = 'Blood Rock';
+        $establishment5->company_name = 'Blood Rock';
         $establishment5->state_registration = '1393799265';
         $establishment5->details = 'Venha conhecer nossas musicas de rock, tem muita novidade e diversos artistas talentosos.';
         $establishment5->type_license = 'b';
@@ -117,6 +122,7 @@ class EstablishmentTableSeeder extends Seeder
         $establishment6 = new Establishment();
         $establishment6->user_id = 7;
         $establishment6->corporate_name = 'Tabacaria Mandela';
+        $establishment6->company_name = 'Tabacaria Mandela';
         $establishment6->state_registration = '5305526837';
         $establishment6->details = 'Tabacaria mandela, venha conhecer e fumar um narguile conosco.';
         $establishment6->type_license = 'b';
@@ -135,6 +141,7 @@ class EstablishmentTableSeeder extends Seeder
         $establishment7 = new Establishment();
         $establishment7->user_id = 8;
         $establishment7->corporate_name = 'Millenium Disco Club';
+        $establishment7->company_name = 'Millenium Disco Club';
         $establishment7->state_registration = '1690829793';
         $establishment7->details = 'Venha conhecer nossas musicas, tem muita novidade e diversos artistas talentosos.';
         $establishment7->type_license = 'f';
@@ -154,6 +161,7 @@ class EstablishmentTableSeeder extends Seeder
         $establishment8 = new Establishment();
         $establishment8->user_id = 9;
         $establishment8->corporate_name = 'Doiszerodois';
+        $establishment8->company_name = 'Doiszerodois';
         $establishment8->state_registration = '4356917494';
         $establishment8->details = 'Tabacaria doiszerodois, venha conhecer nossa casa e fumar um narguile conosco.';
         $establishment8->type_license = 'f';
@@ -175,6 +183,7 @@ class EstablishmentTableSeeder extends Seeder
         $establishment9 = new Establishment();
         $establishment9->user_id = 10;
         $establishment9->corporate_name = 'Rodeo Country Bar';
+        $establishment9->company_name = 'Rodeo Country Bar';
         $establishment9->state_registration = '1564083794';
         $establishment9->details = 'Venha conhecer nossas musicas, tem muita novidade e diversos artistas talentosos.';
         $establishment9->type_license = 'b';
@@ -194,6 +203,7 @@ class EstablishmentTableSeeder extends Seeder
         $establishment10 = new Establishment();
         $establishment10->user_id = 11;
         $establishment10->corporate_name = 'Havana Bar';
+        $establishment10->company_name = 'Havana Bar';
         $establishment10->state_registration = '2423037760';
         $establishment10->details = 'Venha conhecer nosso bar e tomar uma bebida conosco.';
         $establishment10->type_license = 'b';
@@ -213,6 +223,7 @@ class EstablishmentTableSeeder extends Seeder
         $establishment11 = new Establishment();
         $establishment11->user_id = 12;
         $establishment11->corporate_name = 'Peppers';
+        $establishment11->company_name = 'Peppers';
         $establishment11->state_registration = '1669594387';
         $establishment11->details = 'Venha conhecer nossas musicas, tem muita novidade.';
         $establishment11->type_license = 'f';
@@ -231,6 +242,7 @@ class EstablishmentTableSeeder extends Seeder
         $establishment12 = new Establishment();
         $establishment12->user_id = 13;
         $establishment12->corporate_name = 'James Bar';
+        $establishment12->company_name = 'James Bar';
         $establishment12->state_registration = '9459792403';
         $establishment12->details = 'Venha conhecer nossas musicas, tem muita novidade.';
         $establishment12->type_license = 'f';
@@ -250,6 +262,7 @@ class EstablishmentTableSeeder extends Seeder
         $establishment13 = new Establishment();
         $establishment13->user_id = 14;
         $establishment13->corporate_name = 'Shed Bar';
+        $establishment13->company_name = 'Shed Bar';
         $establishment13->state_registration = '5836824069';
         $establishment13->details = 'Venha conhecer nossas musicas, tem muita novidade.';
         $establishment13->type_license = 'f';

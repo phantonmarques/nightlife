@@ -16,6 +16,9 @@ class RoleMiddleware
      */
     public function handle($request, Closure $next, $role, $permission = null)
     {
+        if (strpos($role, '|'))
+            $role = explode('|', $role);
+
         if(!auth()->user()->hasRole($role)) {
             abort(404);
         }

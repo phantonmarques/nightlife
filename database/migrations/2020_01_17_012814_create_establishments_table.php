@@ -17,6 +17,7 @@ class CreateEstablishmentsTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('user_id');
             $table->string('corporate_name');
+            $table->string('company_name');
             $table->string('state_registration');
             $table->enum('type_license', ['b','f']);
             $table->longText('details')->nullable();

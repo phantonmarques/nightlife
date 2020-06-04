@@ -9,6 +9,7 @@
     use App\Models\Site\User;
     use App\Models\Site\State;
     use App\Models\Admin\Role;
+    use App\Models\Admin\Establishment;
 
     use Illuminate\Support\Facades\DB;
 
@@ -84,12 +85,15 @@
 
             $roles = Role::get()->pluck('name', 'id');
 
+            $establishments = Establishment::get()->pluck('corporate_name', 'id');
+
             $typeUsers = $this->typeUsers();
 
             $user = new User();
 
             return view('admin.user.form',
                 compact('formOptions',
+                    'establishments',
                     'roles',
                     'states',
                     'typeUsers',
@@ -185,10 +189,13 @@
 
             $roles = Role::get()->pluck('name', 'id');
 
+            $establishments = Establishment::get()->pluck('corporate_name', 'id');
+
             $typeUsers = $this->typeUsers();
 
             return view('admin.user.form',
                 compact('formOptions',
+                    'establishments',
                     'roles',
                     'states',
                     'typeUsers',

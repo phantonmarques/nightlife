@@ -46,7 +46,6 @@
         protected function failedValidation(Validator $validator)
         {
             exit(json_encode([
-                'message' => 'Não foi possível criar a conta!',
                 'status' => false,
                 'errors' => $validator->errors()->messages()
             ]));

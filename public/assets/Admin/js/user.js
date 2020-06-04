@@ -4,6 +4,11 @@ $(document).ready(function () {
     if (document.getElementById('password').disabled)
         document.getElementById('password').disabled = false;
 
+    if ($('#employee_exists').val()){
+        $('#connect_employee').show();
+        $('#establishment_connect').prop("disabled", false);
+    }
+
     if ($('#type_user').val() === 'u')
         $('#user_role').prop("disabled", true);
 
@@ -74,10 +79,17 @@ $(document).ready(function () {
 
     // Click event of the type user select
     $('#type_user').on('change', function () {
-        if ($(this).val() === 'u')
+        if ($(this).val() === 'u'){
             $('#user_role').prop("disabled", true);
-        else
+            $('#connect_employee').hide();
+        } else if ($(this).val() === 'ef') {
+            $('#establishment_connect').prop("disabled", false);
             $('#user_role').removeAttr("disabled");
+            $('#connect_employee').show();
+        } else {
+            $('#connect_employee').hide();
+            $('#user_role').removeAttr("disabled");
+        }
     });
 
 

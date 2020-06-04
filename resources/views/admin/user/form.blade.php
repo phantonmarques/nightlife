@@ -80,6 +80,23 @@
                         </div>
                     </div>
 
+                    <div class="row" id="connect_employee" style="display: none;">
+                        <br>
+                        <div class="col-lg-6">
+                            {{ Form::label('establishment_connect','Estabelecimento') }} <span class="span-required"></span>
+                            {{ Form::select('establishment_connect', $establishments, (isset($user->id) ? $user->establishment_connect : ''), ['class' => 'form-control', 'disabled' => 'disabled']) }}
+                            {{ Form::hidden('ec', (isset($user->id) ? ($user->type_user === 'ef' ? $user->establishment_connect : '' ) : ''), ['id' => 'employee_exists']) }}
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            @if ($errors->has('establishment_connect'))
+                                <div class="text-red">{{ $errors->first('establishment_connect') }}</div>
+                            @endif
+                        </div>
+                    </div>
+
                     <br>
 
                     <div class="row">

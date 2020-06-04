@@ -1,5 +1,5 @@
 window.onload = function () {
-    $("[name='establishment_connect']").on('change', function(){
+    $("[name='connect']").on('change', function(){
         document.getElementById('formConnect').submit();
     });
 

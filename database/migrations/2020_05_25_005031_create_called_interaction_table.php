@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCalledTable extends Migration
+class CreateCalledInteractionTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,19 @@ class CreateCalledTable extends Migration
      */
     public function up()
     {
-        Schema::create('called', function (Blueprint $table) {
+        Schema::create('called_interaction', function (Blueprint $table) {
             $table->increments('id');
+            $table->text('description');
+            $table->string('situation');
+            $table->date('date_service')->nullable();
+            $table->time('time_service')->default('00:00:00');
+            $table->boolean('visible')->default(true);
+            $table->unsignedInteger('called_id');
             $table->unsignedInteger('establishment_id');
             $table->unsignedInteger('user_id');
-            $table->string('subject');
-            $table->boolean('status')->default(1);
             $table->timestamps();
 
+            $table->foreign('called_id')->references('id')->on('called')->onDelete('cascade');
             $table->foreign('establishment_id')->references('id')->on('establishment')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('user')->onDelete('cascade');
         });
@@ -33,6 +38,6 @@ class CreateCalledTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('called');
+        Schema::dropIfExists('called_interaction');
     }
 }

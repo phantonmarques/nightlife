@@ -20,6 +20,7 @@ class Establishment extends Model
     protected $fillable = [
         'user_id',
         'corporate_name',
+        'company_name',
         'state_registration',
         'type_license',
         'status'
@@ -29,6 +30,7 @@ class Establishment extends Model
      * @var array $hidden
      */
     protected $hidden = [
+        'company_name',
         'state_registration',
         'user_id',
         'type_license',
