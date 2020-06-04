@@ -559,13 +559,15 @@ class AdminController extends Controller
             'ratings',
             'comments'
         ])->find($id);
+        
+        /**$pdf = PDF::loadView('pdf', compact('establishment'));
 
-        #MERIELLY FAZER FUNÇÃO AQUI ABAIXO...
+        return $pdf->setPaper('a4')->stream('RatingsandComments');
+        Caso 1 
+        Todas as notas do estabelecimento 
 
 
-
-
-
+            */
     }
 
     /**
