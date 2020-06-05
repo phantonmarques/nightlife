@@ -242,7 +242,7 @@
 
             try {
                 if (array_key_exists('cover_path', $data)):
-                    if (!Storage::delete("public/" . $event->cover_path))
+                    if (!Storage::delete($event->cover_path))
                         throw new \Exception('Não foi possível atualizar a foto do evento!');
 
                     if (!($path = $data['cover_path']->store('event', 'public')))
@@ -299,7 +299,7 @@
             try {
                 $event->status = 0;
 
-                if (!Storage::delete("public/" . $event->cover_path))
+                if (!Storage::delete($event->cover_path))
                     throw new \Exception('Não foi possível excluir a foto do evento!');
 
                 if (!$event->save())

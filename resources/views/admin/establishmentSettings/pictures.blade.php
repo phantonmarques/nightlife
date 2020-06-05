@@ -55,12 +55,6 @@
 
                 {{ Form::hidden('action', ($establishment->establishments_photos()->count() > 0) ? 'update' : 'new', ['id' => 'action']) }}
 
-                <div class="box-footer">
-                    <div class="col-lg-2 pull-right">
-                        {{ Form::submit('Salvar', ['class' => 'btn btn-block btn-success']) }}
-                    </div>
-                </div>
-                {{ Form::close() }}
             </div>
         </div>
     </div>
@@ -104,6 +98,10 @@
                 parallelUploads: 1,
                 success: function(file, response){
                     uploadFile[file.name] = response.path;
+                    swal({
+                        title: 'Foto adicionada com sucesso, para atualizar o album, atualize a página!',
+                        icon: 'success',
+                    });
                 },
                 error: function(file, response) {
                     swal({

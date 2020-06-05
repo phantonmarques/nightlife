@@ -29,11 +29,11 @@
                     <div class="row">
                         <div class="col-md-10">
                             {{ Form::label('subject','Assunto') }} <span class="span-required">*</span>
-                            @can('establishment-employee')
-                                {{ Form::text('subject', (isset($called->id) ? $called->name : ''), ['placeholder' => 'Informe assunto do chamado', 'class' => 'form-control required']) }}
+                            @if(isset($called->id))
+                                {{ Form::text('subject', $called->name, ['placeholder' => 'Informe assunto do chamado', 'class' => 'form-control required', 'disabled' => 'disabled']) }}
                             @else
-                                {{ Form::text('subject', (isset($called->id) ? $called->name : ''), ['placeholder' => 'Informe assunto do chamado', 'class' => 'form-control required', 'disabled' => 'disabled']) }}
-                            @endcan
+                                {{ Form::text('subject', '', ['placeholder' => 'Informe assunto do chamado', 'class' => 'form-control required']) }}
+                            @endif
                         </div>
                     </div>
 
@@ -45,10 +45,99 @@
                         </div>
                     </div>
 
+                    @if (isset($called->id))
+                        <div class="row top-separate">
+                            <div class="col-md-10">
+                                @can('establishment-employee')
+                                    @foreach($called->called_interaction as $interaction)
+                                        @if ($interaction->visible)
+                                            <div class="box-body table-responsive no-padding">
+                                                <table class="table table-bordered table-hover dataTable table-striped">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Interação</th>
+                                                            <th>Descrição</th>
+                                                            <th>Situação</th>
+                                                            <th>Usuário Interação</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>
+                                                                {{ '#' . $interaction->id }}
+                                                            </td>
+                                                            <td>
+                                                                {!! $interaction->description !!}
+                                                            </td>
+                                                            <td>
+                                                                {{ formatSituation($interaction->situation) }}
+                                                            </td>
+                                                            <td>
+                                                                {{ $interaction->user->name . ' [' . $interaction->user->id . ']' }}
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        @endif
+                                    @endforeach
+                                @else
+                                    @foreach($called->called_interaction as $interaction)
+                                        <div class="box-body table-responsive no-padding">
+                                            <table class="table table-bordered table-hover dataTable table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Interação</th>
+                                                        <th>Descrição</th>
+                                                        <th>Situação</th>
+                                                        <th>Data Último Atendimento</th>
+                                                        <th>Tempo Último Atendimento</th>
+                                                        <th>Estabelecimento</th>
+                                                        <th>Usuário Interação</th>
+                                                        <th>Visível Cliente</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>
+                                                            {{ '#' . $interaction->id }}
+                                                        </td>
+                                                        <td>
+                                                            {!! $interaction->description !!}
+                                                        </td>
+                                                        <td>
+                                                            {{ formatSituation($interaction->situation) }}
+                                                        </td>
+                                                        <td>
+                                                            {{ formatDate($interaction->date_service) }}
+                                                        </td>
+                                                        <td>
+                                                            {{ $interaction->time_service ? formatHour($interaction->time_service): '00:00' }}
+                                                        </td>
+                                                        <td>
+                                                            {{ $interaction->establishment->corporate_name }}
+                                                        </td>
+                                                        <td>
+                                                            {{ $interaction->user->name . ' [' . $interaction->user->id . ']' }}
+                                                        </td>
+                                                        <td>
+                                                            {{ $interaction->visible ? 'Sim' : 'Não' }}
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    @endforeach
+                                @endcan
+
+                            </div>
+                        </div>
+                    @endif
+
                     <div class="row top-separate">
                         <div class="col-md-10">
-                            {{ Form::label('description','Descrição Chamado') }} <span class="span-required">*</span>
-                            {!! Form::textarea('description', (isset($called->id) ? $called->called_interaction->description : ''), ['class'=>'form-control', 'id' => 'description']) !!}
+                            {{ Form::label('description', (isset($called->id) ? 'Descrição da Interação' : 'Descrição do Chamado' )) }} <span class="span-required">*</span>
+                            {!! Form::textarea('description', '', ['class'=>'form-control', 'id' => 'description']) !!}
                         </div>
                     </div>
 
@@ -64,11 +153,18 @@
 
                         <div class="row top-separate">
                             <div class="col-md-3">
-                                {{ Form::label('situation','Situação do chamado') }} <span class="span-required">*</span>
-                                {{ Form::select('situation', $situations, (isset($called->id) ? $called->called_interaction->situation : 'analyze'), ['class' => 'form-control']) }}
+                                {{ Form::label('situation','Situação do chamado') }} <span
+                                        class="span-required">*</span>
+                                {{ Form::select('situation', $situations, (isset($called->id) ? $called->called_interaction()->orderBy('id', 'DESC')->first()->situation : 'analyze'), ['class' => 'form-control']) }}
                             </div>
                             <div class="col-md-3">
-                                Visivel cliente
+                                {{ Form::label('visibleUser','Visível para Usuário') }}
+                                <div class="input-group">
+                                            <span class="input-group-addon">
+                                                {{ Form::checkbox('visibleUser', 1, (isset($called->id)) ? $called->called_interaction()->orderBy('id', 'DESC')->first()->visible : false, ['id' => 'visibleUser', 'onClick' => 'visibleInput(this.checked)']) }}
+                                            </span>
+                                    {{ Form::label('visibleUser', 'Sim', ['class' => 'form-control']) }}
+                                </div>
                             </div>
                         </div>
 
@@ -79,8 +175,8 @@
                                 @endif
                             </div>
                             <div class="col-md-3">
-                                @if ($errors->has('seilavisible'))
-                                    <div class="text-red">{{ $errors->first('seilavisible') }}</div>
+                                @if ($errors->has('visible'))
+                                    <div class="text-red">{{ $errors->first('visible') }}</div>
                                 @endif
                             </div>
                         </div>
@@ -93,7 +189,7 @@
                                             class="span-required">*</span>
 
                                     <div class="input-group">
-                                        {{ Form::time('time_service', (isset($event->id) ? formatHour($called->called_interaction->time_service) : '')) }}
+                                        {{ Form::time('time_service', (isset($event->id) ? formatHour($called->called_interaction->first()->time_service) : '')) }}
                                         <i class="far fa-clock time_style"></i>
                                     </div>
                                 </div>
@@ -114,19 +210,6 @@
                     {{ Form::hidden('date_service', date('Y-m-d')) }}
                     {{ Form::hidden('status', 1, ['id' => 'status']) }}
 
-
-{{--                    $table->unsignedInteger('establishment_id');--}}
-{{--                    $table->unsignedInteger('user_id');--}}
-{{--                    $table->string('subject');--}}
-{{--                    $table->boolean('status')->default(1);--}}
-
-{{--                    $table->text('description');--}}
-{{--                    $table->string('situation');--}}
-{{--                    $table->date('date_service')->nullable();--}}
-{{--                    $table->time('time_service')->nullable();--}}
-{{--                    $table->unsignedInteger('called_id');--}}
-{{--                    $table->unsignedInteger('establishment_id');--}}
-{{--                    $table->unsignedInteger('user_id');--}}
                 </div>
 
                 <div class="box-footer">

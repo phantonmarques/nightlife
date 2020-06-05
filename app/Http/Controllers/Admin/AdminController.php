@@ -654,9 +654,9 @@ class AdminController extends Controller
         DB::beginTransaction();
 
         try {
-            foreach ($establishment->establishments_photos()->get() as $photo):
+            foreach ($establishment->establishments_photos as $photo):
                 if ($photo->img_path === $path):
-                    if (!Storage::delete("public/" . $photo->img_path))
+                    if (!Storage::delete($photo->img_path))
                         throw new \Exception('Não foi possível atualizar as fotos do estabelecimento!');
 
                     if (!$photo->delete())
@@ -755,9 +755,9 @@ class AdminController extends Controller
             DB::beginTransaction();
 
             try {
-                if ($establishment->establishments_photos()->max('created_at') > date('Y-m-d H:i:s', strtotime('-5 minutes'))):
-                    foreach ($establishment->establishments_photos()->get() as $photo):
-                        if (!Storage::delete("public/" . $photo->img_path))
+                if ($establishment->establishments_photos()->max('created_at') < date('Y-m-d H:i:s', strtotime('-5 minutes'))):
+                    foreach ($establishment->establishments_photos as $photo):
+                        if (!Storage::delete($photo->img_path))
                             throw new \Exception('Não foi possível atualizar as fotos do estabelecimento!');
 
                         if (!$photo->delete())

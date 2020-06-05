@@ -80,7 +80,7 @@
                                         {{ $call->called_interaction()->orderBy('id', 'DESC')->first()->time_service }}
                                     </td>
                                     <td>
-                                        {{ ($call->status) ? 'Aberto' : 'Fechado' }}
+                                        {{ ($call->status) ? 'Aberto' : 'Encerrado' }}
                                     </td>
                                     <td>
                                         {{ $call->created_at->format('d/m/Y - H:i') }}

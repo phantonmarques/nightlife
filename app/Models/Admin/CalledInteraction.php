@@ -3,6 +3,7 @@
 namespace App\Models\Admin;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Site\User;
 
 class CalledInteraction extends Model
 {
@@ -24,5 +25,21 @@ class CalledInteraction extends Model
         'establishment_id',
         'user_id',
     ];
+
+    /**
+     * Get establishment of called
+     */
+    public function establishment()
+    {
+        return $this->belongsTo(Establishment::class, 'establishment_id');
+    }
+
+    /**
+     * Get user of interaction
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 
 }

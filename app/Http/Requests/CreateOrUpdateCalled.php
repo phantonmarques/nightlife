@@ -24,7 +24,6 @@
         public function rules()
         {
             $subjectRequired = 'required';
-            $descriptionRequired = 'required';
 
             /** @var \App\Models\Admin\Establishment The establishment to update */
             $called = $this->route()
@@ -33,13 +32,12 @@
             // Append parameters for SUBJECT AND DESCRIPTION REGISTRATION validation
             if ($called instanceof Called) {
                 $subjectRequired = '';
-                $descriptionRequired = '';
             }
 
             $rules = [
                 'subject'          => [$subjectRequired, 'min:3'],
                 'status'           => ['required'],
-                'description'      => [$descriptionRequired, 'min:10'],
+                'description'      => ['required', 'min:10'],
                 'situation'        => ['min:3'],
                 'date_service'     => ['required', 'date_format:Y-m-d', 'date'],
                 'time_service'     => ['date_format:H:i'],

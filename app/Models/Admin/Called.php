@@ -22,11 +22,12 @@ class Called extends Model
     ];
 
     /**
-     * Get phones of establishmentaddress.
+     * Get interactions of called.
      */
     public function called_interaction()
     {
         return $this->hasMany(CalledInteraction::class, 'called_id');
     }
+
 
 }

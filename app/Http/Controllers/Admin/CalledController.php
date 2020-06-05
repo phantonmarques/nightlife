@@ -129,27 +129,6 @@ class CalledController extends Controller
             if (!$created)
                 throw new \Exception('Não foi possível criar o chamado!');
 
-
-
-//
-//            "subject" => "teste"
-//  "status" => "1"
-//  "description" => "<p>teste daniel chamado urgente</p>"
-//  "date_service" => "2020-06-02"
-
-            //            {{--                    $table->unsignedInteger('establishment_id');--}}
-//            {{--                    $table->unsignedInteger('user_id');--}}
-//            {{--                    $table->string('subject');--}}
-//            {{--                    $table->boolean('status')->default(1);--}}
-//
-//            {{--                    $table->text('description');--}}
-//            {{--                    $table->string('situation');--}}
-//            {{--                    $table->date('date_service')->nullable();--}}
-//            {{--                    $table->time('time_service')->nullable();--}}
-//            {{--                    $table->unsignedInteger('called_id');--}}
-//            {{--                    $table->unsignedInteger('establishment_id');--}}
-//            {{--                    $table->unsignedInteger('user_id');--}}
-
             DB::commit();
 
             return redirect()
@@ -184,7 +163,28 @@ class CalledController extends Controller
      */
     public function edit(Called $called)
     {
-        //
+        if (!auth()->user()->can('establishment-employee') && !auth()->user()->can('manage-called'))
+            return abort(401);
+
+        /** Create form options */
+        $formOptions = [
+            'route'     => ['called.update', $called],
+            'method'    => Request::METHOD_PUT,
+            'files'     => false,
+            'onsubmit'  => 'return validateFormCalled(this)',
+        ];
+
+        $situations = [
+            'waiting'       => 'Aguardando Atendimento',
+            'analyze'       => 'Em análise',
+            'development'   => 'Em desenvolvimento',
+            'closed'        => 'Encerrado'
+        ];
+
+        return view('admin.called.form',
+            compact('called',
+                'formOptions',
+                'situations'));
     }
 
     /**
@@ -194,9 +194,63 @@ class CalledController extends Controller
      * @param  \App\Models\Admin\Called  $called
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Called $called)
+    public function update(CreateOrUpdateCalled $request, Called $called)
     {
-        //
+        if (!auth()->user()->can('establishment-employee') && !auth()->user()->can('manage-called'))
+            return abort(401);
+
+        $data = $request->validated();
+
+        # Log Access Users
+        $this->access('Criar Interação Chamado [' . $called->id . ']', $data);
+
+        DB::beginTransaction();
+
+        try {
+            $data['establishment_id'] = $called->establishment_id;
+            $data['user_id'] = auth()->user()->id;
+
+            dd($data);
+
+            //
+//            "subject" => "teste"
+//  "status" => "1"
+//  "description" => "<p>teste daniel chamado urgente</p>"
+//  "date_service" => "2020-06-02"
+
+            //            {{--                    $table->unsignedInteger('establishment_id');--}}
+//            {{--                    $table->unsignedInteger('user_id');--}}
+//            {{--                    $table->string('subject');--}}
+//            {{--                    $table->boolean('status')->default(1);--}}
+//
+//            {{--                    $table->text('description');--}}
+//            {{--                    $table->string('situation');--}}
+//            {{--                    $table->date('date_service')->nullable();--}}
+//            {{--                    $table->time('time_service')->nullable();--}}
+//            {{--                    $table->unsignedInteger('called_id');--}}
+//            {{--                    $table->unsignedInteger('establishment_id');--}}
+//            {{--                    $table->unsignedInteger('user_id');--}}
+
+            $created = $called->called_interaction()->create($data);
+
+            if (!$created)
+                throw new \Exception('Não foi possível criar o chamado!');
+
+            //desabilitar caso necessário, dependendo da situacao usar a função destroy
+
+            DB::commit();
+
+            return redirect()
+                ->route('called.index')
+                ->with('success', 'Interação realizada com sucesso');
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return redirect()
+                ->route('called.edit', compact('called'))
+                ->withInput()
+                ->with('error', $e->getMessage());
+        }
     }
 
     /**
