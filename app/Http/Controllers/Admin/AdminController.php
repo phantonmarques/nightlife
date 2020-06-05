@@ -821,15 +821,18 @@ class AdminController extends Controller
         DB::beginTransaction();
 
         try {
-            if (!empty(auth()->user()->profile_picture_path))
-                if (!Storage::delete("public/" . auth()->user()->profile_picture_path))
+            if (!empty(auth()->user()->profile_picture_path)):
+                if (!Storage::delete(auth()->user()->profile_picture_path))
                     throw new \Exception('Não foi possível atualizar a foto do perfil!');
+
+            endif;
 
             if (!($path = $data['profile_picture_path']->store('settings', 'public')))
                 throw new \Exception('Não foi possível armazenar a foto do perfil!');
 
             $user = auth()->user();
             $user->profile_picture_path = $path;
+
 
             if (!$user->update())
                 throw new \Exception('Ocorreu um erro ao atualizar a foto do perfil!');
@@ -846,6 +849,8 @@ class AdminController extends Controller
                 ->with('success', 'Foto do perfil atualizada com sucesso!');
         } catch (\Exception $e) {
             DB::rollBack();
+            dd('oibb2');
+
 
             return redirect()
                 ->route('settings.changePicture')
