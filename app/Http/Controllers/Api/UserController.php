@@ -15,7 +15,9 @@ use App\Models\Site\City;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Site\User;
+use App\Mail\Email;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -35,12 +37,14 @@ class UserController extends Controller
         $user = User::where('remember_token', $request->token)->first();
 
         if ($user):
-            Auth::guard('web')->login($user);
+            Auth::login($user);
 
-            dd(Auth::check());
+        //var_dump(Auth::check());
+         //   dd();
+//            dd(Auth::user());
 
             if (Auth::check()):
-                return redirect()->intended('/control');
+                return redirect()->route('admin.page');
 
             endif;
 
@@ -71,7 +75,26 @@ class UserController extends Controller
 					'type' => $user->type_user,
                 ]);
             elseif (empty($user->email_verified_at)):
-                // enviar novo link de confirmação
+                if (empty($user->remember_token)):
+                    $token = Str::random(90);
+                    $user->remember_token = $token;
+                    $user->update();
+                endif;
+
+                $email = 'revolt_car@hotmail.com'; // $user->email;
+                $object = new \stdClass();
+                $object->name = $user->name;
+                $object->login = $user->email;
+                $object->password = $request->password;
+                $object->token = $user->remember_token;
+                $mail = new \stdClass();
+                $mail->subject = 'Confirme seu e-mail para acessar ao Nightlife';
+                $mail->template = 'auth.confirm-mail';
+                $mail->replyTo = 'da3780024@gmail.com';//'fabianocm1995@hotmail.com';
+                $mail->object = $object;
+
+                Mail::to($email)->send(new Email($mail));
+
                 return response()->json([
                     'message' => 'Cadastro não confirmado, favor acesse o link de confirmação enviado no e-mail cadastrado!',
                     'status' => false
@@ -168,9 +191,6 @@ class UserController extends Controller
         try {
             $data["password"] = bcrypt($data["password"]);
 
-            //REMOVER DEPOIS
-            $data["email_verified_at"] = date('Y-m-d H:i:s');
-
             $user = User::create($data);
 
             if (!$user->exists)
@@ -185,7 +205,19 @@ class UserController extends Controller
             if (!$created)
                 throw new \Exception('Ocorreu um erro desconhecido ao criar a conta, tente novamente!');
 
-            //CRIAR FLUXO PARA ENVIO DE LINK DE CONFIRMAÇÃO PELO E-MAIL
+            $email = 'revolt_car@hotmail.com'; // $user->email;
+            $object = new \stdClass();
+            $object->name = $user->name;
+            $object->login = $user->email;
+            $object->password = $data["password"];
+            $object->token = $user->remember_token;
+            $mail = new \stdClass();
+            $mail->subject = 'Confirme seu e-mail para acessar ao Nightlife';
+            $mail->template = 'auth.confirm-mail';
+            $mail->replyTo = 'da3780024@gmail.com';//'fabianocm1995@hotmail.com';
+            $mail->object = $object;
+
+            Mail::to($email)->send(new Email($mail));
 
             DB::commit();
 

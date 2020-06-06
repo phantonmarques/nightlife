@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
  * TODO: Institutional
  */
 Route::get('/', 'SiteInstitucional\SiteInstController@index')->name('home');
+Route::get('/confirm/{token}', 'SiteInstitucional\SiteInstController@confirmEmail')->name('confirm.account');
 
 #######################################################################################################################################
 
