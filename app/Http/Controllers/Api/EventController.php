@@ -32,6 +32,9 @@ class EventController extends Controller
             $event->description = strip_tags($event->description);
             $event->increment('views');
 
+            $event->followed = auth()->user()->user_liked()->where('event_id', $event->id)->count() > 0 ? true : false;
+
+
             return response()->json([
                 'status' => true,
                 'data' => array(

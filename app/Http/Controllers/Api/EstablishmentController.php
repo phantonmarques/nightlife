@@ -26,9 +26,11 @@ class EstablishmentController extends Controller
                 $q->limit(5);
             }])->find($id);
 
-        $this->incrementViewEstablishment($establishment->id);
-
         if (isset($establishment->corporate_name)):
+            $this->incrementViewEstablishment($establishment->id);
+
+            $establishment->followed = auth()->user()->user_liked()->where('establishment_id', $establishment->id)->count() > 0 ? true : false;
+
             return response()->json([
                 'status' => true,
                 'data' => $establishment

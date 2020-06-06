@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Route;
 # Routes: Auth Users and Register
 Route::post('login', 'Api\\UserController@login');
 Route::post('register', 'Api\\UserController@store');
+Route::get('/auth_painel/{token}', 'Api\\UserController@authAdmin');
 
 Route::middleware('check_token')->group(function() {
     # Routes: Event
@@ -36,6 +37,10 @@ Route::middleware('check_token')->group(function() {
     Route::post('/user_comment', 'Api\\UserController@storeComment');
     Route::post('/user_picture', 'Api\\UserController@updateImg');
     Route::post('/user_update', 'Api\\UserController@update');
+    Route::get('/user_establishment_follow/{id}', 'Api\\UserController@establishmentFollow');
+    Route::get('/user_establishment_nofollow/{id}', 'Api\\UserController@establishmentUnfollow');
+    Route::get('/user_event_follow/{id}', 'Api\\UserController@eventFollow');
+    Route::get('/user_event_nofollow/{id}', 'Api\\UserController@eventUnfollow');
     Route::get('/states', 'Api\\UserController@searchStates');
     Route::get('/citys/{state_id}', 'Api\\UserController@searchCitys');
 

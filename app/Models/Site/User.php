@@ -98,4 +98,12 @@ class User extends Authenticatable
     {
         return $this->hasMany(UserComment::class, 'user_id');
     }
+
+    /**
+     * Get rating of establishment.
+     */
+    public function user_liked()
+    {
+        return $this->hasMany(UserLiked::class, 'user_id');
+    }
 }

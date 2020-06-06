@@ -49,14 +49,14 @@
                     <table class="table table-bordered table-hover dataTable table-striped">
                         <thead>
                         <tr>
-                            <th>ID</th>
+                            @can('manage-called')
+                                <th>ID</th>
+                            @endcan
                             <th>Título</th>
                             <th>Situação Chamado</th>
                             <th>Data Último Atendimento</th>
                             <th>Tempo Último Atendimento</th>
                             <th>Status</th>
-                            <th>Data de Criação</th>
-                            <th>Data de Atualização</th>
                             <th class="col-actions"></th>
                         </tr>
                         </thead>
@@ -64,9 +64,11 @@
                         @if (isset($called) && sizeof($called) > 0)
                             @foreach($called as $call)
                                 <tr>
-                                    <td>
-                                        {{ $call->id }}
-                                    </td>
+                                    @can('manage-called')
+                                        <td>
+                                            {{ $call->id }}
+                                        </td>
+                                    @endcan
                                     <td>
                                         {{ $call->subject }}
                                     </td>
@@ -77,21 +79,18 @@
                                         {{ formatDate($call->called_interaction()->orderBy('id', 'DESC')->first()->date_service) }}
                                     </td>
                                     <td>
-                                        {{ $call->called_interaction()->orderBy('id', 'DESC')->first()->time_service }}
+                                        {{ $call->called_interaction()->orderBy('id', 'DESC')->first()->time_service ? formatHour($call->called_interaction()->orderBy('id', 'DESC')->first()->time_service) : '00:00' }}
                                     </td>
                                     <td>
                                         {{ ($call->status) ? 'Aberto' : 'Encerrado' }}
                                     </td>
-                                    <td>
-                                        {{ $call->created_at->format('d/m/Y - H:i') }}
-                                    </td>
-                                    <td>
-                                        {{ $call->updated_at->format('d/m/Y - H:i') }}
-                                    </td>
                                     <td class="col-actions">
-                                        <a href="{{ route('called.edit', $call) }}" class="action-edit"
-                                           title="Interagir {{ $call->subject }}"><span
-                                                    class="glyphicon glyphicon-pencil"></span></a>
+                                        @if ($call->status)
+                                            <a href="{{ route('called.edit', $call) }}" class="action-edit"
+                                               title="Interagir {{ $call->subject }}"><span
+                                                        class="glyphicon glyphicon-pencil"></span></a>
+                                        @endif
+
                                         <a href="{{ route('called.show', $call) }}" class="action-show"
                                            title="Visualizar {{ $call->subject }}"><span
                                                     class="glyphicon glyphicon-info-sign"></span></a>
@@ -101,7 +100,7 @@
                         @else
                             <tr>
                                 <td colspan="100%" class="text-center">
-                                    Nenhum chamado {{ (!empty($calledSearch)) ? 'encontrada.' : 'cadastrada.' }}
+                                    Nenhum chamado {{ (!empty($calledSearch)) ? 'encontrado.' : 'cadastrado.' }}
                                 </td>
                             </tr>
                         @endif

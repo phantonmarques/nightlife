@@ -152,7 +152,16 @@ class CalledController extends Controller
      */
     public function show(Called $called)
     {
-        //
+        $situations = [
+            'waiting'       => 'Aguardando Atendimento',
+            'analyze'       => 'Em análise',
+            'development'   => 'Em desenvolvimento',
+            'closed'        => 'Encerrado'
+        ];
+
+        return view('admin.called.show',
+            compact('called',
+                'situations'));
     }
 
     /**
@@ -210,33 +219,21 @@ class CalledController extends Controller
             $data['establishment_id'] = $called->establishment_id;
             $data['user_id'] = auth()->user()->id;
 
-            dd($data);
-
-            //
-//            "subject" => "teste"
-//  "status" => "1"
-//  "description" => "<p>teste daniel chamado urgente</p>"
-//  "date_service" => "2020-06-02"
-
-            //            {{--                    $table->unsignedInteger('establishment_id');--}}
-//            {{--                    $table->unsignedInteger('user_id');--}}
-//            {{--                    $table->string('subject');--}}
-//            {{--                    $table->boolean('status')->default(1);--}}
-//
-//            {{--                    $table->text('description');--}}
-//            {{--                    $table->string('situation');--}}
-//            {{--                    $table->date('date_service')->nullable();--}}
-//            {{--                    $table->time('time_service')->nullable();--}}
-//            {{--                    $table->unsignedInteger('called_id');--}}
-//            {{--                    $table->unsignedInteger('establishment_id');--}}
-//            {{--                    $table->unsignedInteger('user_id');--}}
+            if (!isset($data['situation']))
+                $data['situation'] = $called->called_interaction()->orderBy('id', 'DESC')->first()->situation;
 
             $created = $called->called_interaction()->create($data);
 
             if (!$created)
-                throw new \Exception('Não foi possível criar o chamado!');
+                throw new \Exception('Não foi possível interagir no chamado!');
 
-            //desabilitar caso necessário, dependendo da situacao usar a função destroy
+            if ($data['situation'] === 'closed'):
+                $called->status = false;
+
+                if (!$called->save())
+                    throw new \Exception('Não foi possível encerrar o chamado!');
+
+            endif;
 
             DB::commit();
 
@@ -251,17 +248,6 @@ class CalledController extends Controller
                 ->withInput()
                 ->with('error', $e->getMessage());
         }
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Admin\Called  $called
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Called $called)
-    {
-        //
     }
 
     /**

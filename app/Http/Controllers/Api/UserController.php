@@ -6,6 +6,8 @@ use App\Http\Requests\Api\CreateOrUpdateUser;
 use App\Http\Requests\Api\CreateUserComment;
 use App\Http\Requests\Api\CreateUserRating;
 use App\Http\Requests\Api\UpdatePicture;
+use App\Models\Admin\Establishment;
+use App\Models\Admin\Event;
 use App\Models\Site\UserComment;
 use App\Models\Site\UserRating;
 use App\Models\Site\State;
@@ -18,9 +20,35 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Zend\Diactoros\Response\JsonResponse;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
+
+    /**
+     * Authenticate USER Admin and redirect Painel
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse|void
+     */
+    public function authAdmin(Request $request)
+    {
+        $user = User::where('remember_token', $request->token)->first();
+
+        if ($user):
+            Auth::guard('web')->login($user);
+
+            dd(Auth::check());
+
+            if (Auth::check()):
+                return redirect()->intended('/control');
+
+            endif;
+
+        endif;
+
+//        return abort(401);
+    }
+
     /**
      * Login user common
      * @param Request $request
@@ -177,6 +205,158 @@ class UserController extends Controller
         }
     }
 
+    public function establishmentFollow($id)
+    {
+        if (auth()->user()->user_liked()->where('establishment_id', $id)->count() > 0):
+            return response()->json([
+                'status' => false,
+                'message' => 'Não é possível seguir o estabelecimento mais de uma vez!'
+            ]);
+
+        elseif (Establishment::where('id', $id)->count() > 0):
+            DB::beginTransaction();
+
+            try {
+                $created = auth()->user()->user_liked()->create(['establishment_id' => $id]);
+
+                if (!$created)
+                    throw new \Exception('Erro ao seguir o estabelecimento, por favor tente novamente!');
+
+                DB::commit();
+
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Estabelecimento seguido com sucesso!',
+                ]);
+            } catch (\Exception $e) {
+                DB::rollBack();
+
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Não foi possível seguir o estabelecimento!',
+                    'errors' => $e->getMessage()
+                ]);
+            }
+
+        endif;
+
+        return response()->json([
+            'status' => false,
+            'message' => 'Não é possível seguir o estabelecimento!'
+        ]);
+    }
+
+    public function establishmentUnfollow($id)
+    {
+        if (Establishment::where('id', $id)->count() > 0):
+            DB::beginTransaction();
+
+            try {
+                $deleted = auth()->user()->user_liked()->where('establishment_id', $id)->delete();
+
+                if (!$deleted)
+                    throw new \Exception('Erro ao deixar de seguir o estabelecimento, por favor tente novamente!');
+
+                DB::commit();
+
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Estabelecimento deixado de seguir com sucesso!',
+                ]);
+            } catch (\Exception $e) {
+                DB::rollBack();
+
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Não foi possível deixar de seguir o estabelecimento!',
+                    'errors' => $e->getMessage()
+                ]);
+            }
+
+        endif;
+
+        return response()->json([
+            'status' => false,
+            'message' => 'Não é possível deixar de seguir o estabelecimento!'
+        ]);
+    }
+
+    public function eventFollow($id)
+    {
+        if (auth()->user()->user_liked()->where('event_id', $id)->count() > 0):
+            return response()->json([
+                'status' => false,
+                'message' => 'Não é possível seguir o evento mais de uma vez!'
+            ]);
+
+        elseif (Event::where('id', $id)->count() > 0):
+            DB::beginTransaction();
+
+            try {
+                $created = auth()->user()->user_liked()->create(['event_id' => $id]);
+
+                if (!$created)
+                    throw new \Exception('Erro ao seguir o evento, por favor tente novamente!');
+
+                DB::commit();
+
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Evento seguido com sucesso!',
+                ]);
+            } catch (\Exception $e) {
+                DB::rollBack();
+
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Não foi possível seguir o evento!',
+                    'errors' => $e->getMessage()
+                ]);
+            }
+
+        endif;
+
+        return response()->json([
+            'status' => false,
+            'message' => 'Não é possível seguir o evento!'
+        ]);
+    }
+
+    public function eventUnfollow($id)
+    {
+        if (Event::where('id', $id)->count() > 0):
+            DB::beginTransaction();
+
+            try {
+                $deleted = auth()->user()->user_liked()->where('event_id', $id)->delete();
+
+                if (!$deleted)
+                    throw new \Exception('Erro ao deixar de seguir o evento, por favor tente novamente!');
+
+                DB::commit();
+
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Evento deixado de seguir com sucesso!',
+                ]);
+            } catch (\Exception $e) {
+                DB::rollBack();
+
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Não foi possível deixar de seguir o evento!',
+                    'errors' => $e->getMessage()
+                ]);
+            }
+
+        endif;
+
+        return response()->json([
+            'status' => false,
+            'message' => 'Não é possível deixar de seguir o evento!'
+        ]);
+    }
+
     /**
      * Register rating common user
      * @param CreateOrUpdateUser $request
@@ -271,20 +451,21 @@ class UserController extends Controller
      */
     public function update(CreateOrUpdateUser $request)
     {
-				$data = $request->validated();
-				
-				$category = $rhythm = [];
+		$data = $request->validated();
+
+		$category = $rhythm = [];
 
         # FORMATAÇÃO DOS DADOS RECEBIDOS
         foreach ($request->all() as $key => $requestField):
             if (strpos($key, 'category') !== false)
                 $category[] = preg_split("/(\[|\])/", $key)[1];
             else if (strpos($key, 'rhythm') !== false)
-								$rhythm[] = preg_split("/(\[|\])/", $key)[1];
-				endforeach;
-								
-				$data['favorite_rhythms'] = $rhythm;
-				$data['favorite_categorys'] = $category;
+				$rhythm[] = preg_split("/(\[|\])/", $key)[1];
+
+		endforeach;
+
+		$data['favorite_rhythms'] = $rhythm;
+		$data['favorite_categorys'] = $category;
 
         DB::beginTransaction();
 
@@ -347,7 +528,7 @@ class UserController extends Controller
             $path = 'user/' . Str::random(40) . $format;
 
             if (!Storage::disk('public')->put($path, $file))
-								throw new \Exception('Não foi possível armazenar a foto do perfil!');
+				throw new \Exception('Não foi possível armazenar a foto do perfil!');
 
             $user = auth()->user();
             $user->profile_picture_path = $path;
@@ -362,6 +543,7 @@ class UserController extends Controller
                 'message' => 'Foto inserida com sucesso!',
                 'path' => $path
             ]);
+
         } catch (\Exception $e) {
             DB::rollBack();
 

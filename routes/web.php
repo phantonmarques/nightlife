@@ -27,9 +27,6 @@ Route::group(['middleware' => 'auth', 'prefix' => '/control/'], function () {
             Route::get('event/{event}/destroy', 'Admin\\EventController@destroy')->name('event.destroy');
             Route::resource('event', 'Admin\\EventController')->except(['destroy']);
 
-        # CALLED
-
-
         # SETTINGS
             Route::get('details', 'Admin\\AdminController@details')->name('admin.details');
             Route::get('pictures', 'Admin\\AdminController@changePictures')->name('admin.pictures');
@@ -53,7 +50,6 @@ Route::group(['middleware' => 'auth', 'prefix' => '/control/'], function () {
         Route::resource('category', 'Admin\\CategoryController')->except(['destroy']);
 
     # Called
-        Route::get('called/{called}/destroy', 'Admin\\CalledController@destroy')->name('category.destroy');
         Route::resource('called', 'Admin\\CalledController')->except(['destroy']);
 
     # Musical Rhythm

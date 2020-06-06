@@ -30,7 +30,7 @@
                         <div class="col-md-10">
                             {{ Form::label('subject','Assunto') }} <span class="span-required">*</span>
                             @if(isset($called->id))
-                                {{ Form::text('subject', $called->name, ['placeholder' => 'Informe assunto do chamado', 'class' => 'form-control required', 'disabled' => 'disabled']) }}
+                                {{ Form::text('subject', $called->subject, ['placeholder' => 'Informe assunto do chamado', 'class' => 'form-control required', 'disabled' => 'disabled']) }}
                             @else
                                 {{ Form::text('subject', '', ['placeholder' => 'Informe assunto do chamado', 'class' => 'form-control required']) }}
                             @endif
@@ -49,23 +49,19 @@
                         <div class="row top-separate">
                             <div class="col-md-10">
                                 @can('establishment-employee')
-                                    @foreach($called->called_interaction as $interaction)
-                                        @if ($interaction->visible)
-                                            <div class="box-body table-responsive no-padding">
-                                                <table class="table table-bordered table-hover dataTable table-striped">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Interação</th>
-                                                            <th>Descrição</th>
-                                                            <th>Situação</th>
-                                                            <th>Usuário Interação</th>
-                                                        </tr>
-                                                    </thead>
+                                    <div class="box-body table-responsive no-padding">
+                                        <table class="table table-bordered table-hover dataTable table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th>Descrição</th>
+                                                    <th>Situação</th>
+                                                    <th>Usuário Interação</th>
+                                                </tr>
+                                            </thead>
+                                            @foreach($called->called_interaction as $interaction)
+                                                @if ($interaction->visible)
                                                     <tbody>
                                                         <tr>
-                                                            <td>
-                                                                {{ '#' . $interaction->id }}
-                                                            </td>
                                                             <td>
                                                                 {!! $interaction->description !!}
                                                             </td>
@@ -73,34 +69,34 @@
                                                                 {{ formatSituation($interaction->situation) }}
                                                             </td>
                                                             <td>
-                                                                {{ $interaction->user->name . ' [' . $interaction->user->id . ']' }}
+                                                                {{ $interaction->user->name }}
                                                             </td>
                                                         </tr>
                                                     </tbody>
-                                                </table>
-                                            </div>
-                                        @endif
-                                    @endforeach
+                                                @endif
+                                            @endforeach
+                                        </table>
+                                    </div>
                                 @else
-                                    @foreach($called->called_interaction as $interaction)
-                                        <div class="box-body table-responsive no-padding">
-                                            <table class="table table-bordered table-hover dataTable table-striped">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Interação</th>
-                                                        <th>Descrição</th>
-                                                        <th>Situação</th>
-                                                        <th>Data Último Atendimento</th>
-                                                        <th>Tempo Último Atendimento</th>
-                                                        <th>Estabelecimento</th>
-                                                        <th>Usuário Interação</th>
-                                                        <th>Visível Cliente</th>
-                                                    </tr>
-                                                </thead>
+                                    <div class="box-body table-responsive no-padding">
+                                        <table class="table table-bordered table-hover dataTable table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th>Interação</th>
+                                                    <th>Descrição</th>
+                                                    <th>Situação</th>
+                                                    <th>Data Último Atendimento</th>
+                                                    <th>Tempo Último Atendimento</th>
+                                                    <th>Estabelecimento</th>
+                                                    <th>Usuário Interação</th>
+                                                    <th>Visível Cliente</th>
+                                                </tr>
+                                            </thead>
+                                            @foreach($called->called_interaction as $key => $interaction)
                                                 <tbody>
                                                     <tr>
                                                         <td>
-                                                            {{ '#' . $interaction->id }}
+                                                            {{ '#' . ($key+1) }}
                                                         </td>
                                                         <td>
                                                             {!! $interaction->description !!}
@@ -125,9 +121,10 @@
                                                         </td>
                                                     </tr>
                                                 </tbody>
-                                            </table>
-                                        </div>
-                                    @endforeach
+
+                                            @endforeach
+                                        </table>
+                                    </div>
                                 @endcan
 
                             </div>
@@ -136,7 +133,8 @@
 
                     <div class="row top-separate">
                         <div class="col-md-10">
-                            {{ Form::label('description', (isset($called->id) ? 'Descrição da Interação' : 'Descrição do Chamado' )) }} <span class="span-required">*</span>
+                            {{ Form::label('description', (isset($called->id) ? 'Descrição da Interação' : 'Descrição do Chamado' )) }}
+                            <span class="span-required">*</span>
                             {!! Form::textarea('description', '', ['class'=>'form-control', 'id' => 'description']) !!}
                         </div>
                     </div>
