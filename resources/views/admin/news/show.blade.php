@@ -2,7 +2,12 @@
 @section('title', 'Notícia · Visualização')
 
 @section('content_header')
-    <h1>Notícia [{{ $news->title }}]</h1>
+    <h1>&nbsp;</h1>
+    <ol class="breadcrumb">
+        <li><a href="{{ route('admin.page') }}">Inicio</a></li>
+        <li><a href="{{ route('news.index') }}">Notícias</a></li>
+        <li><a href="{{ route('news.show', $news) }}"> Visualizar notícia</a></li>
+    </ol>
 @stop
 
 @section('content')
@@ -58,7 +63,6 @@
                             ])
                         </div>
                     </div>
-
                 </div>
 
                 <div class="box-footer">

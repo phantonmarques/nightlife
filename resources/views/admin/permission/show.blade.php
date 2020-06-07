@@ -2,12 +2,13 @@
 @section('title', 'Permissão · Visualização')
 
 @section('content_header')
-    <h1>Permissão [{{ $permission->name }}]</h1>
+    <h1>&nbsp;</h1>
+    <ol class="breadcrumb">
+        <li><a href="{{ route('admin.page') }}">Inicio</a></li>
+        <li><a href="{{ route('permission.index') }}">Permissões</a></li>
+        <li><a href="{{ route('permission.show', $permission) }}"> Visualizar permissão</a></li>
+    </ol>
 @stop
-
-@section('breadcrumbs')
-    {{ Breadcrumbs::render(Route::currentRouteName(), $permission) }}
-@endsection
 
 @section('content')
     <div class="row">

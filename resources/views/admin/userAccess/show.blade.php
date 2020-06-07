@@ -2,12 +2,13 @@
 @section('title', 'Log Acesso · Visualização')
 
 @section('content_header')
-    <h1>Log Acesso [{{ $log->users->name }}]</h1>
+    <h1>&nbsp;</h1>
+    <ol class="breadcrumb">
+        <li><a href="{{ route('admin.page') }}">Inicio</a></li>
+        <li><a href="{{ route('logs.index') }}">Logs Usuários</a></li>
+        <li><a href="{{ route('logs.show', $log) }}"> Visualizar log usuário</a></li>
+    </ol>
 @stop
-
-@section('breadcrumbs')
-    {{ Breadcrumbs::render(Route::currentRouteName(), $log) }}
-@endsection
 
 @section('content')
     <div class="row">

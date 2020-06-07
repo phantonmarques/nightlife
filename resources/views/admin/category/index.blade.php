@@ -2,12 +2,12 @@
 @section('title', 'Categorias · ')
 
 @section('content_header')
-    <h1>Categorias</h1>
+    <h1>&nbsp;</h1>
+    <ol class="breadcrumb">
+        <li><a href="{{ route('admin.page') }}">Inicio</a></li>
+        <li><a href="{{ route('category.index') }}">Categorias</a></li>
+    </ol>
 @stop
-
-@section('breadcrumbs')
-    {{ Breadcrumbs::render(Route::currentRouteName(), $categorys) }}
-@endsection
 
 @section('content')
     <div class="row">

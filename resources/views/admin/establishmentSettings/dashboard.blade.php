@@ -1,9 +1,13 @@
 @extends('adminlte::page')
 @section('title', 'Dashboard · ')
 
-@section('breadcrumbs')
-    {{ Breadcrumbs::render(Route::currentRouteName(), 'Dashboard') }}
-@endsection
+@section('content_header')
+    <h1>&nbsp;</h1>
+    <ol class="breadcrumb">
+        <li><a href="{{ route('admin.page') }}">Inicio</a></li>
+        <li><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
+    </ol>
+@stop
 
 @section('content')
     <div class="row">

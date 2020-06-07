@@ -2,12 +2,12 @@
 @section('title', 'Permissões · ')
 
 @section('content_header')
-    <h1>Permissões</h1>
+    <h1>&nbsp;</h1>
+    <ol class="breadcrumb">
+        <li><a href="{{ route('admin.page') }}">Inicio</a></li>
+        <li><a href="{{ route('permission.index') }}">Permissões</a></li>
+    </ol>
 @stop
-
-@section('breadcrumbs')
-    {{ Breadcrumbs::render(Route::currentRouteName(), $permissions) }}
-@endsection
 
 @section('content')
     <div class="row">

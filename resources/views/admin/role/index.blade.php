@@ -2,12 +2,12 @@
 @section('title', 'Funções · ')
 
 @section('content_header')
-    <h1>Funções</h1>
+    <h1>&nbsp;</h1>
+    <ol class="breadcrumb">
+        <li><a href="{{ route('admin.page') }}">Inicio</a></li>
+        <li><a href="{{ route('role.index') }}">Funções</a></li>
+    </ol>
 @stop
-
-@section('breadcrumbs')
-    {{ Breadcrumbs::render(Route::currentRouteName(), $roles) }}
-@endsection
 
 @section('content')
     <div class="row">

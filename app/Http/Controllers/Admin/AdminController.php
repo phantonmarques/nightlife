@@ -849,8 +849,6 @@ class AdminController extends Controller
                 ->with('success', 'Foto do perfil atualizada com sucesso!');
         } catch (\Exception $e) {
             DB::rollBack();
-            dd('oibb2');
-
 
             return redirect()
                 ->route('settings.changePicture')

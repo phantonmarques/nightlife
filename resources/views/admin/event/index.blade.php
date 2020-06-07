@@ -2,12 +2,12 @@
 @section('title', 'Eventos Agendados · ')
 
 @section('content_header')
-    <h1>Eventos Agendados</h1>
+    <h1>&nbsp;</h1>
+    <ol class="breadcrumb">
+        <li><a href="{{ route('admin.page') }}">Inicio</a></li>
+        <li><a href="{{ route('event.index') }}">Eventos</a></li>
+    </ol>
 @stop
-
-@section('breadcrumbs')
-    {{ Breadcrumbs::render(Route::currentRouteName(), $events) }}
-@endsection
 
 @section('content')
     <div class="row">

@@ -2,12 +2,12 @@
 @section('title', 'Logs Acessos Usuários · ')
 
 @section('content_header')
-    <h1>Logs Acessos Usuários</h1>
+    <h1>Log acessos Usuários&nbsp;</h1>
+    <ol class="breadcrumb">
+        <li><a href="{{ route('admin.page') }}">Inicio</a></li>
+        <li><a href="{{ route('logs.index') }}">Logs</a></li>
+    </ol>
 @stop
-
-@section('breadcrumbs')
-    {{ Breadcrumbs::render(Route::currentRouteName(), $logs) }}
-@endsection
 
 @section('content')
     <div class="row">

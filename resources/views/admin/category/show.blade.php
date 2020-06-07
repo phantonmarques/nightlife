@@ -2,12 +2,13 @@
 @section('title', 'Categoria · Visualização')
 
 @section('content_header')
-    <h1>Categoria [{{ $category->name }}]</h1>
+    <h1>&nbsp;</h1>
+    <ol class="breadcrumb">
+        <li><a href="{{ route('admin.page') }}">Inicio</a></li>
+        <li><a href="{{ route('category.index') }}">Chamados</a></li>
+        <li><a href="{{ route('category.show', $category) }}"> Visualizar Chamado</a></li>
+    </ol>
 @stop
-
-@section('breadcrumbs')
-    {{ Breadcrumbs::render(Route::currentRouteName(), $category) }}
-@endsection
 
 @section('content')
     <div class="row">

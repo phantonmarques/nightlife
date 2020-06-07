@@ -2,12 +2,13 @@
 @section('title', 'Endereço Estabelecimento · Visualização')
 
 @section('content_header')
-    <h1>Endereço Estabelecimento [{{ $establishmentAddress->establishment->corporate_name }}]</h1>
+    <h1>&nbsp;</h1>
+    <ol class="breadcrumb">
+        <li><a href="{{ route('admin.page') }}">Inicio</a></li>
+        <li><a href="{{ route('establishmentAddress.index') }}">Endereços Estabelecimentos</a></li>
+        <li><a href="{{ route('establishmentAddress.show', $establishmentAddress) }}"> Visualizar endereços</a></li>
+    </ol>
 @stop
-
-@section('breadcrumbs')
-    {{ Breadcrumbs::render(Route::currentRouteName(), $establishmentAddress) }}
-@endsection
 
 @section('content')
     <div class="row">

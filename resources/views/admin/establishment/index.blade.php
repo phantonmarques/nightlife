@@ -2,12 +2,12 @@
 @section('title', 'Estabelecimentos · ')
 
 @section('content_header')
-    <h1>Estabelecimentos</h1>
+    <h1>&nbsp;</h1>
+    <ol class="breadcrumb">
+        <li><a href="{{ route('admin.page') }}">Inicio</a></li>
+        <li><a href="{{ route('establishment.index') }}">Estabelecimentos</a></li>
+    </ol>
 @stop
-
-@section('breadcrumbs')
-    {{ Breadcrumbs::render(Route::currentRouteName(), $establishments) }}
-@endsection
 
 @section('content')
     <div class="row">

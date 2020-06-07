@@ -2,12 +2,13 @@
 @section('title', 'Ritmo Musical · Visualização')
 
 @section('content_header')
-    <h1>Ritmo Musical [{{ $rhythm->name }}]</h1>
+    <h1>&nbsp;</h1>
+    <ol class="breadcrumb">
+        <li><a href="{{ route('admin.page') }}">Inicio</a></li>
+        <li><a href="{{ route('rhythm.index') }}">Ritmos Musícais</a></li>
+        <li><a href="{{ route('rhythm.show', $rhythm) }}"> Visualizar ritmos musical</a></li>
+    </ol>
 @stop
-
-@section('breadcrumbs')
-    {{ Breadcrumbs::render(Route::currentRouteName(), $rhythm) }}
-@endsection
 
 @section('content')
     <div class="row">

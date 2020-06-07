@@ -60,7 +60,7 @@
                                                border="0" style="border-collapse:collapse">
                                             <tbody>
                                             <tr>
-                                                <td style="word-wrap:break-word;font-size:0px;padding:10px 25px;border-collapse:collapse"
+                                                <td style="background-color:black;word-wrap:break-word;font-size:0px;padding:10px 25px;border-collapse:collapse"
                                                     align="center">
                                                     <table role="presentation" cellpadding="0" cellspacing="0"
                                                            style="border-collapse:collapse;border-spacing:0px"

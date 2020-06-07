@@ -2,12 +2,13 @@
 @section('title', 'Evento · Visualização')
 
 @section('content_header')
-    <h1>Evento [{{ $event->name }}]</h1>
+    <h1>&nbsp;</h1>
+    <ol class="breadcrumb">
+        <li><a href="{{ route('admin.page') }}">Inicio</a></li>
+        <li><a href="{{ route('event.index') }}">Eventos</a></li>
+        <li><a href="{{ route('event.show', $event) }}"> Visualizar evento</a></li>
+    </ol>
 @stop
-
-@section('breadcrumbs')
-    {{ Breadcrumbs::render(Route::currentRouteName(), $event) }}
-@endsection
 
 @section('content')
     <div class="row">

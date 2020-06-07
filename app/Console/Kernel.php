@@ -15,6 +15,7 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         Commands\DisableExpiredEvents::class,
         Commands\ResetCountersStatistics::class,
+        Commands\SendMailUserLiked::class
     ];
 
     /**
@@ -29,6 +30,7 @@ class Kernel extends ConsoleKernel
         //          ->hourly();
         $schedule->command('DisableExpiredEvents:verifyEvents')->daily();
         $schedule->command('ResetCountersStatistics:resetCounters')->daily();
+        $schedule->command('SendMailUserLiked:verifyUsersLiked')->daily();
     }
 
     /**

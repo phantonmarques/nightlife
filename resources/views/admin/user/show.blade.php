@@ -2,12 +2,13 @@
 @section('title', 'Usuário · Visualização')
 
 @section('content_header')
-    <h1>Usuário [{{ $user->name }}]</h1>
+    <h1>&nbsp;</h1>
+    <ol class="breadcrumb">
+        <li><a href="{{ route('admin.page') }}">Inicio</a></li>
+        <li><a href="{{ route('user.index') }}">Usuários</a></li>
+        <li><a href="{{ route('user.show', $user) }}"> Visualizar usuário</a></li>
+    </ol>
 @stop
-
-@section('breadcrumbs')
-    {{ Breadcrumbs::render(Route::currentRouteName(), $user) }}
-@endsection
 
 @section('content')
     <div class="row">

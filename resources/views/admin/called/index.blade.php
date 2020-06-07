@@ -2,7 +2,11 @@
 @section('title', 'Chamados · ')
 
 @section('content_header')
-    <h1>Chamados</h1>
+    <h1>&nbsp;</h1>
+    <ol class="breadcrumb">
+        <li><a href="{{ route('admin.page') }}">Inicio</a></li>
+        <li><a href="{{ route('called.index') }}">Chamados</a></li>
+    </ol>
 @stop
 
 @section('content')

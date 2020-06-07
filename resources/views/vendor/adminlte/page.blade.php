@@ -116,7 +116,13 @@
                         </div>
                         <div class="pull-left info">
                             @if (!empty(auth()->user()->name))
-                                <p>{{ auth()->user()->name }}</p>
+                                @if (strlen(auth()->user()->name) < 25)
+                                    <p>{{ auth()->user()->name }}</p>
+                                @else
+                                    @php $name = explode(" ", auth()->user()->name); @endphp
+                                    <p>{{ $name[0] . " " . $name[1] }}</p>
+
+                                @endif
                             @else
                                 <p>Unknown</p>
                             @endif
