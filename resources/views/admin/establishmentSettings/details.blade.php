@@ -9,10 +9,6 @@
     </ol>
 @stop
 
-@section('breadcrumbs')
-    {{ Breadcrumbs::render(Route::currentRouteName(), $establishment) }}
-@endsection
-
 @section('content')
     <div class="row">
         <div class="col-md-12">

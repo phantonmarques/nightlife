@@ -24,6 +24,7 @@ class CreateUsersTable extends Migration
             $table->integer('establishment_connect')->nullable();
             $table->string('profile_picture_path')->unique()->nullable();
             $table->enum('type_user', ['a','f', 'e', 'ef', 'u'])->default('u'); # ADMINISTRADOR (a), funcionario (f), estabelecimento (e), estabelecimento funcionario (ef), usuário (u).
+            $table->string('type_social')->nullable();
             $table->rememberToken();
             $table->timestamps();
 

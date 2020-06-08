@@ -144,8 +144,12 @@ class AdminController extends Controller
             ->labels($arrayNameCategory)
             ->datasets([
                 [
-                    'backgroundColor' => ['#FF6384', '#36A2EB', '	#4682B4', '#008B8B', '#A52A2A'],
-                    'hoverBackgroundColor' => ['#FF6384', '#36A2EB', '	#4682B4', '#008B8B', '#A52A2A'],
+                    'backgroundColor' => ['#FF6384','#4682B4', '#008B8B', '#A52A2A', '#81BEF7', '#3B0B2E', '#424242', '#2E2E2E', '#0A0A2A', '#0A2A29', '#173B0B', '#F6CED8', 
+                        '#5F4C0B', '#3B0B0B', '#B43104', '#00FF80', '#36A2EB', '#7401DF', '#00FFFF', '#BFFF00', '#FF4000', '#FACC2E', '#045FB4', '#E3CEF6', '#ECF6CE', '#F8E0E0',
+                        '#4000FF', '#F2F2F2', '#292A0A', '#8A0886', '#FE2E64', '#A4A4A4'],
+                    'hoverBackgroundColor' => ['#FF6384','#4682B4', '#008B8B', '#A52A2A', '#81BEF7', '#3B0B2E', '#424242', '#2E2E2E', '#0A0A2A', '#0A2A29', '#173B0B', '#F6CED8', 
+                        '#5F4C0B', '#3B0B0B', '#B43104', '#00FF80', '#36A2EB', '#7401DF', '#00FFFF', '#BFFF00', '#FF4000', '#FACC2E', '#045FB4', '#E3CEF6', '#ECF6CE', '#F8E0E0',
+                        '#4000FF', '#F2F2F2', '#292A0A', '#8A0886', '#FE2E64', '#A4A4A4'],
                     'data' => $arrayTotalCategory,
                 ]
         ])->options([]);
@@ -178,8 +182,12 @@ class AdminController extends Controller
             ->datasets([
                 [
                     "label" => $monthCurrent,
-                    'backgroundColor' => ['#6495ED', '#A52A2A', '#2E8B57', '#A0522D', '#FF6347'],
-                    'hoverBackgroundColor' => ['#6495ED', '#A52A2A', '#2E8B57', '#A0522D', '#FF6347'],
+                    'backgroundColor' => ['#6495ED', '#A52A2A', '#2E8B57', '#A0522D', '#FF6347', '#424242', '#2E2E2E', '#0A0A2A', '#0A2A29', '#173B0B', '#F6CED8', 
+                        '#5F4C0B', '#3B0B0B', '#B43104', '#00FF80', '#36A2EB', '#7401DF', '#00FFFF', '#BFFF00', '#FF4000', '#FACC2E', '#045FB4', '#E3CEF6', '#ECF6CE', '#F8E0E0',
+                        '#4000FF', '#F2F2F2', '#292A0A', '#8A0886', '#FE2E64', '#A4A4A4'],
+                    'hoverBackgroundColor' => ['#6495ED', '#A52A2A', '#2E8B57', '#A0522D', '#FF6347', '#424242', '#2E2E2E', '#0A0A2A', '#0A2A29', '#173B0B', '#F6CED8', 
+                        '#5F4C0B', '#3B0B0B', '#B43104', '#00FF80', '#36A2EB', '#7401DF', '#00FFFF', '#BFFF00', '#FF4000', '#FACC2E', '#045FB4', '#E3CEF6', '#ECF6CE', '#F8E0E0',
+                        '#4000FF', '#F2F2F2', '#292A0A', '#8A0886', '#FE2E64', '#A4A4A4'],
                     'data' => $arrayMonthCategory,
                 ],
         ])->options([]);
@@ -193,8 +201,12 @@ class AdminController extends Controller
             ->datasets([
                 [
                     "label" => $monthCurrent,
-                    'backgroundColor' => ['#6495ED', '#A52A2A', '#2E8B57', '#A0522D', '#FF6347'],
-                    'hoverBackgroundColor' => ['#6495ED', '#A52A2A', '#2E8B57', '#A0522D', '#FF6347'],
+                    'backgroundColor' => ['#6495ED', '#A52A2A', '#2E8B57', '#A0522D', '#FF6347', '#424242', '#2E2E2E', '#0A0A2A', '#0A2A29', '#173B0B', '#F6CED8', 
+                        '#5F4C0B', '#3B0B0B', '#B43104', '#00FF80', '#36A2EB', '#7401DF', '#00FFFF', '#BFFF00', '#FF4000', '#FACC2E', '#045FB4', '#E3CEF6', '#ECF6CE', '#F8E0E0',
+                        '#4000FF', '#F2F2F2', '#292A0A', '#8A0886', '#FE2E64', '#A4A4A4'],
+                    'hoverBackgroundColor' => ['#6495ED', '#A52A2A', '#2E8B57', '#A0522D', '#FF6347', '#424242', '#2E2E2E', '#0A0A2A', '#0A2A29', '#173B0B', '#F6CED8', 
+                        '#5F4C0B', '#3B0B0B', '#B43104', '#00FF80', '#36A2EB', '#7401DF', '#00FFFF', '#BFFF00', '#FF4000', '#FACC2E', '#045FB4', '#E3CEF6', '#ECF6CE', '#F8E0E0',
+                        '#4000FF', '#F2F2F2', '#292A0A', '#8A0886', '#FE2E64', '#A4A4A4'],
                     'data' => $arrayWeekCategory,
                 ],
         ])->options([]);
@@ -285,8 +297,12 @@ class AdminController extends Controller
         ->labels($arrayNameRhythm)
         ->datasets([
             [
-                'backgroundColor' => ['#FF6384', '#36A2EB', '	#4682B4', '#008B8B', '#A52A2A', '#DAA520'],
-                'hoverBackgroundColor' => ['#FF6384', '#36A2EB', '	#4682B4', '#008B8B', '#A52A2A', '#DAA520'],
+                'backgroundColor' => ['#FF6384', '#36A2EB', '	#4682B4', '#008B8B', '#A52A2A', '#DAA520', '#424242', '#2E2E2E', '#0A0A2A', '#0A2A29', '#173B0B', '#F6CED8', 
+                    '#5F4C0B', '#3B0B0B', '#B43104', '#00FF80', '#36A2EB', '#7401DF', '#00FFFF', '#BFFF00', '#FF4000', '#FACC2E', '#045FB4', '#E3CEF6', '#ECF6CE', '#F8E0E0',
+                    '#4000FF', '#F2F2F2', '#292A0A', '#8A0886', '#FE2E64', '#A4A4A4'],
+                'hoverBackgroundColor' => ['#FF6384', '#36A2EB', '	#4682B4', '#008B8B', '#A52A2A', '#DAA520', '#424242', '#2E2E2E', '#0A0A2A', '#0A2A29', '#173B0B', '#F6CED8', 
+                    '#5F4C0B', '#3B0B0B', '#B43104', '#00FF80', '#36A2EB', '#7401DF', '#00FFFF', '#BFFF00', '#FF4000', '#FACC2E', '#045FB4', '#E3CEF6', '#ECF6CE', '#F8E0E0',
+                    '#4000FF', '#F2F2F2', '#292A0A', '#8A0886', '#FE2E64', '#A4A4A4'],
                 'data' => $arrayTotalRhythm,
             ]
         ])->options([]);
@@ -319,8 +335,12 @@ class AdminController extends Controller
         ->datasets([
             [
                 "label" => $monthCurrent,
-                'backgroundColor' => ['#6495ED', '#A52A2A', '#2E8B57', '#A0522D', '#FF6347', '#BC8F8F'],
-                'hoverBackgroundColor' => ['#6495ED', '#A52A2A', '#2E8B57', '#A0522D', '#FF6347', '#BC8F8F'],
+                'backgroundColor' => ['#6495ED', '#A52A2A', '#2E8B57', '#A0522D', '#FF6347', '#BC8F8F', '#424242', '#2E2E2E', '#0A0A2A', '#0A2A29', '#173B0B', '#F6CED8', 
+                    '#5F4C0B', '#3B0B0B', '#B43104', '#00FF80', '#36A2EB', '#7401DF', '#00FFFF', '#BFFF00', '#FF4000', '#FACC2E', '#045FB4', '#E3CEF6', '#ECF6CE', '#F8E0E0',
+                    '#4000FF', '#F2F2F2', '#292A0A', '#8A0886', '#FE2E64', '#A4A4A4'],
+                'hoverBackgroundColor' => ['#6495ED', '#A52A2A', '#2E8B57', '#A0522D', '#FF6347', '#BC8F8F', '#424242', '#2E2E2E', '#0A0A2A', '#0A2A29', '#173B0B', '#F6CED8', 
+                    '#5F4C0B', '#3B0B0B', '#B43104', '#00FF80', '#36A2EB', '#7401DF', '#00FFFF', '#BFFF00', '#FF4000', '#FACC2E', '#045FB4', '#E3CEF6', '#ECF6CE', '#F8E0E0',
+                    '#4000FF', '#F2F2F2', '#292A0A', '#8A0886', '#FE2E64', '#A4A4A4'],
                 'data' => $arrayMonthRhythm,
             ],
         ])->options([]);
@@ -334,8 +354,12 @@ class AdminController extends Controller
         ->datasets([
             [
                 "label" => $monthCurrent,
-                'backgroundColor' => ['#6495ED', '#A52A2A', '#2E8B57', '#A0522D', '#FF6347', '#BC8F8F'],
-                'hoverBackgroundColor' => ['#6495ED', '#A52A2A', '#2E8B57', '#A0522D', '#FF6347', '#BC8F8F'],
+                'backgroundColor' => ['#6495ED', '#A52A2A', '#2E8B57', '#A0522D', '#FF6347', '#BC8F8F', '#424242', '#2E2E2E', '#0A0A2A', '#0A2A29', '#173B0B', '#F6CED8', 
+                    '#5F4C0B', '#3B0B0B', '#B43104', '#00FF80', '#36A2EB', '#7401DF', '#00FFFF', '#BFFF00', '#FF4000', '#FACC2E', '#045FB4', '#E3CEF6', '#ECF6CE', '#F8E0E0',
+                    '#4000FF', '#F2F2F2', '#292A0A', '#8A0886', '#FE2E64', '#A4A4A4'],
+                'hoverBackgroundColor' => ['#6495ED', '#A52A2A', '#2E8B57', '#A0522D', '#FF6347', '#BC8F8F', '#424242', '#2E2E2E', '#0A0A2A', '#0A2A29', '#173B0B', '#F6CED8', 
+                    '#5F4C0B', '#3B0B0B', '#B43104', '#00FF80', '#36A2EB', '#7401DF', '#00FFFF', '#BFFF00', '#FF4000', '#FACC2E', '#045FB4', '#E3CEF6', '#ECF6CE', '#F8E0E0',
+                    '#4000FF', '#F2F2F2', '#292A0A', '#8A0886', '#FE2E64', '#A4A4A4'],
                 'data' => $arrayWeekRhythm,
             ],
         ])->options([]);
@@ -413,8 +437,12 @@ class AdminController extends Controller
         ->datasets([
             [
                 "label" => $monthCurrent,
-                'backgroundColor' => ['#6495ED', '#A52A2A', '#2E8B57', '#A0522D', '#FF6347', '#BC8F8F'],
-                'hoverBackgroundColor' => ['#6495ED', '#A52A2A', '#2E8B57', '#A0522D', '#FF6347', '#BC8F8F'],
+                'backgroundColor' => ['#6495ED', '#A52A2A', '#2E8B57', '#A0522D', '#FF6347', '#BC8F8F', '#424242', '#2E2E2E', '#0A0A2A', '#0A2A29', '#173B0B', '#F6CED8', 
+                    '#5F4C0B', '#3B0B0B', '#B43104', '#00FF80', '#36A2EB', '#7401DF', '#00FFFF', '#BFFF00', '#FF4000', '#FACC2E', '#045FB4', '#E3CEF6', '#ECF6CE', '#F8E0E0',
+                    '#4000FF', '#F2F2F2', '#292A0A', '#8A0886', '#FE2E64', '#A4A4A4'],
+                'hoverBackgroundColor' => ['#6495ED', '#A52A2A', '#2E8B57', '#A0522D', '#FF6347', '#BC8F8F', '#424242', '#2E2E2E', '#0A0A2A', '#0A2A29', '#173B0B', '#F6CED8', 
+                    '#5F4C0B', '#3B0B0B', '#B43104', '#00FF80', '#36A2EB', '#7401DF', '#00FFFF', '#BFFF00', '#FF4000', '#FACC2E', '#045FB4', '#E3CEF6', '#ECF6CE', '#F8E0E0',
+                    '#4000FF', '#F2F2F2', '#292A0A', '#8A0886', '#FE2E64', '#A4A4A4'],
                 'data' => $arrayMonthCategoryCity,
             ],
         ])->options([]);
@@ -727,7 +755,7 @@ class AdminController extends Controller
      */
     public function searchCitys($stateSelect)
     {
-        if (! auth()->user()->can('manage-users') && ! auth()->user()->can('manage-called'))
+        if (!auth()->user()->can('manage-called'))
             return abort(401);
 
         return response()->json(City::where('state_id', $stateSelect)->select( 'id', 'name', 'name_visible')->get());
@@ -740,7 +768,7 @@ class AdminController extends Controller
      */
     public function searchState($state)
     {
-        if (! auth()->user()->can('manage-users') && ! auth()->user()->can('manage-called'))
+        if (!auth()->user()->can('manage-called'))
             return abort(401);
 
         return response()->json(State::where('state_cod', $state)->select('id')->first());

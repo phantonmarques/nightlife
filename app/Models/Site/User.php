@@ -30,7 +30,8 @@ class User extends Authenticatable
         'password',
         'cpf_cnpj',
         'city_id',
-        'type_user'
+        'type_user',
+        'type_social'
     ];
 
     /**

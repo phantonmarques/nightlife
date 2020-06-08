@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Requests\Api\CreateOrUpdateUser;
 use App\Http\Requests\Api\CreateUserComment;
 use App\Http\Requests\Api\CreateUserRating;
+use App\Http\Requests\Api\CreateUserSocial;
 use App\Http\Requests\Api\UpdatePicture;
 use App\Models\Admin\Establishment;
 use App\Models\Admin\Event;
@@ -115,6 +116,75 @@ class UserController extends Controller
     }
 
     /**
+     * Login user common social networks
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function loginSocialNetworks(CreateUserSocial $request)
+    {
+        $user = User::where('email', $request->email)->first();
+
+        if ($user):
+            if (Hash::check('socialNetwork@2', $user->password)):
+                $token = Str::random(90);
+                $user->remember_token = $token;
+                $user->update();
+                return response()->json([
+                    'message' => 'Login efetuado com sucesso',
+                    'status' => true,
+                    'first' => false,
+                    'token' => $token,
+                ]);
+            else:
+                return response()->json([
+                    'message' => 'Senha inválida',
+                    'status' => 'Ocorreu um erro ao conectar com a conta do ' . $data['typeSocial'] . '!'
+                ]);
+            endif;
+
+        else:
+            $data = $request->validated();
+
+            DB::beginTransaction();
+
+            try {
+                $user = new User();
+                $user->name = $data['name'];
+                $user->email = $data['email'];
+                $user->email_verified_at = date('Y-m-d H:i:s');
+                $user->password = bcrypt('socialNetwork@2');
+                $user->type_social = $data['typeSocial'];
+                $token = Str::random(90);
+                $user->remember_token = $token;
+
+                if (!$user->save())
+                    throw new \Exception('Ocorreu um erro ao conectar com a conta do ' . $data['typeSocial'] . '!');
+
+                $created = $user->user_settings()->create();
+
+                if (!$created)
+                    throw new \Exception('Ocorreu um erro ao conectar com a conta do ' . $data['typeSocial'] . '!');
+
+                DB::commit();
+
+                return response()->json([
+                    'message' => 'Login efetuado com sucesso',
+                    'status' => true,
+                    'first' => true,
+                    'token' => $token
+                ]);
+            } catch (\Exception $e) {
+                DB::rollBack();
+
+                return response()->json([
+                    'status' => false,
+                    'message' => $e->getMessage()
+                ]);
+            }
+        endif;
+    }
+
+    /**
      * Info common user
      * @param CreateOrUpdateUser $request
      * @return \Illuminate\Http\JsonResponse
@@ -150,12 +220,12 @@ class UserController extends Controller
      */
     public function searchCitys($state)
     {
-        $citys = City::where('state_id', $state)->pluck('id', 'name_visible');
+        $citys = City::select('id', 'name_visible as name')->where('state_id', $state)->get();
 
         if (count($citys) > 0)
             return response()->json([
                 'status' => true,
-                'data' => City::select('id', 'name_visible as name')->where('state_id', $state)->get()
+                'data' => $citys
             ]);
 
         return response()->json([

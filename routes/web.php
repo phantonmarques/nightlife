@@ -31,7 +31,7 @@ Route::group(['middleware' => 'auth', 'prefix' => '/control/'], function () {
             Route::get('details', 'Admin\\AdminController@details')->name('admin.details');
             Route::get('pictures', 'Admin\\AdminController@changePictures')->name('admin.pictures');
             Route::post('updatePictures', 'Admin\\AdminController@updatePictures')->name('admin.updatePictures');
-            Route::delete('removePicture', 'Admin\\AdminController@removePicture')->name('admin.removePicture');
+            Route::delete('removePictures', 'Admin\\AdminController@removePicture')->name('admin.removePicture');
             Route::get('settings', 'Admin\\AdminController@settings')->name('admin.settings');
             Route::post('updateSettings', 'Admin\\AdminController@updateSettings')->name('admin.updateSettings');
 

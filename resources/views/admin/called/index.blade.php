@@ -104,7 +104,7 @@
                         @else
                             <tr>
                                 <td colspan="100%" class="text-center">
-                                    Nenhum chamado {{ (!empty($calledSearch)) ? 'encontrado.' : 'cadastrado.' }}
+                                    Nenhum chamado {{ (!empty($calledSearch)) ? 'encontrado.' : 'aberto.' }}
                                 </td>
                             </tr>
                         @endif
