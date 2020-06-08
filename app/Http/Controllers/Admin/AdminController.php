@@ -678,7 +678,45 @@ class AdminController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()
-            ], 400);
+            ], 200);
+        }
+    }
+
+    /**
+     * Function remove picture profile user connect in Painel
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function removeProfilePicture()
+    {
+        # Log Access Users
+        $this->access('Excluir Foto Usuário', auth()->user()->profile_picture_path);
+
+        DB::beginTransaction();
+
+        try {
+            if (!Storage::delete(auth()->user()->profile_picture_path))
+                throw new \Exception('Não foi possível remover a foto do perfil!');
+
+            $user = auth()->user();
+            $user->profile_picture_path = null;
+
+            if (!$user->save())
+                throw new \Exception('Não foi possível remover a foto do perfil!');
+
+            DB::commit();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Foto do perfil excluída com sucesso!',
+            ], 200);
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ], 200);
         }
     }
 

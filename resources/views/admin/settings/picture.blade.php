@@ -1,5 +1,5 @@
 @extends('adminlte::page')
-@section('title', 'Redefinir Senha· ')
+@section('title', 'Foto Perfil · ')
 
 @section('content_header')
     <h1>&nbsp;</h1>
@@ -31,8 +31,19 @@
                             </div>
                         </div>
                     </div>
+                    @if (!empty(auth()->user()->profile_picture_path))
+                        <div class="row">
+                            <div class="pull-center">
+                                <div class="input-file-container">
+                                    <a class="btn btn-block btn-warning btn-lg font-button" onclick="removePicture()">Remover Foto</a>
+                                    {!! Form::hidden('urlRemove', route('settings.removePicture')) !!}
+                                </div>
+                            </div>
+                            <p class="file-return pull-center"></p>
+                        </div>
+                    @endif
                     <div class="row">
-                        <div class="pull-center">
+                        <div class="pull-center top-separate">
                             <div class="input-file-container">
                                 {{ Form::file('profile_picture_path', ['class' => 'input-file']) }}
                                 {{ Form::label('profile_picture_path', (!empty(auth()->user()->profile_picture_path) ? 'Mudar ' : '') . 'Foto de Perfil', ['class' => 'input-file-trigger']) }}
@@ -63,6 +74,39 @@
 
 @section('js')
     <script type="text/javascript" src="{{ asset('assets/admin/js/settings.js') }}"></script>
+    <script type="text/javascript">
+        function removePicture() {
+            $.ajax({
+                url: '{{ route('settings.removePicture') }}',
+                headers: {
+                    'X-CSRF-Token': document.getElementsByTagName('meta')[2].getAttribute('content')
+                },
+                type: 'DELETE',
+                success: function(data) {
+                    if (data.success){
+                        swal({
+                            title: data.message,
+                            icon: 'success',
+                        });
+                        setTimeout(function(){
+                            window.location.reload();
+                        }, 1500);
+                    } else {
+                        swal({
+                            title: data.message,
+                            icon: 'error',
+                        });
+                    }
+                },
+                error: function() {
+                    swal({
+                        title: 'Desconhecido, favor recarrega a página e tente novamente!',
+                        icon: 'error',
+                    });
+                },
+            });
+        }
+    </script>
 @endsection
 
 @section('css')

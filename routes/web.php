@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Route;
  * TODO: Institutional
  */
 Route::get('/', 'SiteInstitucional\SiteInstController@index')->name('home');
-Route::get('/confirm/{token}', 'SiteInstitucional\SiteInstController@confirmEmail')->name('confirm.account');
 
 #######################################################################################################################################
 
@@ -35,6 +34,7 @@ Route::group(['middleware' => 'auth', 'prefix' => '/control/'], function () {
             Route::delete('removePicture', 'Admin\\AdminController@removePicture')->name('admin.removePicture');
             Route::get('settings', 'Admin\\AdminController@settings')->name('admin.settings');
             Route::post('updateSettings', 'Admin\\AdminController@updateSettings')->name('admin.updateSettings');
+
         # REPORTS
             Route::get('reports', 'Admin\\AdminController@reports')->name('admin.reports');
             Route::get('generatePDF', 'Admin\\AdminController@generatePDF')->name('admin.pdf');
@@ -102,8 +102,9 @@ Route::group(['middleware' => 'auth', 'prefix' => '/control/'], function () {
         # Route valid password recent
             Route::get('valid/{password}', 'Admin\\AdminController@validPasswordRecent')->name('settings.valid');
 
-        # View change new picture
+        # View change new picture and remove picture
             Route::get('changePicture', 'Admin\\AdminController@changeProfilePicture')->name('settings.changePicture');
+            Route::delete('removePicture', 'Admin\\AdminController@removeProfilePicture')->name('settings.removePicture');
 
         # New/Alter profile picture
             Route::post('picture', 'Admin\\AdminController@updateProfilePicture')->name('settings.picture');
@@ -124,6 +125,9 @@ Route::group(['middleware' => 'auth', 'prefix' => '/control/'], function () {
 /**
  * TODO: Funções Padrões do Sistema
  */
+
+# Rota de confirmação de conta usuário comum
+    Route::get('/confirm/{token}', 'SiteInstitucional\SiteInstController@confirmEmail')->name('confirm.account');
 
 # Rotas para registrar usuários comuns
     Route::get('register', ['uses' => 'Auth\RegisterController@showRegistrationForm'])->name('register.page');
