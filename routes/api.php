@@ -13,10 +13,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-# Routes: Auth Users and Register
+# Routes: Auth Users, Register, Auth Painel and Recover Password
 Route::post('login', 'Api\\UserController@login');
 Route::post('register', 'Api\\UserController@store');
-Route::get('/auth_painel/{token}', 'Api\\UserController@authAdmin');
+Route::get('auth_painel/{token}', 'Api\\UserController@authAdmin');
+Route::post('recover_password', 'Api\\UserController@recoverPassword');
 
 Route::middleware('check_token')->group(function() {
     # Routes: Event

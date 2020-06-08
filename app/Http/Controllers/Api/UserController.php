@@ -391,6 +391,55 @@ class UserController extends Controller
 
     /**
      * Register rating common user
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function recoverPassword(Request $request)
+    {
+        $user = User::where('email', $request->email)->first();
+
+        if ($user):
+            $token = Str::random(90);
+            $user->remember_token = $token;
+            $newPassword = Str::random(10);
+            $user->password = bcrypt($newPassword);
+            
+            if (!$user->update())
+                return response()->json([
+                    'message' => 'Erro ao enviar o e-mail, por favor atualize a página e tente novamente!',
+                    'status' => false
+                ]); 
+
+
+            $email = 'revolt_car@hotmail.com'; // $user->email;
+            $object = new \stdClass();
+            $object->name = $user->name;
+            $object->login = $user->email;
+            $object->password = $newPassword;
+            $object->token = $user->remember_token;
+            $object->link = 'http://localhost:3000/login';
+            $mail = new \stdClass();
+            $mail->subject = 'Esqueceu sua senha? Foi gerada uma nova senha para acessar ao Nightlife';
+            $mail->template = 'auth.forgot-password-mail';
+            $mail->replyTo = 'da3780024@gmail.com';//'fabianocm1995@hotmail.com';
+            $mail->object = $object;
+
+            Mail::to($email)->send(new Email($mail));
+
+            return response()->json([
+                'message' => 'Enviado ao e-mail informado novos dados de acesso, favor verifique na caixa de entrada ou spam!',
+                'status' => true
+            ]);    
+        endif;
+
+        return response()->json([
+            'message' => 'E-mail não encontrado!',
+            'status' => false
+        ]);            
+    }
+
+    /**
+     * Register rating common user
      * @param CreateOrUpdateUser $request
      * @return \Illuminate\Http\JsonResponse
      */
