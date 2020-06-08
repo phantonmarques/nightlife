@@ -155,7 +155,7 @@ class UserController extends Controller
         if (count($citys) > 0)
             return response()->json([
                 'status' => true,
-                'data' => City::where('state_id', $state)->pluck('id', 'name_visible')
+                'data' => City::select('id', 'name_visible as name')->where('state_id', $state)->get()
             ]);
 
         return response()->json([
@@ -173,7 +173,7 @@ class UserController extends Controller
     {
         return response()->json([
             'status' => true,
-            'data' => State::pluck('id', 'name_visible')
+            'data' => State::select('id', 'name_visible as name')->get()
         ]);
     }
 

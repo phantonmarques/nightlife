@@ -45,9 +45,17 @@
          */
         protected function failedValidation(Validator $validator)
         {
+					$message = '';
+					foreach ($validator->errors()->messages() as $key => $errorArray) {
+						foreach ($errorArray as $error) {
+							$message .= $error . ' ';
+						}	
+					}
+						http_response_code(403);
             exit(json_encode([
                 'status' => false,
-                'errors' => $validator->errors()->messages()
+								'errors' => $validator->errors()->messages(),
+								'message' => $message,
             ]));
         }
     }
