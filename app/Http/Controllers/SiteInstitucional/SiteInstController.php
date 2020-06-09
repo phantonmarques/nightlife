@@ -10,17 +10,21 @@ use Illuminate\Support\Str;
 
 class SiteInstController extends Controller
 {
-    public function index(){
-        return view('siteinstitucional.home.home');
-    }
 
-    /** PROVISÓRIO
+    /**
+     * Login Authentication Admin Painel
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function login()
     {
         return view('siteinstitucional.auth.login');
     }
 
+    /**
+     * Confirm email user
+     * @param $token
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function confirmEmail($token)
     {
         $user = User::where('remember_token', $token)->first();
