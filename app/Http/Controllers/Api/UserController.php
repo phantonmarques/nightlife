@@ -137,8 +137,8 @@ class UserController extends Controller
                 ]);
             else:
                 return response()->json([
-                    'message' => 'Senha inválida',
-                    'status' => 'Ocorreu um erro ao conectar com a conta do ' . $data['typeSocial'] . '!'
+                    'message' => 'Ocorreu um erro ao conectar com a conta do ' . $user->type_social . '!',
+                    'status' => false
                 ]);
             endif;
 
@@ -153,17 +153,17 @@ class UserController extends Controller
                 $user->email = $data['email'];
                 $user->email_verified_at = date('Y-m-d H:i:s');
                 $user->password = bcrypt('socialNetwork@2');
-                $user->type_social = $data['typeSocial'];
+                $user->type_social = $data['type_social'];
                 $token = Str::random(90);
                 $user->remember_token = $token;
 
                 if (!$user->save())
-                    throw new \Exception('Ocorreu um erro ao conectar com a conta do ' . $data['typeSocial'] . '!');
+                    throw new \Exception('Ocorreu um erro ao conectar com a conta do ' . $data['type_social'] . '!');
 
                 $created = $user->user_settings()->create();
 
                 if (!$created)
-                    throw new \Exception('Ocorreu um erro ao conectar com a conta do ' . $data['typeSocial'] . '!');
+                    throw new \Exception('Ocorreu um erro ao conectar com a conta do ' . $data['type_social'] . '!');
 
                 DB::commit();
 

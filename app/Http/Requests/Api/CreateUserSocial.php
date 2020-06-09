@@ -2,9 +2,6 @@
 
     namespace App\Http\Requests\Api;
 
-    use App\Models\Site\User;
-
-
     class CreateUserSocial extends FormRequest
     {
         /**
@@ -24,14 +21,10 @@
          */
         public function rules()
         {
-            $emailUnique = '';
-            $nameRequired = 'required';
-            $emailRequired = 'required';
-
             $rules = [
                 'name' => ['required', 'string', 'min:3'],
                 'email' => ['required', 'string', 'unique:user'],
-                'typeSocial' => ['min:3'],
+                'type_social' => ['required','min:3'],
             ];
 
             return $rules;
