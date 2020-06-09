@@ -149,11 +149,11 @@ class UserController extends Controller
 
             try {
                 $user = new User();
-                $user->name = $data['name'];
+                $user->name = $data['displayName'];
                 $user->email = $data['email'];
                 $user->email_verified_at = date('Y-m-d H:i:s');
                 $user->password = bcrypt('socialNetwork@2');
-                $user->type_social = $data['type_social'];
+                $user->type_social = $data['socialNetwork'];
                 $token = Str::random(90);
                 $user->remember_token = $token;
 

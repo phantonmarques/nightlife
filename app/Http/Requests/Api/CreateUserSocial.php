@@ -22,9 +22,9 @@
         public function rules()
         {
             $rules = [
-                'name' => ['required', 'string', 'min:3'],
-                'email' => ['required', 'string', 'unique:user'],
-                'type_social' => ['required','min:3'],
+                'displayName' => ['required', 'string', 'min:3'],
+                'email' => ['string', 'required'],
+                'socialNetwork' => ['required','min:3'],
             ];
 
             return $rules;
@@ -41,9 +41,8 @@
                 'name.required' => 'Ocorreu um erro ao conectar a conta!',
                 'name.string' => 'Ocorreu um erro ao conectar a conta!',
                 'name.min' => 'Ocorreu um erro ao conectar a conta!',
-                'email.required' => 'Ocorreu um erro ao conectar a conta!',
-                'email.string' => 'Ocorreu um erro ao conectar a conta!',
-                'email.unique' => 'Ocorreu um erro ao conectar a conta!',
+                'email.required' => 'Ocorreu um erro ao conectar a conta! (1)',
+                'email.string' => 'Ocorreu um erro ao conectar a conta! (2)',
                 'typeSocial.min' => 'Ocorreu um erro ao conectar a conta!',
             ];
         }
