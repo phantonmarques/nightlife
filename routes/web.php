@@ -37,7 +37,7 @@ Route::group(['middleware' => 'auth', 'prefix' => '/control/'], function () {
 
         # REPORTS
             Route::get('reports', 'Admin\\AdminController@reports')->name('admin.reports');
-            Route::get('generatePDF', 'Admin\\AdminController@generatePDF')->name('admin.pdf');
+            Route::post('generateReports', 'Admin\\AdminController@generateReport')->name('admin.generateReport');
 
     # Admin|Employee Access *SPECIAL*
         Route::post('establishmentConnect', 'Admin\\AdminController@establishmentConnect')->name('admin.establishment');

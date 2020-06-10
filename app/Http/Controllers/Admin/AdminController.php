@@ -565,7 +565,7 @@ class AdminController extends Controller
      * Function generate PDF info Establishment
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function generatePDF()
+    public function generateReport()
     {
         if (!empty(auth()->user()->establishment_connect))
             $id = auth()->user()->establishment_connect;
@@ -577,6 +577,8 @@ class AdminController extends Controller
                 ->back()
                 ->withInput()
                 ->with('error', 'Conecte em algum estabelecimento para realizar alterações, em seguida tente novamente!');
+
+        dd('teste');
 
         $establishment = Establishment::with([
             'users',

@@ -14,19 +14,31 @@
         <div class="col-md-12">
             <div class="box box-warning">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Olá, Bem vindo aos relatórios, [{{ $establishment->corporate_name }}]</h3>
-                    <br><br>
-                    
-                    <div class="form-group">
-                  <label>Selecionar o tipo de relatório</label>
-                  <select class="form-control">
-                    <option value="1">Notas e comentários. - PDF</option>
-                    <option value="2">Notas e comentários. - XLS</option>
-                  </select>
-                  <br>
-                 <a href="{{route('admin.pdf')}}" class="btn btn-sm btn-primary btn-flat">Gerar</a>
-                </div> <br><br>
+                    <h3 class="box-title">Olá, Bem vindo aos relatórios [{{ $establishment->corporate_name }}]</h3>
                 </div>
+
+                {{ Form::open(array('route' => 'admin.generateReport', 'method' => 'POST')) }}
+                {!! csrf_field() !!}
+
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-5">
+                            <div class="form-group">
+                                {{ Form::label('typeReport', 'Tipo de relatório') }}
+                                <div class="input-group">
+                                    {{ Form::select('typeReport', [1 => 'Notas e comentários - PDF', 2 => 'Notas e comentários - XLS'], ['id' => 'typeReport']) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-2">
+                            {{ Form::submit('Gerar', ['class' => 'btn btn-sm btn-primary btn-flat']) }}
+                        </div>
+                    </div>
+                </div>
+                {{ Form::close() }}
+
 
             </div>
         </div>

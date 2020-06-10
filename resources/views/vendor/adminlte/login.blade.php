@@ -19,26 +19,26 @@
             <form action="{{ url(config('adminlte.login_url', 'login')) }}" method="post">
                 {!! csrf_field() !!}
 
-                <div class="form-group has-feedback {{ $errors->has('email') ? 'has-error' : '' }}">
+                <div class="form-group has-feedback">
                     <input type="email" name="email" class="form-control" value="{{ old('email') }}"
                            placeholder="E-mail">
                     <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
-                    @if ($errors->has('email'))
-                        <span class="help-block">
-                            <strong>{{ $errors->first('email') }}</strong>
-                        </span>
-                    @endif
                 </div>
-                <div class="form-group has-feedback {{ $errors->has('password') ? 'has-error' : '' }}">
+                <div class="form-group has-feedback">
                     <input type="password" name="password" class="form-control"
                            placeholder="Senha">
                     <span class="glyphicon glyphicon-lock form-control-feedback"></span>
-                    @if ($errors->has('password'))
-                        <span class="help-block">
+                </div>
+                @if ($errors->has('password'))
+                    <span class="help-block text-red">
                             <strong>{{ $errors->first('password') }}</strong>
                         </span>
-                    @endif
-                </div>
+                @endif
+                @if ($errors->has('email'))
+                    <span class="help-block text-red">
+                            <strong>{{ $errors->first('email') }}</strong>
+                        </span>
+                @endif
                 <div class="row">
                     <div class="col-xs-8">
                         <div class="checkbox icheck">
