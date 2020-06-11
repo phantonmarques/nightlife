@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\Admin\EstablishmentAddress;
 use App\Models\Admin\EstablishmentStatistics;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -21,7 +20,9 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\ImageManagerStatic as Image;
-use Barryvdh\DomPDF\PDF;
+use Barryvdh\DomPDF\Facade as PDF;
+use App\Exports\EstablishmentExports;
+use Maatwebsite\Excel\Facades\Excel;
 
 class AdminController extends Controller
 {
@@ -563,9 +564,10 @@ class AdminController extends Controller
 
     /**
      * Function generate PDF info Establishment
-     * @return \Illuminate\Http\RedirectResponse
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse|\Symfony\Component\HttpFoundation\BinaryFileResponse
      */
-    public function generateReport()
+    public function generateReport(Request $request)
     {
         if (!empty(auth()->user()->establishment_connect))
             $id = auth()->user()->establishment_connect;
@@ -578,26 +580,30 @@ class AdminController extends Controller
                 ->withInput()
                 ->with('error', 'Conecte em algum estabelecimento para realizar alterações, em seguida tente novamente!');
 
-        dd('teste');
+        if ($request->typeReport === '1'):
+            $establishment = Establishment::with([
+                'ratings',
+                'comments'
+            ])->find($id);
 
-        $establishment = Establishment::with([
-            'users',
-            'establishment_address',
-            'establishment_phones',
-            'establishment_statistics',
-            'events',
-            'ratings',
-            'comments'
-        ])->find($id);
+            $pdf = PDF::loadView('admin.reports.pdf', compact('establishment'));
+            return $pdf->setPaper('a4')->stream('RatingsandComments');
 
-        /**$pdf = PDF::loadView('pdf', compact('establishment'));
+        elseif ($request->typeReport === '2'):
+            return Excel::download(new EstablishmentExports, 'establishment.xlsx');
+
+        endif;
+        /**
 
         return $pdf->setPaper('a4')->stream('RatingsandComments');
         Caso 1
         Todas as notas do estabelecimento
         **/
 
-
+        return redirect()
+            ->back()
+            ->withInput()
+            ->with('error', 'Selecione corretamente o tipo de relatório solicitado!');
     }
 
     /**

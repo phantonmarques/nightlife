@@ -17,9 +17,7 @@
                     <h3 class="box-title">Olá, Bem vindo aos relatórios [{{ $establishment->corporate_name }}]</h3>
                 </div>
 
-                {{ Form::open(array('route' => 'admin.generateReport', 'method' => 'POST')) }}
-                {!! csrf_field() !!}
-
+                {{ Form::open(array('route' => 'admin.generateReport', 'method' => 'GET')) }}
                 <div class="box-body">
                     <div class="row">
                         <div class="col-md-5">

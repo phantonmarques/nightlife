@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Route;
  *  Page main for all
  * TODO: Institutional
  */
-Route::get('/', 'SiteInstitucional\SiteInstController@index')->name('home');
+Route::get('/', 'SiteInstitucional\SiteInstController@login')->name('home');
 
 #######################################################################################################################################
 
@@ -37,7 +37,7 @@ Route::group(['middleware' => 'auth', 'prefix' => '/control/'], function () {
 
         # REPORTS
             Route::get('reports', 'Admin\\AdminController@reports')->name('admin.reports');
-            Route::post('generateReports', 'Admin\\AdminController@generateReport')->name('admin.generateReport');
+            Route::get('generateReports', 'Admin\\AdminController@generateReport')->name('admin.generateReport');
 
     # Admin|Employee Access *SPECIAL*
         Route::post('establishmentConnect', 'Admin\\AdminController@establishmentConnect')->name('admin.establishment');
