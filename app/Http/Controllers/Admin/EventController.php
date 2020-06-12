@@ -33,7 +33,7 @@
          */
         public function index(Request $request)
         {
-            if (!auth()->user()->can('manage-called') && !auth()->user()->can('establishment-manager'))
+            if (!auth()->user()->can('manage-called') && !auth()->user()->can('establishment-employee'))
                 return abort(401);
 
             $eventSearch = $request->query('s');
@@ -69,7 +69,7 @@
          */
         public function create()
         {
-            if (!auth()->user()->can('manage-called') && !auth()->user()->can('establishment-manager'))
+            if (!auth()->user()->can('manage-called') && !auth()->user()->can('establishment-employee'))
                 return abort(401);
 
             /** Create form options */
@@ -120,7 +120,7 @@
          */
         public function store(CreateOrUpdateEvent $request)
         {
-            if (!auth()->user()->can('manage-called') && !auth()->user()->can('establishment-manager'))
+            if (!auth()->user()->can('manage-called') && !auth()->user()->can('establishment-employee'))
                 return abort(401);
 
             $data = $request->validated();
@@ -174,7 +174,7 @@
          */
         public function show(Event $event)
         {
-            if (!auth()->user()->can('manage-called') && !auth()->user()->can('establishment-manager'))
+            if (!auth()->user()->can('manage-called') && !auth()->user()->can('establishment-employee'))
                 return abort(401);
 
             return view('admin.event.show',
@@ -189,7 +189,7 @@
          */
         public function edit(Event $event)
         {
-            if (!auth()->user()->can('manage-called') && !auth()->user()->can('establishment-manager'))
+            if (!auth()->user()->can('manage-called') && !auth()->user()->can('establishment-employee'))
                 return abort(401);
 
             /** Create form options */
@@ -230,7 +230,7 @@
          */
         public function update(CreateOrUpdateEvent $request, Event $event)
         {
-            if (!auth()->user()->can('manage-called') && !auth()->user()->can('establishment-manager'))
+            if (!auth()->user()->can('manage-called') && !auth()->user()->can('establishment-employee'))
                 return abort(401);
 
             $data = $request->validated();
@@ -288,7 +288,7 @@
          */
         public function destroy(Event $event)
         {
-            if (!auth()->user()->can('manage-called') && !auth()->user()->can('establishment-manager'))
+            if (!auth()->user()->can('manage-called') && !auth()->user()->can('establishment-employee'))
                 return abort(401);
 
             # Log Access Users

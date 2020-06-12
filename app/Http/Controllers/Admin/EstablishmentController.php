@@ -286,10 +286,13 @@
 
                 endif;
 
-                $eventsDesative = Event::whereStatus(1)->where('establishment_id', $establishment->id)->update(['status' => 0]);
+                if (Event::whereStatus(1)->where('establishment_id', $establishment->id)->count() > 0):
+                    $eventsDesative = Event::whereStatus(1)->where('establishment_id', $establishment->id)->update(['status' => 0]);
 
-                if (!$eventsDesative)
-                    throw new \Exception('Não foi possível desativar o estabelecimento');
+                    if (!$eventsDesative)
+                        throw new \Exception('Não foi possível desativar o estabelecimento');
+
+                endif;
 
                 $establishment->status = 0;
 
@@ -335,13 +338,15 @@
 
                 endif;
 
-                $eventsDesative = Event::whereStatus(1)->where('establishment_id', $establishment->id)->update(['status' => 0]);
+                if (Event::whereStatus(1)->where('establishment_id', $establishment->id)->count() > 0):
+                    $eventsDesative = Event::whereStatus(1)->where('establishment_id', $establishment->id)->update(['status' => 0]);
 
-                if (!$eventsDesative)
-                    return response()->json([
-                        'status' => false,
-                        'message' => 'Erro ao desativar a(s) estabelecimento(s)!'
-                    ]);
+                    if (!$eventsDesative)
+                        return response()->json([
+                            'status' => false,
+                            'message' => 'Erro ao desativar a(s) estabelecimento(s)!'
+                        ]);
+                endif;
 
                 $establishment->status = 0; 
 

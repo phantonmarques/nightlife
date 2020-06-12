@@ -20,7 +20,7 @@ class CalledController extends Controller
         #ONLY AUTH
         $this->middleware('auth');
         #ONLY WITH ROLE ACTIVE [ADMIN]
-        $this->middleware('role:admin|establishment');
+        $this->middleware('role:admin|establishment|establishment-employee');
     }
 
     /**

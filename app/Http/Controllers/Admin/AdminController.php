@@ -98,7 +98,7 @@ class AdminController extends Controller
     {
         if (!empty(auth()->user()->establishment_connect))
             $id = auth()->user()->establishment_connect;
-        elseif (auth()->user()->establishments()->count() > 0)
+        elseif (auth()->user()->establishments->count() > 0)
             $id = auth()->user()->establishments->id;
 
         if (empty($id) && auth()->user()->can('manage-called'))
@@ -240,9 +240,14 @@ class AdminController extends Controller
         foreach ($establishment->establishment_address as $address)
             $citysEstablishment[] = $address->city_id;
 
-        $establishmentsCity = Establishment::whereHas('establishment_address', function ($q) use ($citysEstablishment) {
-            $q->where('city_id', $citysEstablishment);
-        })->select('id')->get()->toArray();
+        if (count($establishment->establishment_address) > 0):
+            $establishmentsCity = Establishment::whereHas('establishment_address', function ($q) use ($citysEstablishment) {
+                $q->where('city_id', $citysEstablishment);
+            })->select('id')->get()->toArray();
+        else:
+            $establishmentsCity = [];
+
+        endif;
 
         # Establishment Statistics
         $establishmentsStatistics = EstablishmentStatistics::whereIn('establishment_id', $establishmentsCity)->get()->toArray();
