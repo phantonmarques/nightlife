@@ -1,0 +1,11 @@
+CREATE FUNCTION st_distance_sphere(pt1 POINT, pt2 POINT)
+RETURNS double(10,2)
+
+RETURN 6371000 * 2 * ASIN(
+    SQRT(
+        POWER(SIN((ST_Y(pt2) - ST_Y(pt1)) * pi()/180 / 2), 2) +
+        COS(ST_Y(pt1) * pi()/180 ) *
+        COS(ST_Y(pt2) * pi()/180) *
+        POWER(SIN((ST_X(pt2) - ST_X(pt1)) * pi()/180 / 2), 2)
+    )
+)
